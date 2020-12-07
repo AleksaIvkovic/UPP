@@ -10,6 +10,7 @@ export class RegistrationComponent implements OnInit {
 
   formFields = [];
   enumValues = [];
+  processInstance;
 
   constructor(private repositoryService: UserService) { }
 
@@ -20,7 +21,7 @@ export class RegistrationComponent implements OnInit {
         //this.categories = res;
         //this.formFieldsDto = res;
         this.formFields = res.formFields;
-        //this.processInstance = res.processInstanceId;
+        this.processInstance = res.processInstanceId;
         this.formFields.forEach( (field) =>{
           
           if( field.type.name=='enum'){

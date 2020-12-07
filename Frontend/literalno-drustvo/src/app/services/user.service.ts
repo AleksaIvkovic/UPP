@@ -12,4 +12,8 @@ export class UserService {
   getRegisterForm() : Observable<any>{
     return this.http.get("http://localhost:8080/register") as Observable<any>;
   }
+
+  submitRegisterForm() : Observable<any>{
+    return this.http.put("http://localhost:8080/register",null) as Observable<any>;
+  }
 }
