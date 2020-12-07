@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="LiteralnoDrustvo" name="LiteralnoDrustvo" isExecutable="true">
+    <bpmn:startEvent id="Event_1mdtefo">
+      <bpmn:outgoing>Flow_1k0em20</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0ev4wst">
+      <bpmn:incoming>Flow_168qq2m</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1k0em20" sourceRef="Event_1mdtefo" targetRef="Activity_07q9ere" />
+    <bpmn:sequenceFlow id="Flow_168qq2m" sourceRef="Activity_07q9ere" targetRef="Event_0ev4wst" />
+    <bpmn:userTask id="Activity_07q9ere" name="Register">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="firstname" type="string" />
+          <camunda:formField id="lastname" type="string" />
+          <camunda:formField id="city" type="string" />
+          <camunda:formField id="country" type="string" />
+          <camunda:formField id="email" type="string" />
+          <camunda:formField id="username" type="string">
+            <camunda:validation>
+              <camunda:constraint />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="password" type="string" />
+          <camunda:formField id="confirmPassword" />
+          <camunda:formField id="isBeta" type="boolean" />
+          <camunda:formField id="genres" type="enum" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1k0em20</bpmn:incoming>
+      <bpmn:outgoing>Flow_168qq2m</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="LiteralnoDrustvo">
+      <bpmndi:BPMNEdge id="Flow_1k0em20_di" bpmnElement="Flow_1k0em20">
+        <di:waypoint x="228" y="120" />
+        <di:waypoint x="363" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_168qq2m_di" bpmnElement="Flow_168qq2m">
+        <di:waypoint x="463" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0hdgxbb_di" bpmnElement="Activity_07q9ere">
+        <dc:Bounds x="363" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1mdtefo_di" bpmnElement="Event_1mdtefo">
+        <dc:Bounds x="192" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ev4wst_di" bpmnElement="Event_0ev4wst">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
