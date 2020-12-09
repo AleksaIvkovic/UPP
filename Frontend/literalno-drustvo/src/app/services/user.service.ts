@@ -10,10 +10,10 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getRegisterForm() : Observable<any>{
-    return this.http.get("http://localhost:8080/register") as Observable<any>;
+    return this.http.get("http://localhost:8081/register/user-form") as Observable<any>;
   }
 
   submitRegisterForm() : Observable<any>{
-    return this.http.put("http://localhost:8080/register",null) as Observable<any>;
+    return this.http.put("http://localhost:8081/register",null) as Observable<any>;
   }
 }
