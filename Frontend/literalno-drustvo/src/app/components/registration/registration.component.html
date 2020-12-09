@@ -4,7 +4,7 @@
         <div *ngFor="let field of formFields" >
             <label for={{field.id}}>{{field.label}}</label>
       
-            <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'" >
+            <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
             <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
             <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
             <select name="field.id" *ngIf="field.type.name=='enum'">
@@ -12,8 +12,13 @@
                 {{field.type.values[val]}}
               </option>
             </select>
+            <!-- <div *ngFor="let validator of field.validationConstraints">
+              <div *ngIf="validator.name=='required' && {{field.id}}.errors.required">
+                Name is required.
+              </div>
+            </div> -->
         </div>
         
-        <input type="submit">
+        <input type="submit" (disabled)="f.isValid">
       </form>
 </div>

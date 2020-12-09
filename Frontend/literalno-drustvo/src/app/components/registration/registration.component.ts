@@ -22,7 +22,7 @@ export class RegistrationComponent implements OnInit {
         //this.formFieldsDto = res;
         this.formFields = res.formFields;
         this.processInstance = res.processInstanceId;
-        this.formFields.forEach( (field) =>{
+        this.formFields.map( (field) =>{
           
           if( field.type.name=='enum'){
             this.enumValues = Object.keys(field.type.values);
