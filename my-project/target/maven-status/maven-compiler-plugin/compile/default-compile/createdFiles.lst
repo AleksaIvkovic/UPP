@@ -1,5 +1,5 @@
 com\example\workflow\controllers\RegistrationController.class
+com\example\workflow\models\FormSubmissionDTO.class
 com\example\workflow\config\webConfig.class
-models\FormSubmissionDTO.class
 com\example\workflow\Application.class
 com\example\workflow\models\FormFieldsDTO.class

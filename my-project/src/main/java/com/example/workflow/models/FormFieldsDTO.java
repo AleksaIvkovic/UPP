@@ -5,18 +5,18 @@ import org.camunda.bpm.engine.form.FormField;
 import java.util.List;
 
 public class FormFieldsDTO {
-    String taksId;
+    String taskId;
 
     List<FormField>  formFields;
 
     String processInstanceId;
 
-    public String getTaksId() {
-        return taksId;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public void setTaksId(String taksId) {
-        this.taksId = taksId;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public List<FormField> getFormFields() {
@@ -35,8 +35,9 @@ public class FormFieldsDTO {
         this.processInstanceId = processInstanceId;
     }
 
-    public FormFieldsDTO(String taksId, List<FormField> formFields, String processInstanceId) {
-        this.taksId = taksId;
+    public FormFieldsDTO(String taskId, List<FormField> formFields, String processInstanceId) {
+        super();
+        this.taskId = taskId;
         this.formFields = formFields;
         this.processInstanceId = processInstanceId;
     }

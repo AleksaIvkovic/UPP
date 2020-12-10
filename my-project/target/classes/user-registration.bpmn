@@ -45,11 +45,13 @@
           <camunda:formField id="password" label="Password" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
+              <camunda:constraint name="minlength" config="4" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="confirmPassword" label="Confirm password" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
+              <camunda:constraint name="minlength" config="4" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="isBeta" label="Is Beta" type="boolean" />

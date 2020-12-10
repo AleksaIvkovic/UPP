@@ -1,4 +1,4 @@
-package models;
+package com.example.workflow.models;
 
 import java.io.Serializable;
 
@@ -6,7 +6,12 @@ public class FormSubmissionDTO implements Serializable {
     String fieldId;
     String fieldValue;
 
+    public FormSubmissionDTO() {
+        super();
+    }
+
     public FormSubmissionDTO(String fieldId, String fieldValue) {
+        super();
         this.fieldId = fieldId;
         this.fieldValue = fieldValue;
     }
