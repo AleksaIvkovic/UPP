@@ -1,22 +1,22 @@
 <div>
-    <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)">
 
-        <div *ngFor="let field of formFields" >
+        <div *ngFor="let field of formFields; let i=index" >
             <label for={{field.id}}>{{field.label}}</label>
       
-            <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
-            <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
-            <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
+            <input id="{{i}}" required type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
+            <input id="{{i}}" type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
+            <input id="{{i}}" type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
             <select name="field.id" *ngIf="field.type.name=='enum'">
               <option *ngFor="let val of enumValues" value={{val}}>
                 {{field.type.values[val]}}
               </option>
             </select>
-            <!-- <div *ngFor="let validator of field.validationConstraints">
-              <div *ngIf="validator.name=='required' && {{field.id}}.errors.required">
+            <div *ngFor="let validator of field.validationConstraints">
+              <div *ngIf="validator.name=='required' && i.errors.required">
                 Name is required.
               </div>
-            </div> -->
+            </div>
         </div>
         
         <input type="submit" (disabled)="f.isValid">

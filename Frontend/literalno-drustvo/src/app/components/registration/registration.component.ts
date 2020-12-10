@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Form, FormControl, FormGroup, NgForm } from '@angular/forms';
 import { UserService} from '../../services/user.service'
 
 @Component({
@@ -11,6 +12,7 @@ export class RegistrationComponent implements OnInit {
   formFields = [];
   enumValues = [];
   processInstance;
+  f: NgForm
 
   constructor(private repositoryService: UserService) { }
 
@@ -23,7 +25,14 @@ export class RegistrationComponent implements OnInit {
         this.formFields = res.formFields;
         this.processInstance = res.processInstanceId;
         this.formFields.map( (field) =>{
-          
+          field.validationConstraints.map( (validation) => {
+            switch(validation){
+               case 'required' : {
+                  break;
+               }
+            }
+          })
+
           if( field.type.name=='enum'){
             this.enumValues = Object.keys(field.type.values);
           }

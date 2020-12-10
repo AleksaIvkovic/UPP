@@ -12,14 +12,46 @@
     <bpmn:userTask id="Activity_0cic0t1" name="Register">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="firstname" label="Firstname" type="string" />
-          <camunda:formField id="lastname" label="Lastname" type="string" />
-          <camunda:formField id="city" label="City" type="string" />
-          <camunda:formField id="country" label="Country" type="string" />
-          <camunda:formField id="email" label="Email" type="string" />
-          <camunda:formField id="username" label="Username" type="string" />
-          <camunda:formField id="password" label="Password" type="string" />
-          <camunda:formField id="confirmPassword" label="Confirm password" type="string" />
+          <camunda:formField id="firstname" label="Firstname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="lastname" label="Lastname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="city" label="City" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="country" label="Country" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="email" label="Email" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="username" label="Username" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="password" label="Password" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="confirmPassword" label="Confirm password" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
           <camunda:formField id="isBeta" label="Is Beta" type="boolean" />
           <camunda:formField id="genres" type="enum" />
         </camunda:formData>
