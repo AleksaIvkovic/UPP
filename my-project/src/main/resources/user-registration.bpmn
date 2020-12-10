@@ -12,15 +12,15 @@
     <bpmn:userTask id="Activity_0cic0t1" name="Register">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="firstname" type="string" />
-          <camunda:formField id="lastname" type="string" />
-          <camunda:formField id="city" type="string" />
-          <camunda:formField id="country" type="string" />
-          <camunda:formField id="email" type="string" />
-          <camunda:formField id="username" type="string" />
-          <camunda:formField id="password" type="string" />
-          <camunda:formField id="confirmPassword" type="string" />
-          <camunda:formField id="isBeta" type="boolean" />
+          <camunda:formField id="firstname" label="Firstname" type="string" />
+          <camunda:formField id="lastname" label="Lastname" type="string" />
+          <camunda:formField id="city" label="City" type="string" />
+          <camunda:formField id="country" label="Country" type="string" />
+          <camunda:formField id="email" label="Email" type="string" />
+          <camunda:formField id="username" label="Username" type="string" />
+          <camunda:formField id="password" label="Password" type="string" />
+          <camunda:formField id="confirmPassword" label="Confirm password" type="string" />
+          <camunda:formField id="isBeta" label="Is Beta" type="boolean" />
           <camunda:formField id="genres" type="enum" />
         </camunda:formData>
       </bpmn:extensionElements>
@@ -30,13 +30,13 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="register">
-      <bpmndi:BPMNEdge id="Flow_03jn8ht_di" bpmnElement="Flow_03jn8ht">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="340" y="117" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0xgs9eg_di" bpmnElement="Flow_0xgs9eg">
         <di:waypoint x="440" y="117" />
         <di:waypoint x="552" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03jn8ht_di" bpmnElement="Flow_03jn8ht">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="340" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
