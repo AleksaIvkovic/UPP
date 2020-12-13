@@ -1,5 +1,10 @@
-com\example\workflow\controllers\RegistrationController.class
 com\example\workflow\models\FormSubmissionDTO.class
+com\example\workflow\services\GetGenresService.class
+com\example\workflow\models\Genre.class
+com\example\workflow\handlers\GetGenresHandler.class
+com\example\workflow\intefaces\IGetGenres.class
+com\example\workflow\models\FormFieldsDTO.class
+com\example\workflow\controllers\RegistrationController.class
 com\example\workflow\config\webConfig.class
 com\example\workflow\Application.class
-com\example\workflow\models\FormFieldsDTO.class
+com\example\workflow\models\MultipleEnumFormType.class

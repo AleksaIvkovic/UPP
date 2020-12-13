@@ -7,7 +7,7 @@
             <input formControlName={{field.id}} required type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
             <input formControlName={{field.id}} type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
             <input formControlName={{field.id}} type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
-            <select name="field.id" *ngIf="field.type.name=='enum'">
+            <select name="field.id" *ngIf="field.type.name=='enum' || field.type.name=='multipleEnum_genres'">
               <option *ngFor="let val of enumValues" value={{val}}>
                 {{field.type.values[val]}}
               </option>

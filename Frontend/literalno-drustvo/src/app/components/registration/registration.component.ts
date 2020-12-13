@@ -59,7 +59,7 @@ export class RegistrationComponent implements OnInit {
             validators
           );
 
-          if( field.type.name=='enum'){
+          if( field.type.name=='enum' || field.type.name=='multipleEnum_genres'){
             this.enumValues = Object.keys(field.type.values);
           }
         });
