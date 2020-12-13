@@ -8,6 +8,7 @@
             <input formControlName={{field.id}} type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
             <input formControlName={{field.id}} type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
             <input formControlName={{field.id}} type="email" name={{field.id}} ngModel  *ngIf="field.type.name=='string_email'">
+            <input formControlName={{field.id}} type="password" name={{field.id}} ngModel  *ngIf="field.type.name=='string_password'">
             <select name="field.id" *ngIf="field.type.name=='enum'">
               <option *ngFor="let val of enumValues[field.id]" value={{val}}>
                 {{field.type.values[val]}}
