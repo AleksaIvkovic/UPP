@@ -4,7 +4,10 @@ com\example\workflow\models\Genre.class
 com\example\workflow\handlers\GetGenresHandler.class
 com\example\workflow\intefaces\IGetGenres.class
 com\example\workflow\models\FormFieldsDTO.class
+com\example\workflow\validators\LettersValidator.class
 com\example\workflow\controllers\RegistrationController.class
+com\example\workflow\models\EmailStringFormType.class
 com\example\workflow\config\webConfig.class
+com\example\workflow\services\CustomTypeProcessEnginePlugin.class
 com\example\workflow\Application.class
 com\example\workflow\models\MultipleEnumFormType.class

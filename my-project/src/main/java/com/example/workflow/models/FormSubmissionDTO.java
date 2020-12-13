@@ -1,16 +1,25 @@
 package com.example.workflow.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
-public class FormSubmissionDTO implements Serializable {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class FormSubmissionDTO {
     String fieldId;
-    String fieldValue;
+    Object fieldValue;
 
-    public FormSubmissionDTO() {
+    /*public FormSubmissionDTO() {
         super();
     }
 
-    public FormSubmissionDTO(String fieldId, String fieldValue) {
+    public FormSubmissionDTO(String fieldId, Object fieldValue) {
         super();
         this.fieldId = fieldId;
         this.fieldValue = fieldValue;
@@ -24,11 +33,11 @@ public class FormSubmissionDTO implements Serializable {
         this.fieldId = fieldId;
     }
 
-    public String getFieldValue() {
+    public Object getFieldValue() {
         return fieldValue;
     }
 
     public void setFieldValue(String fieldValue) {
         this.fieldValue = fieldValue;
-    }
+    }*/
 }

@@ -13,7 +13,7 @@ export class UserService {
     return this.http.get("http://localhost:8081/api/register/user-form") as Observable<any>;
   }
 
-  submitRegisterForm(user, taskId) : Observable<any>{
-    return this.http.post("http://localhost:8081/api/register/submit-form/".concat(taskId), user) as Observable<any>;
+  submitRegisterForm(user, taskId){
+    return this.http.post("http://localhost:8081/api/register/submit-form/".concat(taskId), user);
   }
 }

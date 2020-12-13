@@ -54,25 +54,13 @@ public class RegistrationController {
         return new FormFieldsDTO(task.getId(), properties, pi.getId());
     }
 
-    @PostMapping(path="/submit-form/{taskId}", produces = "application/json")
-    public @ResponseBody
-    ResponseEntity post(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+    @PostMapping(path="/submit-form/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> post(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
-
-        // list all running/unsuspended instances of the process
-//		    ProcessInstance processInstance =
-//		        runtimeService.createProcessInstanceQuery()
-//		            .processDefinitionKey("Process_1")
-//		            .active() // we only want the unsuspended process instances
-//		            .list().get(0);
-
-//			Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list().get(0);
-
-
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        runtimeService.setVariable(processInstanceId, "registration", dto);
+        runtimeService.setVariable(processInstanceId, "registration", map);
         formService.submitTaskForm(taskId, map);
         return new ResponseEntity<>(HttpStatus.OK);
     }

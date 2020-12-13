@@ -7,11 +7,21 @@
             <input formControlName={{field.id}} required type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
             <input formControlName={{field.id}} type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
             <input formControlName={{field.id}} type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
-            <select name="field.id" *ngIf="field.type.name=='enum' || field.type.name=='multipleEnum_genres'">
-              <option *ngFor="let val of enumValues" value={{val}}>
+            <input formControlName={{field.id}} type="email" name={{field.id}} ngModel  *ngIf="field.type.name=='string_email'">
+            <select name="field.id" *ngIf="field.type.name=='enum'">
+              <option *ngFor="let val of enumValues[field.id]" value={{val}}>
                 {{field.type.values[val]}}
               </option>
             </select>
+            <div *ngIf="field.type.name=='multipleEnum_genres'" formGroupName={{field.id}}>
+              <div *ngFor="let element of enumValues| keyvalue">
+                <div *ngIf="element.key == field.id">
+                  <div *ngFor="let genre of element.value">
+                    <input type="checkbox" [formControlName]="genre">{{field.type.values[genre]}}<br>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div *ngFor="let validator of field.validationConstraints">
               <div *ngIf="validator.name=='required' && !registerForm.controls[field.id].valid && registerForm.controls[field.id].touched">
                 {{field.id}} is required.

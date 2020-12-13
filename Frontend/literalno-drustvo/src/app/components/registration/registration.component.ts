@@ -10,11 +10,12 @@ import { UserService} from '../../services/user.service'
 export class RegistrationComponent implements OnInit {
 
   formFields = [];
-  enumValues = [];
+  enumValues = new Map();
   processInstance;
   formFieldsDto = null;
 
   registerForm: FormGroup = new FormGroup({});
+  enumForm = new Map();
   formControls: FormControl[] = [];
 
   constructor(private userService: UserService) { }
@@ -28,39 +29,51 @@ export class RegistrationComponent implements OnInit {
         this.formFields = res.formFields;
         this.processInstance = res.processInstanceId;
         this.formFields.map( (field) => {
-          let temp = new FormControl(field.defaultValue);
-          this.formControls.push(temp);
-          this.registerForm.addControl(field.id, temp);
-          
-          let validators = [];
 
-          field.validationConstraints.map( (validation) => {
-            switch(validation.name){
-               case 'required' : {
-                 validators.push(Validators.required);
-                 break;
-               }
-              //  case 'email' : {
-              //   validators.push(Validators.email);
-              //   break;
-              // }
-              case 'minlength' : {
-                validators.push(Validators.minLength(<number>validation.configuration));
-                break;
+          if(field.type.name != "multipleEnum_genres"){
+            let temp = new FormControl(field.defaultValue);
+            this.formControls.push(temp);
+            this.registerForm.addControl(field.id, temp);
+            
+            let validators = [];
+
+            field.validationConstraints.map( (validation) => {
+              switch(validation.name){
+                case 'required' : {
+                  validators.push(Validators.required);
+                  break;
+                }
+                //  case 'email' : {
+                //   validators.push(Validators.email);
+                //   break;
+                // }
+                case 'minlength' : {
+                  validators.push(Validators.minLength(<number>validation.configuration));
+                  break;
+                }
+              }
+            });
+
+            this.registerForm.controls[field.id].setValidators(
+              validators
+            );
+          }
+          else{
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempForm = new FormGroup({});
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let genreId of value){
+                  tempForm.addControl(genreId, new FormControl(false));
+                }
               }
             }
-          });
 
-          if (field.id == "email") {
-            validators.push(Validators.email);
-          }
-
-          this.registerForm.controls[field.id].setValidators(
-            validators
-          );
-
-          if( field.type.name=='enum' || field.type.name=='multipleEnum_genres'){
-            this.enumValues = Object.keys(field.type.values);
+            this.registerForm.addControl(
+              field.id, tempForm
+            );
           }
         });
         console.log(this.registerForm);
