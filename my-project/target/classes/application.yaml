@@ -1,5 +1,3 @@
-spring.datasource.url: jdbc:h2:file:./camunda-h2-database
-spring.h2.console.enabled: true
 server:
   port: 8081
 camunda.bpm.admin-user:
