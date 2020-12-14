@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService} from '../../services/user.service'
 
 @Component({
@@ -18,12 +19,38 @@ export class RegistrationComponent implements OnInit {
   enumForm = new Map();
   formControls: FormControl[] = [];
 
-  constructor(private userService: UserService) { }
+  isReader = false;
+  isBetaReader = false;
+  isWriter = false;
+
+  constructor( 
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.userService.getRegisterForm().subscribe(
-      res => {
-        console.log(res);
+    if(this.router.url.includes('register-reader')){
+      this.isReader = true;
+      this.userService.getRegisterForm().subscribe(
+        res => {
+          this.initForm(res);
+        },
+        err => {
+          console.log("Error occured");
+        }
+      );
+    }
+    else if(this.router.url.includes('beta')){
+      this.isBetaReader = true;
+      this.initForm(JSON.parse(sessionStorage.getItem('betaForm')));
+    }
+    else if(this.router.url.includes('writer')){
+      this.isWriter = true;
+    }
+  }
+
+  initForm(res){
+    console.log(res);
         //this.categories = res;
         this.formFieldsDto = res;
         this.formFields = res.formFields;
@@ -91,11 +118,6 @@ export class RegistrationComponent implements OnInit {
         //     this.enumValues = Object.keys(field.type.values);
         //   }
         // });
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
   }
 
   onSubmit(value, form) {
@@ -108,11 +130,27 @@ export class RegistrationComponent implements OnInit {
 
     console.log(o);
 
-    this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
-      (res) => {
-        alert('Registration successful');
-    }, error => {
-      console.log(error);
-    });
+    if(this.isReader){
+      this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Registration successful');
+          }
+          else{
+            sessionStorage.setItem('betaForm',JSON.stringify(res));
+            this.router.navigate(['../','register-beta']);
+          }
+      }, error => {
+        console.log(error);
+      });
+    }
+    else if(this.isBetaReader){
+      this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Registration successful');
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 }

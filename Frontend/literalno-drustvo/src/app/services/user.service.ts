@@ -16,4 +16,8 @@ export class UserService {
   submitRegisterForm(user, taskId){
     return this.http.post("http://localhost:8081/api/register/submit-form/".concat(taskId), user);
   }
+
+  submitBetaForm(genres, taskId){
+    return this.http.post("http://localhost:8081/api/register/submit-beta-form/".concat(taskId), genres);
+  }
 }

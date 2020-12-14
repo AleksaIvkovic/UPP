@@ -3,8 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegistrationComponent } from './components/registration/registration.component';
 
 const routes: Routes = [
-  {path: '', redirectTo:'register', pathMatch: 'full'},
-  {path: 'register', component: RegistrationComponent}
+  {path: '', redirectTo:'register-reader', pathMatch: 'full'},
+  {path: 'register-reader', component: RegistrationComponent},
+  {path: 'register-beta', component: RegistrationComponent}
 ];
 
 @NgModule({

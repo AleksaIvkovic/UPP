@@ -38,7 +38,7 @@ public class RegistrationController {
     FormService formService;
 
     @GetMapping(path = "/user-form", produces = "application/json")
-    public @ResponseBody FormFieldsDTO get() {
+    public @ResponseBody FormFieldsDTO getReaderForm() {
         //provera da li korisnik sa id-jem pera postoji
         //List<User> users = identityService.createUserQuery().userId("pera").list();
         ProcessInstance pi = runtimeService.startProcessInstanceByKey("register");
@@ -55,14 +55,47 @@ public class RegistrationController {
     }
 
     @PostMapping(path="/submit-form/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> post(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+    public ResponseEntity<?> postReaderForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "registration", map);
+
+        //try catch block
         formService.submitTaskForm(taskId, map);
+
+        Task nextTask;
+        TaskFormData tfd = null;
+        if(taskService.createTaskQuery().processInstanceId(processInstanceId).list().size() != 0) {
+            nextTask = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
+            tfd = formService.getTaskFormData(nextTask.getId());
+
+            List<FormField> properties = tfd.getFormFields();
+            for(FormField fp : properties) {
+                System.out.println(fp.getId() + fp.getType());
+            }
+
+            return new ResponseEntity<>(new FormFieldsDTO(nextTask.getId(), properties, processInstanceId), HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @PostMapping(path="/submit-beta-form/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postBetaForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        runtimeService.setVariable(processInstanceId, "betaGenres", map);
+
+        //try catch block
+        formService.submitTaskForm(taskId, map);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
