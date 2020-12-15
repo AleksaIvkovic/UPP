@@ -1,6 +1,7 @@
 package com.example.workflow.services;
 
 import com.example.workflow.intefaces.IGenre;
+import com.example.workflow.intefaces.IReader;
 import com.example.workflow.models.Genre;
 import com.example.workflow.models.Reader;
 import org.camunda.bpm.engine.IdentityService;
@@ -25,6 +26,9 @@ public class StoreReaderService implements JavaDelegate {
 
     @Autowired
     private IGenre genreService;
+
+    @Autowired
+    private IReader readerService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -77,5 +81,6 @@ public class StoreReaderService implements JavaDelegate {
         newReader.setBetaGenres(betaGenres);
 
         //Repository za Reader-a i Genre-ove
+        readerService.storeReader(newReader);
     }
 }
