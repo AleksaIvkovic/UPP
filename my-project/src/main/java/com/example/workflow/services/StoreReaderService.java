@@ -82,5 +82,6 @@ public class StoreReaderService implements JavaDelegate {
 
         //Repository za Reader-a i Genre-ove
         readerService.storeReader(newReader);
+        execution.setVariable("email", newReader.getEmail());
     }
 }
