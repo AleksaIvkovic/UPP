@@ -14,13 +14,14 @@ public class Application {
     SpringApplication.run(Application.class);
 
 
-    String connectionUrl = "jdbc:sqlserver://localhost:1433;integratedSecurity=true;";
+    String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=uppDB;integratedSecurity=true;";
 
     try {
       System.out.print("Connecting to SQL Server ... ");
       try (Connection connection = DriverManager.getConnection(connectionUrl)) {
         System.out.println("Done.");
 
+        /*
         System.out.print("Dropping and creating database 'SampleDB' ... ");
         String sql = "DROP DATABASE IF EXISTS [SampleDB]; CREATE DATABASE [SampleDB]";
         try (Statement statement = connection.createStatement()) {
@@ -40,7 +41,7 @@ public class Application {
           statement.executeUpdate(sql);
           System.out.println("Done.");
         }
-
+        */
 
       }
     } catch (Exception e) {

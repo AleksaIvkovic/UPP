@@ -1,8 +1,14 @@
 package com.example.workflow.models;
 
-public class Genre {
+import javax.persistence.*;
 
+@Entity
+public class Genre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;
+
+    @Column(nullable = false)
     private  String  name;
 
     public  Genre() {};
