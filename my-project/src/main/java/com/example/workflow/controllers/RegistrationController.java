@@ -60,7 +60,7 @@ public class RegistrationController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        runtimeService.setVariable(processInstanceId, "registration", map);
+        runtimeService.setVariable(processInstanceId, "newReader", map);
 
         //try catch block
         formService.submitTaskForm(taskId, map);
@@ -89,7 +89,7 @@ public class RegistrationController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        runtimeService.setVariable(processInstanceId, "betaGenres", map);
+        runtimeService.setVariable(processInstanceId, "betaGenresForm", map);
 
         //try catch block
         formService.submitTaskForm(taskId, map);

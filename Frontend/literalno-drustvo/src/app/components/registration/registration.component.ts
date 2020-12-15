@@ -59,6 +59,9 @@ export class RegistrationComponent implements OnInit {
 
           if(field.type.name != "multipleEnum_genres"){
             let temp = new FormControl(field.defaultValue);
+            if(field.type.name == "boolean"){
+              temp.setValue(field.defaultValue);
+            }
             this.formControls.push(temp);
             this.registerForm.addControl(field.id, temp);
             

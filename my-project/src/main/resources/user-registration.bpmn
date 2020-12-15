@@ -5,7 +5,7 @@
       <bpmn:outgoing>Flow_03jn8ht</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_0hrc19m">
-      <bpmn:incoming>Flow_1jd8qk1</bpmn:incoming>
+      <bpmn:incoming>Flow_0ywcmyy</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_03jn8ht" sourceRef="StartEvent_1" targetRef="Activity_0cic0t1" />
     <bpmn:userTask id="Activity_0cic0t1" name="Register">
@@ -83,7 +83,7 @@
       <bpmn:incoming>Flow_0oudang</bpmn:incoming>
       <bpmn:outgoing>Flow_1jd8qk1</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1jd8qk1" sourceRef="Gateway_0id1lxh" targetRef="Event_0hrc19m" />
+    <bpmn:sequenceFlow id="Flow_1jd8qk1" sourceRef="Gateway_0id1lxh" targetRef="Activity_1pocx9o" />
     <bpmn:sequenceFlow id="Flow_0oudang" sourceRef="Activity_172s4r7" targetRef="Gateway_0id1lxh" />
     <bpmn:sequenceFlow id="Flow_0o2j7b9" name="is beta" sourceRef="Gateway_0jwc2mn" targetRef="Activity_172s4r7">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isBeta==true}</bpmn:conditionExpression>
@@ -97,10 +97,20 @@
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="betaGenres">
+            <camunda:map />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0o2j7b9</bpmn:incoming>
       <bpmn:outgoing>Flow_0oudang</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0ywcmyy" sourceRef="Activity_1pocx9o" targetRef="Event_0hrc19m" />
+    <bpmn:serviceTask id="Activity_1pocx9o" name="Write reader to DB" camunda:class="com.example.workflow.services.StoreReaderService">
+      <bpmn:incoming>Flow_1jd8qk1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ywcmyy</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="register">
@@ -119,7 +129,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1jd8qk1_di" bpmnElement="Flow_1jd8qk1">
         <di:waypoint x="655" y="280" />
-        <di:waypoint x="752" y="280" />
+        <di:waypoint x="690" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1jd4vdu_di" bpmnElement="Flow_1jd4vdu">
         <di:waypoint x="475" y="280" />
@@ -136,6 +146,10 @@
         <di:waypoint x="215" y="280" />
         <di:waypoint x="280" y="280" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ywcmyy_di" bpmnElement="Flow_0ywcmyy">
+        <di:waypoint x="790" y="280" />
+        <di:waypoint x="892" y="280" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="262" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -148,14 +162,17 @@
           <dc:Bounds x="435" y="152" width="32" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_091xcs9_di" bpmnElement="Activity_172s4r7">
-        <dc:Bounds x="490" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0id1lxh_di" bpmnElement="Gateway_0id1lxh" isMarkerVisible="true">
         <dc:Bounds x="605" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_091xcs9_di" bpmnElement="Activity_172s4r7">
+        <dc:Bounds x="490" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0hrc19m_di" bpmnElement="Event_0hrc19m">
-        <dc:Bounds x="752" y="262" width="36" height="36" />
+        <dc:Bounds x="892" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pwqusc_di" bpmnElement="Activity_1pocx9o">
+        <dc:Bounds x="690" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

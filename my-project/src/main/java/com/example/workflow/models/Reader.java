@@ -29,6 +29,9 @@ public class Reader {
     private String password;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private boolean isBeta;
 
     @Column(nullable = false)
@@ -128,17 +131,25 @@ public class Reader {
         isConfirmed = confirmed;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Reader() {
     }
 
-    public Reader(Long id, String firstname, String lastname, String city, String country, String username, String password, boolean isBeta) {
-        this.id = id;
+    public Reader(String firstname, String lastname, String city, String country, String username, String password, String email, boolean isBeta) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.city = city;
         this.country = country;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.isBeta = isBeta;
         this.isConfirmed = false;
     }

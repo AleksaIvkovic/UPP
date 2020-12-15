@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreService implements IGenre {
@@ -33,10 +34,10 @@ public class GenreService implements IGenre {
 
     @Override
     public Genre getGenre(long id) {
-        Genre genre = this.genreRepository.getOne(id);
-        if(genre == null){
+        Optional<Genre> genre = this.genreRepository.findById(id);
+        if(genre.get() == null){
             throw new NotFoundException();
         }
-        return  genre;
+        return  genre.get();
     }
 }
