@@ -146,14 +146,14 @@ export class RegistrationComponent implements OnInit {
 
     console.log(o);
 
-    if(this.isReader){
+    if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Registration successful. Verification email has been sent to your address.');
           }
           else{
-            sessionStorage.setItem('betaForm',JSON.stringify(res));
+            sessionStorage.setItem('betaForm', JSON.stringify(res));
             this.router.navigate(['../','register-beta']);
           }
       }, (error : any)  => {
@@ -161,12 +161,13 @@ export class RegistrationComponent implements OnInit {
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
-    else if(this.isBetaReader){
+    else {
       this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Registration successful. Verification email has been sent to your address.');
       }, error => {
         console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
   }

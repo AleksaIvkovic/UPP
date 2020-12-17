@@ -1,6 +1,6 @@
 package com.example.workflow.handlers;
 
-import com.example.workflow.services.ReaderService;
+import com.example.workflow.services.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,10 @@ public class ServiceUtils {
     private static ServiceUtils instance;
 
     @Autowired
-    ReaderService readerService;
+    SystemUserService systemUserService;
 
     @PostConstruct
     public void fillInstance() {instance = this;}
 
-    public static ReaderService getReaderService() { return instance.readerService;}
+    public static SystemUserService getSystemUserService() { return instance.systemUserService;}
 }

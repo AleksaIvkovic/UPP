@@ -20,16 +20,6 @@ public class GenreService implements IGenre {
     @Override
     public List<Genre> getGenres(){
         return this.genreRepository.findAll();
-
-        /*
-        List<Genre> genres = new ArrayList<Genre>();
-        genres.add(new Genre(0,"Romance"));
-        genres.add(new Genre(1,"Fiction"));
-        genres.add(new Genre(2,"Horror"));
-        genres.add(new Genre(3,"History"));
-
-        return genres;
-        */
     }
 
     @Override

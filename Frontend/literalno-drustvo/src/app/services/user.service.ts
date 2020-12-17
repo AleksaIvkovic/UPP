@@ -9,7 +9,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getRegisterForm() : Observable<any>{
-    return this.http.get("http://localhost:8081/api/register/reader-form/".concat(sessionStorage.getItem("processId"))) as Observable<any>;
+    return this.http.get("http://localhost:8081/api/register/registration-form/".concat(sessionStorage.getItem("processId"))) as Observable<any>;
   }
 
   submitRegisterForm(user, taskId){
