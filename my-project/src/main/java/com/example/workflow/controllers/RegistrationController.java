@@ -5,10 +5,12 @@ import com.example.workflow.models.FormFieldsDTO;
 import com.example.workflow.models.TokenConfirmation;
 import com.example.workflow.models.ValidationError;
 import org.camunda.bpm.engine.FormService;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class RegistrationController {
 
     @Autowired
     FormService formService;
+
 
     @GetMapping(path = "/reader-form/{processId}", produces = "application/json")
     public @ResponseBody FormFieldsDTO getReaderForm(@PathVariable String processId) {
@@ -108,7 +112,10 @@ public class RegistrationController {
 
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
     public ResponseEntity<?> postBetaForm(@RequestBody TokenConfirmation object, @PathVariable String processId) {
-        //
+        runtimeService.setVariable(processId, "TokenValidationToken", object.getToken());
+
+        MessageCorrelationResult results = runtimeService.createMessageCorrelation("ReceiveReaderVerification")
+                .processInstanceId(processId).correlateWithResult();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

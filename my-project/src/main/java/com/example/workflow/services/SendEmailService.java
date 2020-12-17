@@ -21,10 +21,9 @@ public class SendEmailService implements JavaDelegate {
         email.setSSLOnConnect(true);
 
         String token = execution.getVariable("verificationToken").toString();
-        String username = execution.getVariable("username").toString();
         String processId = execution.getProcessInstanceId();
 
-        String text = "http://localhost:4200/email-confirmation/".concat(username).concat("/").concat(token).concat("/").concat(processId);
+        String text = "http://localhost:4200/email-confirmation/".concat(token).concat("/").concat(processId);
 
         try {
 

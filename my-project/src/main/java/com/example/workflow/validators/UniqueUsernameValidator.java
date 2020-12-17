@@ -17,7 +17,6 @@ public class UniqueUsernameValidator implements FormFieldValidator {
 
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {
-        //return  true;
         readerService = ServiceUtils.getReaderService();
         return  readerService.checkUniqueUsername((String)o);
     }

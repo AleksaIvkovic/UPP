@@ -47,6 +47,14 @@ export class RegistrationComponent implements OnInit {
     }
     else if(this.router.url.includes('writer')){
       this.isWriter = true;
+      this.userService.getRegisterForm().subscribe(
+        res => {
+          this.initForm(res);
+        },
+        err => {
+          console.log("Error occured");
+        }
+      );
     }
   }
 
@@ -142,7 +150,7 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
-            alert('Registration successful');
+            alert('Registration successful. Verification email has been sent to your address.');
           }
           else{
             sessionStorage.setItem('betaForm',JSON.stringify(res));
@@ -156,7 +164,7 @@ export class RegistrationComponent implements OnInit {
     else if(this.isBetaReader){
       this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
-          alert('Registration successful');
+          alert('Registration successful. Verification email has been sent to your address.');
       }, error => {
         console.log(error);
       });

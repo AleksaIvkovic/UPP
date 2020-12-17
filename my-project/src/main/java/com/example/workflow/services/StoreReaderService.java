@@ -78,7 +78,14 @@ public class StoreReaderService implements JavaDelegate {
         newReader.setBetaGenres(betaGenres);
 
         //Repository za Reader-a i Genre-ove
-        readerService.storeReader(newReader);
+        try {
+            readerService.storeReader(newReader);
+            execution.setVariable("invalidSave", false);
+        } catch (Exception e) {
+            execution.setVariable("invalidSave", true);
+            throw new Exception("Something went wrong");
+            //Poslati na front da je nesto poslo naopako
+        }
 
         String token = UUID.randomUUID().toString();
         readerService.createVerificationToken(newReader, token);

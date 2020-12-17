@@ -9,7 +9,8 @@ const routes: Routes = [
   {path: 'starter', component: StarterComponent},
   {path: 'register-reader', component: RegistrationComponent},
   {path: 'register-beta', component: RegistrationComponent},
-  {path: 'email-confirmation/:username/:token/:processId', component: EmailConfirmationComponent}
+  {path: 'register-writer', component: RegistrationComponent},
+  {path: 'email-confirmation/:token/:processId', component: EmailConfirmationComponent}
 ];
 
 @NgModule({

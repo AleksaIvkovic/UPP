@@ -20,10 +20,9 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/register/submit-beta-form/".concat(taskId), genres);
   }
 
-  confirmEmail(token, username, processId) {
+  confirmEmail(token, processId) {
     let object = {
-      "token": token,
-      "username" : username
+      "token": token
     };
 
     return this.http.post("http://localhost:8081/api/register/confirm-email/".concat(processId), object);
