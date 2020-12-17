@@ -18,7 +18,6 @@ public class UniqueEmailValidator implements FormFieldValidator {
 
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {
-        //return  true;
         readerService = ServiceUtils.getReaderService();
         return readerService.checkUniqueEmail((String)o);
     }

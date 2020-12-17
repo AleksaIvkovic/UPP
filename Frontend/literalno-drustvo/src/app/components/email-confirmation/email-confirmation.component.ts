@@ -20,7 +20,7 @@ export class EmailConfirmationComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
-        this.readerService.confirmEmail(params['token'],params['username'],params['processId']).subscribe(
+        this.readerService.confirmEmail(params['token'],params['processId']).subscribe(
           res => {
             this.message = "Confirmation was successful";
           },

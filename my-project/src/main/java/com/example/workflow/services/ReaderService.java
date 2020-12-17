@@ -38,6 +38,12 @@ public class ReaderService implements IReader {
     }
 
     @Override
+    public Reader findReaderByToken(String token) {
+        Reader reader = verificationTokenRepository.findByToken(token).getReader();
+        return reader;
+    }
+
+    @Override
     public void storeReader(Reader newReader) {
         readerRepository.save(newReader);
     }
