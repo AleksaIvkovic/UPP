@@ -18,14 +18,26 @@ export class StarterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  StartRegisterProcess(){
-    this.starterService.getRegisterForm().subscribe(
+  StartReaderRegistrationProcess(){
+    this.starterService.startReaderRegistration().subscribe(
       (res) => {
         sessionStorage.setItem("processId", res.processId );
         this.router.navigate(['../','register-reader']);
       },
       (err) => {
+        console.log(err);
+      }
+    )
+  }
 
+  StartWriterRegistrationProcess(){
+    this.starterService.startWriterRegistration().subscribe(
+      (res) => {
+        sessionStorage.setItem("processId", res.processId );
+        this.router.navigate(['../','register-writer']);
+      },
+      (err) => {
+        console.log(err);
       }
     )
   }
