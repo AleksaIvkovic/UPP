@@ -148,8 +148,9 @@ export class RegistrationComponent implements OnInit {
             sessionStorage.setItem('betaForm',JSON.stringify(res));
             this.router.navigate(['../','register-beta']);
           }
-      }, error => {
+      }, (error : any)  => {
         console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
     else if(this.isBetaReader){

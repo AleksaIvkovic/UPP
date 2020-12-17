@@ -3,6 +3,7 @@ package com.example.workflow.controllers;
 import com.example.workflow.models.FormSubmissionDTO;
 import com.example.workflow.models.FormFieldsDTO;
 import com.example.workflow.models.TokenConfirmation;
+import com.example.workflow.models.ValidationError;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,7 +66,12 @@ public class RegistrationController {
         runtimeService.setVariable(processInstanceId, "newReader", map);
 
         //try catch block
-        formService.submitTaskForm(taskId, map);
+        try {
+            formService.submitTaskForm(taskId, map);
+
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
 
         Task nextTask;
         TaskFormData tfd = null;
