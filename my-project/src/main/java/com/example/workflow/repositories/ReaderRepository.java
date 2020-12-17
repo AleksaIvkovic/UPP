@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ReaderRepository extends JpaRepository<Reader, Long> {
-    Optional<Reader> getReaderByUsername(String username);
+    Reader getReaderByUsername(String username);
+    Reader getReaderByEmail(String email);
 }

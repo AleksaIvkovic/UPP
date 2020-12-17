@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService} from '../../services/user.service'
@@ -27,7 +28,7 @@ export class RegistrationComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router) { }
-
+  
   ngOnInit(): void {
     if(this.router.url.includes('register-reader')){
       this.isReader = true;
@@ -57,11 +58,8 @@ export class RegistrationComponent implements OnInit {
         this.processInstance = res.processInstanceId;
         this.formFields.map( (field) => {
 
-          if(field.type.name != "multipleEnum_genres"){
+          if(!field.type.name.includes("multipleEnum")){
             let temp = new FormControl(field.defaultValue);
-            if(field.type.name == "boolean"){
-              temp.setValue(field.defaultValue);
-            }
             this.formControls.push(temp);
             this.registerForm.addControl(field.id, temp);
             
@@ -87,6 +85,13 @@ export class RegistrationComponent implements OnInit {
             this.registerForm.controls[field.id].setValidators(
               validators
             );
+
+            // if(field.type.name == "boolean"){
+            //   let element = document.getElementById(field.id);
+            //   console.log(element);
+            //   //element.nodeValue = field.defaultValue.toString();
+            //   //temp.setValue(field.defaultValue);
+            // }
           }
           else{
             this.enumValues.set(field.id, Object.keys(field.type.values));

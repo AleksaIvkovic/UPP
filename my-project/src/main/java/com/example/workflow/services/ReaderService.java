@@ -25,15 +25,25 @@ public class ReaderService implements IReader {
 
     @Override
     public Reader getReaderByUsername(String username) {
-        Optional<Reader> reader = readerRepository.getReaderByUsername(username);
-        if (reader.get() == null) {
+        Reader reader = readerRepository.getReaderByUsername(username);
+        if (reader == null) {
             throw new NotFoundException();
         }
-        return reader.get();
+        return reader;
     }
 
     @Override
     public void storeReader(Reader newReader) {
         readerRepository.save(newReader);
+    }
+
+    @Override
+    public boolean checkUniqueUsername(String username) {
+        return readerRepository.getReaderByUsername(username) == null;
+    }
+
+    @Override
+    public boolean checkUniqueEmail(String email) {
+        return readerRepository.getReaderByEmail(email) == null;
     }
 }

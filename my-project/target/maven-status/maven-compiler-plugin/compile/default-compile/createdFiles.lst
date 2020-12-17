@@ -1,4 +1,5 @@
 com\example\workflow\validators\EmailValidator.class
+com\example\workflow\controllers\StarterController.class
 com\example\workflow\handlers\GetGenresHandler.class
 com\example\workflow\intefaces\IGenre.class
 com\example\workflow\models\FormFieldsDTO.class

@@ -5,7 +5,7 @@
             <label for={{field.id}}>{{field.label}}</label>
       
             <input formControlName={{field.id}} required type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'">
-            <input formControlName={{field.id}} type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
+            <input formControlName={{field.id}} id={{field.id}} type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
             <input formControlName={{field.id}} type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
             <input formControlName={{field.id}} type="email" name={{field.id}} ngModel  *ngIf="field.type.name=='string_email'">
             <input formControlName={{field.id}} type="password" name={{field.id}} ngModel  *ngIf="field.type.name=='string_password'">
@@ -14,7 +14,7 @@
                 {{field.type.values[val]}}
               </option>
             </select>
-            <div *ngIf="field.type.name=='multipleEnum_genres'" formGroupName={{field.id}}>
+            <div *ngIf="field.type.name.includes('multipleEnum')" formGroupName={{field.id}}>
               <div *ngFor="let element of enumValues| keyvalue">
                 <div *ngIf="element.key == field.id">
                   <div *ngFor="let genre of element.value">

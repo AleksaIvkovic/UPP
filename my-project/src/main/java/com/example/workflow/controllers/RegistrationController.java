@@ -37,13 +37,13 @@ public class RegistrationController {
     @Autowired
     FormService formService;
 
-    @GetMapping(path = "/user-form", produces = "application/json")
-    public @ResponseBody FormFieldsDTO getReaderForm() {
+    @GetMapping(path = "/reader-form/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDTO getReaderForm(@PathVariable String processId) {
         //provera da li korisnik sa id-jem pera postoji
         //List<User> users = identityService.createUserQuery().userId("pera").list();
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey("register");
+        //ProcessInstance pi = runtimeService.startProcessInstanceByKey("register");
 
-        Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
+        Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
 
         TaskFormData tfd = formService.getTaskFormData(task.getId());
         List<FormField> properties = tfd.getFormFields();
@@ -51,7 +51,7 @@ public class RegistrationController {
             System.out.println(fp.getId() + fp.getType());
         }
 
-        return new FormFieldsDTO(task.getId(), properties, pi.getId());
+        return new FormFieldsDTO(task.getId(), properties, processId);
     }
 
     @PostMapping(path="/submit-form/{taskId}", consumes = "application/json")
