@@ -11,10 +11,7 @@ import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StoreReaderService implements JavaDelegate {
@@ -82,6 +79,11 @@ public class StoreReaderService implements JavaDelegate {
 
         //Repository za Reader-a i Genre-ove
         readerService.storeReader(newReader);
+
+        String token = UUID.randomUUID().toString();
+        readerService.createVerificationToken(newReader, token);
+
         execution.setVariable("email", newReader.getEmail());
+        execution.setVariable("verificationToken", token);
     }
 }

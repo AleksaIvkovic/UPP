@@ -140,6 +140,7 @@ public class Reader {
     }
 
     public Reader() {
+        this.isConfirmed = false;
     }
 
     public Reader(String firstname, String lastname, String city, String country, String username, String password, String email, boolean isBeta) {

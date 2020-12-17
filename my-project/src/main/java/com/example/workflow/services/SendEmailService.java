@@ -20,11 +20,17 @@ public class SendEmailService implements JavaDelegate {
         email.setSmtpPort(465);
         email.setSSLOnConnect(true);
 
+        String token = execution.getVariable("verificationToken").toString();
+        String username = execution.getVariable("username").toString();
+        String processId = execution.getProcessInstanceId();
+
+        String text = "http://localhost:4200/email-confirmation/".concat(username).concat("/").concat(token).concat("/").concat(processId);
+
         try {
 
             email.setFrom("literary.assoc@gmail.com");
             email.setSubject("Verification email");
-            email.setMsg("Email message");
+            email.setMsg(text);
             email.addTo(execution.getVariable("email").toString());
             email.send();
 

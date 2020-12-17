@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/internal/Observable';
   providedIn: 'root'
 })
 export class UserService {
-
   constructor(private http: HttpClient) { }
 
   getRegisterForm() : Observable<any>{
@@ -19,5 +18,14 @@ export class UserService {
 
   submitBetaForm(genres, taskId){
     return this.http.post("http://localhost:8081/api/register/submit-beta-form/".concat(taskId), genres);
+  }
+
+  confirmEmail(token, username, processId) {
+    let object = {
+      "token": token,
+      "username" : username
+    };
+
+    return this.http.post("http://localhost:8081/api/register/confirm-email/".concat(processId), object);
   }
 }

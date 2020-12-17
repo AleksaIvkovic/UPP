@@ -2,7 +2,9 @@ package com.example.workflow.services;
 
 import com.example.workflow.intefaces.IReader;
 import com.example.workflow.models.Reader;
+import com.example.workflow.models.VerificationToken;
 import com.example.workflow.repositories.ReaderRepository;
+import com.example.workflow.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class ReaderService implements IReader {
     @Autowired
     ReaderRepository readerRepository;
+
+    @Autowired
+    VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public Reader getReaderById(Long id) {
@@ -45,5 +50,11 @@ public class ReaderService implements IReader {
     @Override
     public boolean checkUniqueEmail(String email) {
         return readerRepository.getReaderByEmail(email) == null;
+    }
+
+    @Override
+    public void createVerificationToken(Reader reader, String token) {
+        VerificationToken myToken = new VerificationToken(token, reader);
+        verificationTokenRepository.save(myToken);
     }
 }

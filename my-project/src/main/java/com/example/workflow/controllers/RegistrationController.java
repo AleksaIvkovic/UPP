@@ -2,6 +2,7 @@ package com.example.workflow.controllers;
 
 import com.example.workflow.models.FormSubmissionDTO;
 import com.example.workflow.models.FormFieldsDTO;
+import com.example.workflow.models.TokenConfirmation;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -96,6 +97,13 @@ public class RegistrationController {
 
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
+    public ResponseEntity<?> postBetaForm(@RequestBody TokenConfirmation object, @PathVariable String processId) {
+        //
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
