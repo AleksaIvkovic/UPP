@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TokenConfirmation{
-    private String username;
     private String token;
 }
