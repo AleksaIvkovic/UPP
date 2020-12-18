@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class SysUser {
+public class SysUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

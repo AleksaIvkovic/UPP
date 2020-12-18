@@ -7,6 +7,7 @@ import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,18 +31,30 @@ public class StoreSystemUserService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
         boolean isBeta = false;
+        String group = "";
         //boolean isBeta = (boolean)systemUserForm.get("isBeta");
         String role = execution.getVariable("systemUserRole").toString();
+
         if (role.equals("READER")) {
             isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
+            if(isBeta){
+                group = "betaReaders";
+            }
+            else{
+                group = "readers";
+            }
+        }
+        else{
+            group = "writers";
         }
 
-        /*User user = identityService.newUser(systemUserForm.get("username").toString());
+        User user = identityService.newUser(systemUserForm.get("username").toString());
         user.setPassword(systemUserForm.get("password").toString());
         user.setFirstName(systemUserForm.get("firstname").toString());
         user.setLastName(systemUserForm.get("lastname").toString());
         user.setEmail(systemUserForm.get("email").toString());
-        identityService.saveUser(user);*/
+        identityService.saveUser(user);
+        identityService.createMembership(user.getId(), group);
 
         SysUser newSysUser = new SysUser(
                 systemUserForm.get("firstname").toString(),

@@ -1,13 +1,24 @@
 package com.example.workflow;
 
+import com.example.workflow.models.SysUser;
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.identity.Group;
+import org.camunda.bpm.engine.identity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 @SpringBootApplication
 public class Application {
+
+  @Autowired
+  private IdentityService identityService;
 
   public static void main(String[] args) {
 
@@ -48,9 +59,56 @@ public class Application {
       System.out.println();
       e.printStackTrace();
     }
+  }
 
+  @PostConstruct
+  private void InitGroups(){
+    List<Group> groups = identityService.createGroupQuery()
+            .groupIdIn("readers", "betaReaders", "writers", "editors", "committee", "headCommittee", "sysAdmin").list();
+    if (groups.isEmpty()) {
 
+      Group readerGroup = identityService.newGroup("readers");
+      identityService.saveGroup(readerGroup);
 
+      Group betaReaderGroup = identityService.newGroup("betaReaders");
+      identityService.saveGroup(betaReaderGroup);
+
+      Group writerGroup = identityService.newGroup("writers");
+      identityService.saveGroup(writerGroup);
+
+      Group editorGroup = identityService.newGroup("editors");
+      identityService.saveGroup(editorGroup);
+
+      Group committeeGroup = identityService.newGroup("committee");
+      identityService.saveGroup(committeeGroup);
+
+      Group headCommitteeGroup = identityService.newGroup("headCommittee");
+      identityService.saveGroup(headCommitteeGroup);
+
+      Group sysAdminGroup = identityService.newGroup("sysAdmin");
+      identityService.saveGroup(sysAdminGroup);
+    }
+
+    List<User> users = identityService.createUserQuery().userIdIn("reader1").list();
+    if (users.isEmpty()) {
+
+      registerInCamunda("reader1","pass","reader","reader","97ivkovic@gmail.com");
+
+      identityService.createMembership("reader1", "readers");
+    }
+  }
+
+  private void registerInCamunda(String username, String password, String firstname, String lastname, String email) {
+    try {
+      User camundaUser = identityService.newUser(username);
+      camundaUser.setPassword(password);
+      camundaUser.setFirstName(firstname);
+      camundaUser.setLastName(lastname);
+      camundaUser.setEmail(email);
+      identityService.saveUser(camundaUser);
+    } catch (Exception e) {
+      System.out.println("User all ready exists");
+    }
   }
 
 }
