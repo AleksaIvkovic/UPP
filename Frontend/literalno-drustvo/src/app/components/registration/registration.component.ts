@@ -1,6 +1,6 @@
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService} from '../../services/user.service'
 
@@ -104,7 +104,7 @@ export class RegistrationComponent implements OnInit {
           else{
             this.enumValues.set(field.id, Object.keys(field.type.values));
 
-            let tempForm = new FormGroup({});
+            let tempForm = new FormGroup({}, this.checkArray);
 
             for (let [key, value] of this.enumValues) {
               if(key == field.id){
@@ -169,6 +169,22 @@ export class RegistrationComponent implements OnInit {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
+    }
+  }
+
+  checkArray(group: FormGroup): {[s:string]:boolean}{
+    let found = false;
+    Object.keys(group.controls).forEach(key => {
+      if(group.controls[key].value)
+      {
+        found = true;
+      }
+    });
+    if(found){
+      return null
+    }
+    else{
+      return {'none are chosen': true}
     }
   }
 }
