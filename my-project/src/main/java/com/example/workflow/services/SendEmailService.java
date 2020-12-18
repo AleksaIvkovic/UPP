@@ -1,40 +1,26 @@
 package com.example.workflow.services;
 
+import com.example.workflow.intefaces.IMailing;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SendEmailService implements JavaDelegate {
 
-    private static final String HOST = "smtp.gmail.com";
-    private static final String USER = "literary.assoc@gmail.com";
-    private static final String PWD = "UPPpass1";
+    @Autowired
+    IMailing mailingService;
+
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Email email = new SimpleEmail();
-        email.setCharset("utf-8");
-        email.setHostName(HOST);
-        email.setAuthentication(USER,PWD);
-        email.setSmtpPort(465);
-        email.setSSLOnConnect(true);
-
         String token = execution.getVariable("verificationToken").toString();
         String processId = execution.getProcessInstanceId();
-
         String text = "http://localhost:4200/email-confirmation/".concat(token).concat("/").concat(processId);
 
-        try {
-
-            email.setFrom("literary.assoc@gmail.com");
-            email.setSubject("Verification email");
-            email.setMsg(text);
-            email.addTo(execution.getVariable("email").toString());
-            email.send();
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        mailingService.sendMail(text,execution.getVariable("email").toString());
     }
 }

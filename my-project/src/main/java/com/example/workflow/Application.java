@@ -64,7 +64,7 @@ public class Application {
   @PostConstruct
   private void InitGroups(){
     List<Group> groups = identityService.createGroupQuery()
-            .groupIdIn("readers", "betaReaders", "writers", "editors", "committee", "headCommittee", "sysAdmin").list();
+            .groupIdIn("readers", "betaReaders", "writers", "editors", "committee", "headCommittee", "sysAdmins").list();
     if (groups.isEmpty()) {
 
       Group readerGroup = identityService.newGroup("readers");
@@ -85,16 +85,28 @@ public class Application {
       Group headCommitteeGroup = identityService.newGroup("headCommittee");
       identityService.saveGroup(headCommitteeGroup);
 
-      Group sysAdminGroup = identityService.newGroup("sysAdmin");
+      Group sysAdminGroup = identityService.newGroup("sysAdmins");
       identityService.saveGroup(sysAdminGroup);
     }
 
-    List<User> users = identityService.createUserQuery().userIdIn("reader1").list();
+    List<User> users = identityService.createUserQuery().userIdIn("editor1","editor2","committee1","committee2","committee3","headCommittee","sysAdmin").list();
     if (users.isEmpty()) {
 
-      registerInCamunda("reader1","pass","reader","reader","97ivkovic@gmail.com");
+      registerInCamunda("editor1","pass","Aleksa","Ivkovic","97ivkovic1@gmail.com");
+      registerInCamunda("editor2","pass","Aleksa","Ivkovic","97ivkovic2@gmail.com");
+      registerInCamunda("committee1","pass","Aleksa","Ivkovic","97ivkovic3@gmail.com");
+      registerInCamunda("committee2","pass","Aleksa","Ivkovic","97ivkovic4@gmail.com");
+      registerInCamunda("committee3","pass","Aleksa","Ivkovic","97ivkovic5@gmail.com");
+      registerInCamunda("headCommittee","pass","Aleksa","Ivkovic","97ivkovic6@gmail.com");
+      registerInCamunda("sysAdmin","pass","Aleksa","Ivkovic","97ivkovic7@gmail.com");
 
-      identityService.createMembership("reader1", "readers");
+      identityService.createMembership("editor1", "editors");
+      identityService.createMembership("editor2", "editors");
+      identityService.createMembership("committee1", "committee");
+      identityService.createMembership("committee2", "committee");
+      identityService.createMembership("committee3", "committee");
+      identityService.createMembership("headCommittee", "headCommittee");
+      identityService.createMembership("sysAdmin", "sysAdmins");
     }
   }
 
