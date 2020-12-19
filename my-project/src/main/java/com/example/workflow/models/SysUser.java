@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Reader {
+public class SysUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Reader {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean isBeta;
 
     @Column(nullable = false)
@@ -42,6 +42,9 @@ public class Reader {
 
     @ManyToMany
     private List<Genre> betaGenres;
+
+    @Column(nullable = false)
+    private String role;
 
     public String getFirstname() {
         return firstname;
@@ -139,11 +142,19 @@ public class Reader {
         this.email = email;
     }
 
-    public Reader() {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public SysUser() {
         this.isConfirmed = false;
     }
 
-    public Reader(String firstname, String lastname, String city, String country, String username, String password, String email, boolean isBeta) {
+    public SysUser(String firstname, String lastname, String city, String country, String username, String password, String email, String role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.city = city;
@@ -151,7 +162,7 @@ public class Reader {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.isBeta = isBeta;
+        this.role = role;
         this.isConfirmed = false;
     }
 }

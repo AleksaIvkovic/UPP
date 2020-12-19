@@ -31,7 +31,7 @@
               <camunda:constraint name="validator" config="com.example.workflow.validators.LettersValidator" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="email" label="email" type="string_email">
+          <camunda:formField id="email" label="Email" type="string_email">
             <camunda:validation>
               <camunda:constraint name="required" />
               <camunda:constraint name="validator" config="com.example.workflow.validators.UniqueEmailValidator" />
@@ -67,7 +67,7 @@
       <bpmn:outgoing>Flow_1u5qqw1</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_14db4w2" sourceRef="StartEvent_1" targetRef="Gateway_06eqhev" />
-    <bpmn:serviceTask id="Activity_1iv3lut" name="Write writer to DB" camunda:class="com.example.workflow.services.StoreReaderService">
+    <bpmn:serviceTask id="Activity_1iv3lut" name="Write writer to DB" camunda:class="com.example.workflow.services.StoreSystemUserService">
       <bpmn:incoming>Flow_1u5qqw1</bpmn:incoming>
       <bpmn:outgoing>Flow_1bpp24x</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -76,7 +76,7 @@
       <bpmn:outgoing>Flow_1or6r9f</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1ershs2" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.SendEmailService" />
     </bpmn:intermediateThrowEvent>
-    <bpmn:intermediateCatchEvent id="Event_1eevqhj" name="Receive reader verification">
+    <bpmn:intermediateCatchEvent id="Event_1eevqhj" name="Receive writer verification">
       <bpmn:incoming>Flow_1or6r9f</bpmn:incoming>
       <bpmn:outgoing>Flow_1eq8jcd</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_08sme3w" messageRef="Message_1vnpduc" />
@@ -226,8 +226,8 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1k57rxk" sourceRef="Gateway_0zwgjf6" targetRef="Event_1y3ng9b" />
   </bpmn:process>
-  <bpmn:message id="Message_1dob6i9" name="SendReaderVerification" />
-  <bpmn:message id="Message_1vnpduc" name="ReceiveReaderVerification" />
+  <bpmn:message id="Message_1dob6i9" name="SendSystemUserVerification" />
+  <bpmn:message id="Message_1vnpduc" name="ReceiveSystemUserVerification" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="registerWriter">
       <bpmndi:BPMNEdge id="Flow_1k57rxk_di" bpmnElement="Flow_1k57rxk">
@@ -374,7 +374,7 @@
       <bpmndi:BPMNShape id="Event_1eevqhj_di" bpmnElement="Event_1eevqhj">
         <dc:Bounds x="792" y="79" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="774" y="122" width="76" height="27" />
+          <dc:Bounds x="777" y="122" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_16gxu2t_di" bpmnElement="Activity_16gxu2t">

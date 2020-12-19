@@ -27,16 +27,10 @@ public class MultipleEnumFormType extends EnumFormType {
 
     public TypedValue convertValue(TypedValue propertyValue) {
         Object value = propertyValue.getValue();
-        /*if (value != null && !String.class.isInstance(value)) {
-            throw new ProcessEngineException("Value '" + value + "' is not of type List.");
-        } else {*/
-        //this.validateValue(value);
         return value == null ? Variables.stringValue((String) null, propertyValue.isTransient()) : Variables.stringValue(value.toString(), propertyValue.isTransient());
-        //}
     }
 
     public Object convertFormValueToModelValue(Object propertyValue) {
-        //this.validateValue(propertyValue);
         return propertyValue;
     }
 
@@ -45,8 +39,6 @@ public class MultipleEnumFormType extends EnumFormType {
             if (!(modelValue instanceof List)) {
                 throw new ProcessEngineException("Model value should be a List");
             }
-
-            //this.validateValue(modelValue);
         }
 
         return modelValue.toString();

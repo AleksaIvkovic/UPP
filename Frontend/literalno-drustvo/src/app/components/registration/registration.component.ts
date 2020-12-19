@@ -1,6 +1,6 @@
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService} from '../../services/user.service'
 
@@ -104,7 +104,7 @@ export class RegistrationComponent implements OnInit {
           else{
             this.enumValues.set(field.id, Object.keys(field.type.values));
 
-            let tempForm = new FormGroup({});
+            let tempForm = new FormGroup({}, this.checkArray);
 
             for (let [key, value] of this.enumValues) {
               if(key == field.id){
@@ -146,14 +146,14 @@ export class RegistrationComponent implements OnInit {
 
     console.log(o);
 
-    if(this.isReader){
+    if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Registration successful. Verification email has been sent to your address.');
           }
           else{
-            sessionStorage.setItem('betaForm',JSON.stringify(res));
+            sessionStorage.setItem('betaForm', JSON.stringify(res));
             this.router.navigate(['../','register-beta']);
           }
       }, (error : any)  => {
@@ -161,13 +161,30 @@ export class RegistrationComponent implements OnInit {
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
-    else if(this.isBetaReader){
+    else {
       this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Registration successful. Verification email has been sent to your address.');
       }, error => {
         console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
+    }
+  }
+
+  checkArray(group: FormGroup): {[s:string]:boolean}{
+    let found = false;
+    Object.keys(group.controls).forEach(key => {
+      if(group.controls[key].value)
+      {
+        found = true;
+      }
+    });
+    if(found){
+      return null
+    }
+    else{
+      return {'none are chosen': true}
     }
   }
 }

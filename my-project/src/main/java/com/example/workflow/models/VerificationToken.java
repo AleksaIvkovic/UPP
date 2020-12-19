@@ -15,9 +15,9 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(targetEntity = Reader.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = SysUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "reader_id")
-    private Reader reader;
+    private SysUser sysUser;
 
     private Date expiryDate;
 
@@ -28,9 +28,9 @@ public class VerificationToken {
         return new Date(cal.getTime().getTime());
     }
 
-    public VerificationToken(String token, Reader reader) {
+    public VerificationToken(String token, SysUser sysUser) {
         this.token = token;
-        this.reader = reader;
+        this.sysUser = sysUser;
     }
 
     public VerificationToken() {
@@ -52,12 +52,12 @@ public class VerificationToken {
         this.token = token;
     }
 
-    public Reader getReader() {
-        return reader;
+    public SysUser getReader() {
+        return sysUser;
     }
 
-    public void setReader(Reader reader) {
-        this.reader = reader;
+    public void setReader(SysUser sysUser) {
+        this.sysUser = sysUser;
     }
 
     public Date getExpiryDate() {

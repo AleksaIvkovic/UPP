@@ -44,12 +44,8 @@ public class RegistrationController {
     FormService formService;
 
 
-    @GetMapping(path = "/reader-form/{processId}", produces = "application/json")
-    public @ResponseBody FormFieldsDTO getReaderForm(@PathVariable String processId) {
-        //provera da li korisnik sa id-jem pera postoji
-        //List<User> users = identityService.createUserQuery().userId("pera").list();
-        //ProcessInstance pi = runtimeService.startProcessInstanceByKey("register");
-
+    @GetMapping(path = "/registration-form/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDTO getRegistrationForm(@PathVariable String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
 
         TaskFormData tfd = formService.getTaskFormData(task.getId());
@@ -67,12 +63,10 @@ public class RegistrationController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        runtimeService.setVariable(processInstanceId, "newReader", map);
+        runtimeService.setVariable(processInstanceId, "newSysUser", map);
 
-        //try catch block
         try {
             formService.submitTaskForm(taskId, map);
-
         } catch (Exception e) {
             return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
@@ -103,8 +97,11 @@ public class RegistrationController {
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "betaGenresForm", map);
 
-        //try catch block
-        formService.submitTaskForm(taskId, map);
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -114,7 +111,7 @@ public class RegistrationController {
     public ResponseEntity<?> postBetaForm(@RequestBody TokenConfirmation object, @PathVariable String processId) {
         runtimeService.setVariable(processId, "TokenValidationToken", object.getToken());
 
-        MessageCorrelationResult results = runtimeService.createMessageCorrelation("ReceiveReaderVerification")
+        MessageCorrelationResult results = runtimeService.createMessageCorrelation("ReceiveSystemUserVerification")
                 .processInstanceId(processId).correlateWithResult();
 
         return new ResponseEntity<>(HttpStatus.OK);

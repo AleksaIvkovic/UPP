@@ -1,6 +1,6 @@
 package com.example.workflow.services;
 
-import com.example.workflow.models.Reader;
+import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class SaveEmailConfirmationService implements JavaDelegate {
     @Autowired
-    private ReaderService readerService;
+    private SystemUserService systemUserService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         String token = execution.getVariable("TokenValidationToken").toString();
-        Reader reader = readerService.findReaderByToken(token);
+        SysUser sysUser = systemUserService.findSystemUserByToken(token);
 
-        if(reader != null){
-            reader.setConfirmed(true);
-            readerService.storeReader(reader);
+        if(sysUser != null){
+            sysUser.setConfirmed(true);
+            systemUserService.storeSystemUser(sysUser);
         }
     }
 }
