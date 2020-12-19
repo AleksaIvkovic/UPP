@@ -110,7 +110,7 @@
     <bpmn:userTask id="Activity_1mmat6m" name="Submit works">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="files" type="Files" />
+          <camunda:formField id="files" type="files" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1d6exoj</bpmn:incoming>
