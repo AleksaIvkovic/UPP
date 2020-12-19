@@ -10,6 +10,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { LogInComponent } from './components/log-in/log-in.component';
 import { StarterComponent } from './components/starter/starter.component';
 import { EmailConfirmationComponent } from './components/email-confirmation/email-confirmation.component';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { EmailConfirmationComponent } from './components/email-confirmation/emai
     RegistrationComponent,
     LogInComponent,
     StarterComponent,
-    EmailConfirmationComponent
+    EmailConfirmationComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
