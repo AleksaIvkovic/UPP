@@ -19,7 +19,7 @@ public class SendEmailService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         String token = execution.getVariable("verificationToken").toString();
         String processId = execution.getProcessInstanceId();
-        String text = "http://localhost:4200/email-confirmation/".concat(token).concat("/").concat(processId);
+        String text = "http://localhost:4200/main/email-confirmation/".concat(token).concat("/").concat(processId);
 
         mailingService.sendMail(text,execution.getVariable("email").toString());
     }

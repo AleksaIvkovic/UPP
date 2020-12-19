@@ -2,6 +2,8 @@ import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_t
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
 
 @Component({
@@ -15,17 +17,21 @@ export class RegistrationComponent implements OnInit {
   enumValues = new Map();
   processInstance;
   formFieldsDto = null;
+  files = [];
 
   registerForm: FormGroup = new FormGroup({});
   enumForm = new Map();
   formControls: FormControl[] = [];
+  uploadResponse = { status: '', message: '' };
 
   isReader = false;
   isBetaReader = false;
   isWriter = false;
+  submitWork = false;
 
   constructor( 
     private userService: UserService,
+    private uploadService: UploadService,
     private route: ActivatedRoute,
     private router: Router) { }
   
@@ -52,6 +58,20 @@ export class RegistrationComponent implements OnInit {
           this.initForm(res);
         },
         err => {
+          console.log("Error occured");
+        }
+      );
+    }
+    else if(this.router.url.includes('submit')){
+      this.isWriter = true;
+      this.submitWork = true;
+      sessionStorage.setItem("processId", this.router.url.split("/")[3] );
+      this.userService.getRegisterForm().subscribe(
+        res => {
+          this.initForm(res);
+        },
+        err => {
+          console.log(err);
           console.log("Error occured");
         }
       );
@@ -141,12 +161,64 @@ export class RegistrationComponent implements OnInit {
     for (var property in value) {
       console.log(property);
       console.log(value[property]);
+      if(property == "files"){
+        value[property] = this.files;
+      }
       o.push({fieldId : property, fieldValue : value[property]});
     }
 
     console.log(o);
 
-    if(!this.isBetaReader){
+    if(this.submitWork){
+
+      let tempFiles = [];
+      for(let file of this.files){
+        const fd = new FormData();
+        fd.append('file',file);
+        tempFiles.push(fd);
+      }
+
+      let requests = [];
+      
+      for(let fd of tempFiles){
+        requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
+      }
+
+      forkJoin(requests).subscribe(
+        (res:any) => {
+          this.uploadResponse = res
+          if (this.uploadResponse.status === 'finish') {
+            console.log("Uspesan upload.")
+            this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
+              (res: any) =>{
+                alert("Successful work submission.")
+              },
+            (err) => console.log(err)
+            );
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+
+      // this.uploadService.upload(formData, this.formFieldsDto.taskId).subscribe(
+      //   (res: any) => {
+      //     this.uploadResponse = res
+      //     if (this.uploadResponse.status === 'finish') {
+      //       console.log("Uspesan upload.")
+      //       this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
+      //         (res: any) =>{
+      //           alert("Successful work submission.")
+      //         },
+      //       (err) => console.log(err)
+      //       );
+      //     }
+      //     },
+      //   (err) => console.log(err)
+      // );
+    }
+    else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
@@ -187,4 +259,15 @@ export class RegistrationComponent implements OnInit {
       return {'none are chosen': true}
     }
   }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      for(let file of event.target.files)
+        this.files.push(file);
+     // this.registerForm.controls["files"].setValue((<Array>this.registerForm.controls["files"].value));
+      console.log(this.files.length);
+
+    }
+  }
+
 }

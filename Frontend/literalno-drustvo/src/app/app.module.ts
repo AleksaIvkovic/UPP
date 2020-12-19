@@ -50,7 +50,6 @@ import {MatTreeModule} from '@angular/material/tree';
 
 import { MainComponent } from './components/main/main.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { UploadFileComponent } from './components/upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -60,8 +59,7 @@ import { UploadFileComponent } from './components/upload-file/upload-file.compon
     StarterComponent,
     EmailConfirmationComponent,
     NavigationComponent,
-    MainComponent,
-    UploadFileComponent
+    MainComponent
   ],
   imports: [
     BrowserModule,

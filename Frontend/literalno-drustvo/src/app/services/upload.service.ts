@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators'
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,9 @@ export class UploadService {
   constructor(private httpClient: HttpClient) { }
 
   public upload(data, taskId) {
+    let uploadURL = 'http://localhost:8081/api/file/upload/'.concat(taskId);
 
-    return this.httpClient.post<any>(data, {
+    return this.httpClient.post<any>(uploadURL, data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(map((event) => {

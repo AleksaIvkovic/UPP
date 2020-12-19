@@ -104,7 +104,27 @@ public class RegistrationController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @PostMapping(path="/submit-work/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> submitWork(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        //HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = this.taskService.createTaskQuery()
+                .active()
+                .taskId(taskId)
+                .singleResult();
+
+
+        //ScientificWork scientificWork = (ScientificWork) this.runtimeService.getVariable(task.getProcessInstanceId(), "scientific_work");
+        //scientificWork.setFilePath(filepath.toString());
+        //this.scientificWorkRepository.save(scientificWork);
+        HashMap<String, Object> map = new HashMap<>();
+        //map.put("pdf_fajl", filepath.toString());
+        formService.submitTaskForm(taskId, map);
+        //log.info("Form submitted");
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
@@ -116,6 +136,8 @@ public class RegistrationController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
     {
