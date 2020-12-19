@@ -31,7 +31,7 @@
               <camunda:constraint name="validator" config="com.example.workflow.validators.LettersValidator" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="email" label="email" type="string_email">
+          <camunda:formField id="email" label="Email" type="string_email">
             <camunda:validation>
               <camunda:constraint name="required" />
               <camunda:constraint name="validator" config="com.example.workflow.validators.UniqueEmailValidator" />
@@ -108,6 +108,11 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1d6exoj" sourceRef="Activity_16gxu2t" targetRef="Activity_1mmat6m" />
     <bpmn:userTask id="Activity_1mmat6m" name="Submit works">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="files" type="files" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1d6exoj</bpmn:incoming>
       <bpmn:outgoing>Flow_0qdalny</bpmn:outgoing>
     </bpmn:userTask>
