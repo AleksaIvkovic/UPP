@@ -1,6 +1,7 @@
 package com.example.workflow.services;
 
 import com.example.workflow.models.EmailStringFormType;
+import com.example.workflow.models.FileFormType;
 import com.example.workflow.models.MultipleEnumFormType;
 import com.example.workflow.models.PasswordStringFormType;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
@@ -21,6 +22,7 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
         }
 
         List<AbstractFormFieldType> formTypes = processEngineConfiguration.getCustomFormTypes();
+        formTypes.add(new FileFormType());
         formTypes.add(new MultipleEnumFormType("genres"));
         formTypes.add(new EmailStringFormType("email"));
         formTypes.add(new PasswordStringFormType("password"));

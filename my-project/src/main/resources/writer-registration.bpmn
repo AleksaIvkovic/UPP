@@ -108,6 +108,11 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1d6exoj" sourceRef="Activity_16gxu2t" targetRef="Activity_1mmat6m" />
     <bpmn:userTask id="Activity_1mmat6m" name="Submit works">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="files" type="Files" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1d6exoj</bpmn:incoming>
       <bpmn:outgoing>Flow_0qdalny</bpmn:outgoing>
     </bpmn:userTask>

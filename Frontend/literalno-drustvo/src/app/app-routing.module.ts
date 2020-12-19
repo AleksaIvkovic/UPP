@@ -4,6 +4,7 @@ import { EmailConfirmationComponent } from './components/email-confirmation/emai
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { StarterComponent } from './components/starter/starter.component';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'main', pathMatch: 'full'},
