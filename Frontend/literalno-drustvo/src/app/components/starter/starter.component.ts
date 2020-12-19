@@ -10,7 +10,7 @@ import { StarterService } from '../../services/starter.service'
 export class StarterComponent implements OnInit {
 
   constructor(
-    private route: ActivatedRoute,
+    private activeRoute: ActivatedRoute,
     private router: Router,
     private starterService: StarterService
   ) { }
@@ -22,7 +22,7 @@ export class StarterComponent implements OnInit {
     this.starterService.startReaderRegistration().subscribe(
       (res) => {
         sessionStorage.setItem("processId", res.processId );
-        this.router.navigate(['../','register-reader']);
+        this.router.navigate(['register-reader'], {relativeTo : this.activeRoute});
       },
       (err) => {
         console.log(err);
@@ -34,7 +34,7 @@ export class StarterComponent implements OnInit {
     this.starterService.startWriterRegistration().subscribe(
       (res) => {
         sessionStorage.setItem("processId", res.processId );
-        this.router.navigate(['../','register-writer']);
+        this.router.navigate(['register-writer'], {relativeTo : this.activeRoute});
       },
       (err) => {
         console.log(err);

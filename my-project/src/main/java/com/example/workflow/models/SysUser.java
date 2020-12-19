@@ -34,6 +34,9 @@ public class SysUser{
     @Column(nullable = true)
     private boolean isBeta;
 
+    @Column(nullable = true)
+    private boolean isActive;
+
     @Column(nullable = false)
     private boolean isConfirmed;
 
@@ -148,6 +151,14 @@ public class SysUser{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public SysUser() {

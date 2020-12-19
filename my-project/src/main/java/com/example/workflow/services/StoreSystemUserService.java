@@ -95,6 +95,9 @@ public class StoreSystemUserService implements JavaDelegate {
 
             newSysUser.setBetaGenres(betaGenres);
         }
+        else{
+            newSysUser.setActive(false);
+        }
 
         //Repository za SysUser-a i Genre-ove
         try {
