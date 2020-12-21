@@ -13,7 +13,7 @@ public class MailingService implements IMailing {
     private static final String PWD = "UPPpass1";
 
     @Override
-    public void sendMail(String text, String receiverEmail) {
+    public void sendMail(String subject, String text, String receiverEmail) {
         Email email = new SimpleEmail();
         email.setCharset("utf-8");
         email.setHostName(HOST);
@@ -24,7 +24,7 @@ public class MailingService implements IMailing {
         try {
 
             email.setFrom("literary.assoc@gmail.com");
-            email.setSubject("Verification email");
+            email.setSubject(subject);
             email.setMsg(text);
             email.addTo(receiverEmail);
             email.send();

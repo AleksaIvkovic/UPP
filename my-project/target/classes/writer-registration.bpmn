@@ -126,12 +126,10 @@
       <bpmn:outgoing>Flow_0qdalny</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0qdalny" sourceRef="Activity_1mmat6m" targetRef="Gateway_0zwgjf6" />
-    <bpmn:userTask id="Activity_0vti6s4" name="Committee vote and comment">
+    <bpmn:userTask id="Activity_0vti6s4" name="Committee vote and comment" camunda:assignee="${committeeMember}">
       <bpmn:incoming>Flow_03d7r2g</bpmn:incoming>
       <bpmn:outgoing>Flow_14n7nqy</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics>
-        <bpmn:loopCardinality xsi:type="bpmn:tFormalExpression">3</bpmn:loopCardinality>
-      </bpmn:multiInstanceLoopCharacteristics>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${committeeMembers}" camunda:elementVariable="committeeMember" />
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_14n7nqy" sourceRef="Activity_0vti6s4" targetRef="Activity_1ramqvw" />
     <bpmn:serviceTask id="Activity_1ramqvw" name="Check vote" camunda:expression="${true}">

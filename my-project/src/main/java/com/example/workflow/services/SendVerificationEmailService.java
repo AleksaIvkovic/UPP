@@ -21,6 +21,7 @@ public class SendVerificationEmailService implements JavaDelegate {
         String processId = execution.getProcessInstanceId();
         String text = "http://localhost:4200/main/email-confirmation/".concat(token).concat("/").concat(processId);
 
-        mailingService.sendMail(text,execution.getVariable("email").toString());
+        String subject = "Verification email";
+        mailingService.sendMail(subject,text,execution.getVariable("email").toString());
     }
 }
