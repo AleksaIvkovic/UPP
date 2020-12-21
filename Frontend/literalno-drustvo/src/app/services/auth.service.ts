@@ -20,10 +20,10 @@ export class AuthService {
   }
 
   getLoggedInUser() {
-    const options = {
-      headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
-    };
+    // const options = {
+    //   headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+    // };
 
-    return this.http.get("http://localhost:8081/api/auth/loggedInUser", options);
+    return this.http.get("http://localhost:8081/api/auth/loggedInUser"); //, options
   }
 }
