@@ -108,14 +108,14 @@ public class RegistrationController {
 
     @PostMapping(path="/submit-work/{taskId}", consumes = "application/json")
     public ResponseEntity<?> submitWork(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        //HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = this.mapListToDTO(dto);
 
         Task task = this.taskService.createTaskQuery()
                 .active()
                 .taskId(taskId)
                 .singleResult();
 
-        HashMap<String, Object> map = new HashMap<>();
+        //HashMap<String, Object> map = new HashMap<>();
         formService.submitTaskForm(taskId, map);
 
         return new ResponseEntity<>(HttpStatus.OK);

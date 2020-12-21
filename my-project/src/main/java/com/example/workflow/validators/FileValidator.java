@@ -10,6 +10,8 @@ import java.util.HashMap;
 public class FileValidator implements FormFieldValidator {
     @Override
     public boolean validate(Object submittedValue, FormFieldValidatorContext validatorContext) {
-        return ((ArrayList<String>)submittedValue).toArray().length >= 2;
+        int min = Integer.parseInt(validatorContext.getFormFieldHandler().getId().split("_")[1]);
+        int max = Integer.parseInt(validatorContext.getFormFieldHandler().getId().split("_")[2]);
+        return ((ArrayList<String>)submittedValue).toArray().length >= min && ((ArrayList<String>)submittedValue).toArray().length <= max;
     }
 }

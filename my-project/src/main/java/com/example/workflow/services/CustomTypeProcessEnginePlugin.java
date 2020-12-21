@@ -22,7 +22,7 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
         }
 
         List<AbstractFormFieldType> formTypes = processEngineConfiguration.getCustomFormTypes();
-        formTypes.add(new FileFormType());
+        formTypes.add(new FileFormType("2_10"));
         formTypes.add(new MultipleEnumFormType("genres"));
         formTypes.add(new EmailStringFormType("email"));
         formTypes.add(new PasswordStringFormType("password"));

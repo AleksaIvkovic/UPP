@@ -19,7 +19,7 @@ export class RegistrationComponent implements OnInit {
   formFieldsDto = null;
   files = new Map();
   filesString = [];
-  requiredFiles = 0;
+ 
 
   registerForm: FormGroup = new FormGroup({});
   formControls: FormControl[] = [];
@@ -30,13 +30,15 @@ export class RegistrationComponent implements OnInit {
   isWriter = false;
   submitWork = false;
 
+
   constructor( 
     private userService: UserService,
     private uploadService: UploadService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) {}
   
   ngOnInit(): void {
+
     if(this.router.url.includes('register-reader')){
       this.isReader = true;
       this.userService.getRegisterForm().subscribe(
@@ -89,7 +91,7 @@ export class RegistrationComponent implements OnInit {
           if(field.type.name.includes("multipleEnum")){
             this.enumValues.set(field.id, Object.keys(field.type.values));
 
-            let tempForm = new FormGroup({}, this.checkFiles);
+            let tempForm = new FormGroup({}, this.checkArray);
 
             for (let [key, value] of this.enumValues) {
               if(key == field.id){
@@ -104,8 +106,9 @@ export class RegistrationComponent implements OnInit {
             );
           }
           else if(field.type.name.includes("files")){
-            this.requiredFiles = 2;
-            let tempForm = new FormControl([], this.checkFiles.bind(this));
+            let minFiles = <number>field.type.name.split('_')[1];
+            let maxFiles = <number>field.type.name.split('_')[2]
+            let tempForm = new FormControl([], this.checkFiles(minFiles, maxFiles));
             this.files.set(field.id, []);
             this.registerForm.addControl(
               field.id, tempForm
@@ -166,16 +169,13 @@ export class RegistrationComponent implements OnInit {
   
         forkJoin(requests).subscribe(
           (res:any) => {
-            this.uploadResponse = res
-            if (this.uploadResponse.status.includes('finish')) {
-              console.log("Successful upload.")
-              this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
-                (res: any) =>{
-                  alert("Successful work submission.")
-                },
-              (err) => console.log(err)
-              );
-            }
+            console.log("Successful upload.")
+            this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
+              (res: any) =>{
+                alert("Successful work submission.")
+              },
+            (err) => console.log(err)
+            );
           },
           (err) => {
             console.log(err);
@@ -225,11 +225,13 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  checkFiles(control: FormControl): {[s:string]:boolean}{
-    if((<File[]>control.value).length < this.requiredFiles)
-      return {'More files are needed' : true};
-    else
-      return null;
+   checkFiles(min: number, max : number): ValidatorFn {
+    return (control: FormControl): {[key: string]: any} | null => {
+      if((<File[]>control.value).length < min || (<File[]>control.value).length > max)
+        return {'More files are needed' : true};
+      else
+        return null;
+    };
   }
 
   onFileChange(event, id) {

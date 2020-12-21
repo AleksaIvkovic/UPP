@@ -110,8 +110,17 @@
     <bpmn:userTask id="Activity_1mmat6m" name="Submit works">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="files" label="Please submit your works (at least 2):" type="files" />
+          <camunda:formField id="files_2_10" label="Please submit your works (at least 2):" type="files_2_10">
+            <camunda:validation>
+              <camunda:constraint name="validator" config="com.example.workflow.validators.FileValidator" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="files_2_10">
+            <camunda:list />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1d6exoj</bpmn:incoming>
       <bpmn:outgoing>Flow_0qdalny</bpmn:outgoing>

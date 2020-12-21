@@ -1,0 +1,1 @@
+Proširiti Example2 tako da se generiše kod za klasu koja može imati i metode sa parametrima.

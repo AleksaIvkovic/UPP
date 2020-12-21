@@ -37,7 +37,7 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="col-md-6" *ngIf="field.type.name == 'files'" >
+      <div class="col-md-6" *ngIf="field.type.name.includes('files')" >
         <div class="row" style="margin-left: 9px; margin-bottom: 10px;" >
           <mat-label>{{field.label}}</mat-label>
           <br>
