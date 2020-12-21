@@ -12,6 +12,7 @@ import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +44,8 @@ public class RegistrationController {
     FileService fileService;
 
 
-    @GetMapping(path = "/registration-form/{processId}", produces = "application/json")
-    public @ResponseBody FormFieldsDTO getRegistrationForm(@PathVariable String processId) {
+    @GetMapping(path = "/form/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDTO getForm(@PathVariable String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
 
         TaskFormData tfd = formService.getTaskFormData(task.getId());
@@ -56,7 +57,7 @@ public class RegistrationController {
         return new FormFieldsDTO(task.getId(), properties, processId);
     }
 
-    @PostMapping(path="/submit-form/{taskId}", consumes = "application/json")
+    @PostMapping(path="/submit-registration-form/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postReaderForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
@@ -105,6 +106,7 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //@PreAuthorize("hasAnyAuthority('CLINICADMIN','PATIENT')") ako jedan onda hasAuthority
     @PostMapping(path="/submit-work/{taskId}", consumes = "application/json")
     public ResponseEntity<?> submitWork(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);

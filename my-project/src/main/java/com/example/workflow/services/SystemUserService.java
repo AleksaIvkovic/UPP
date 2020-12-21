@@ -6,12 +6,15 @@ import com.example.workflow.repositories.SysUserRepository;
 import com.example.workflow.models.VerificationToken;
 import com.example.workflow.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
 
 @Service
-public class SystemUserService implements ISystemUser {
+public class SystemUserService implements ISystemUser, UserDetailsService {
     @Autowired
     SysUserRepository sysUserRepository;
 
@@ -61,5 +64,15 @@ public class SystemUserService implements ISystemUser {
     public void createVerificationToken(SysUser sysUser, String token) {
         VerificationToken myToken = new VerificationToken(token, sysUser);
         verificationTokenRepository.save(myToken);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        SysUser user = sysUserRepository.getSystemUserByUsername(s);
+
+        if(user == null)
+            throw new UsernameNotFoundException("User with "+ s+" doesn't exists!");
+
+        return user;
     }
 }

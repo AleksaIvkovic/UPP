@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -21,7 +21,7 @@ export class LogInComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {username: string, password: string},
     private dialogRef:MatDialogRef<LogInComponent>,
-    private userService: UserService,
+    private authService: AuthService,
     private _snackBar: MatSnackBar
   ) { }
 
@@ -37,11 +37,10 @@ export class LogInComponent implements OnInit {
   }
 
   onLogin() {
-    this.userService.login(this.logInForm.value['username'], this.logInForm.value['password'])
+    this.authService.login(this.logInForm.value['username'], this.logInForm.value['password'])
     .subscribe(
       (res: any) => {
-        localStorage.setItem('username', res.username);
-        localStorage.setItem('role', res.role);
+        sessionStorage.setItem('token', res.accessToken);
         this.dialogRef.close('success');
       },
       err => {

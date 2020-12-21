@@ -191,7 +191,7 @@ export class RegistrationComponent implements OnInit {
           }
           else{
             sessionStorage.setItem('betaForm', JSON.stringify(res));
-            this.router.navigate(['../','register-beta']);
+            this.router.navigate(['main/register-beta']);
           }
       }, (error : any)  => {
         console.log(error);

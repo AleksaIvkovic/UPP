@@ -35,7 +35,7 @@
               <camunda:constraint name="validator" config="com.example.workflow.validators.LettersValidator" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="email" label="email" type="string_email">
+          <camunda:formField id="email" label="Email" type="string_email">
             <camunda:validation>
               <camunda:constraint name="required" />
               <camunda:constraint name="validator" config="com.example.workflow.validators.UniqueEmailValidator" />
