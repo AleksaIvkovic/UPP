@@ -38,14 +38,14 @@ public class TokenUtils {
 
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    public String generateToken(String email) {
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setIssuer(APP_NAME)
-                .setSubject(email)
+                .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate())
-                // .claim("role", role) //postavljanje proizvoljnih podataka u telo JWT tokena
+                .claim("username", username) //postavljanje proizvoljnih podataka u telo JWT tokena
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 
@@ -80,22 +80,22 @@ public class TokenUtils {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         SysUser user = (SysUser) userDetails;
-        final String email = getEmailFromToken(token);
+        final String email = getUsernameFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
 
         return (email != null && email.equals(userDetails.getUsername())
                 && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
     }
 
-    public String getEmailFromToken(String token) {
-        String email;
+    public String getUsernameFromToken(String token) {
+        String username;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            email = claims.getSubject();
+            username = claims.getSubject();
         } catch (Exception e) {
-            email = null;
+            username = null;
         }
-        return email;
+        return username;
     }
 
     public Date getIssuedAtDateFromToken(String token) {

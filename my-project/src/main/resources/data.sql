@@ -55,10 +55,10 @@ INSERT INTO authority ([name]) values ('HEAD-COMMITTEE');
 INSERT INTO authority ([name]) values ('SYS-ADMIN');
 
 INSERT INTO user_authority ([user_id], authority_id) values (1, 4); --editor
-INSERT INTO user_authority ([user_id], authority_id) values (1, 4); --editor
-INSERT INTO user_authority ([user_id], authority_id) values (1, 5); --commitee
-INSERT INTO user_authority ([user_id], authority_id) values (1, 5); --commitee
-INSERT INTO user_authority ([user_id], authority_id) values (1, 5); --commitee
-INSERT INTO user_authority ([user_id], authority_id) values (1, 6); --lector
-INSERT INTO user_authority ([user_id], authority_id) values (1, 7); --headCommitee
-INSERT INTO user_authority ([user_id], authority_id) values (1, 8); --sysAdmin
+INSERT INTO user_authority ([user_id], authority_id) values (2, 4); --editor
+INSERT INTO user_authority ([user_id], authority_id) values (3, 5); --commitee
+INSERT INTO user_authority ([user_id], authority_id) values (4, 5); --commitee
+INSERT INTO user_authority ([user_id], authority_id) values (5, 5); --commitee
+INSERT INTO user_authority ([user_id], authority_id) values (6, 6); --lector
+INSERT INTO user_authority ([user_id], authority_id) values (7, 7); --headCommitee
+INSERT INTO user_authority ([user_id], authority_id) values (8, 8); --sysAdmin

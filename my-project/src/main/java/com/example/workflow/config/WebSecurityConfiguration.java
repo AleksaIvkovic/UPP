@@ -87,7 +87,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/camunda/**", "/api/**")
-                .permitAll()
+                .permitAll() //"/api/register/**", "/api/file/**", "/api/starter/**", "/api/auth/login"
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserService), BasicAuthenticationFilter.class);

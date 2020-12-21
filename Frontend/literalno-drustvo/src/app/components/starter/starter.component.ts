@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StarterService } from '../../services/starter.service'
+import { AuthService } from 'src/app/services/auth.service';
+import { SysUser } from '../../models/sysUser.model';
+import { StarterService } from '../../services/starter.service';
 import { LogInComponent } from '../log-in/log-in.component';
 
 @Component({
@@ -10,13 +12,13 @@ import { LogInComponent } from '../log-in/log-in.component';
   styleUrls: ['./starter.component.css']
 })
 export class StarterComponent implements OnInit {
-  username;
-  role;
+  user: SysUser = null;
 
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private starterService: StarterService,
+    private authService: AuthService,
     private logInDialog: MatDialog,
   ) { }
 
@@ -59,12 +61,20 @@ export class StarterComponent implements OnInit {
     .subscribe(
       (result) => {
         if (result === "success") {
-          this.username = localStorage.getItem('username');
-          this.role = localStorage.getItem('role');
-          // this.user = this.userService.getLoggedInUser();
-          if (this.username === undefined) {
-            return;
-          }
+          //this.username = localStorage.getItem('username');
+          //this.role = localStorage.getItem('role');
+          this.authService.getLoggedInUser().subscribe(
+            (res : SysUser) => {
+              alert("Uspesno logovanje");
+              sessionStorage.setItem("loggedInUser", JSON.stringify(res));
+            }, 
+            error => {
+              console.log(error);
+            }
+          );
+          //if (this.username === undefined) {
+          //  return;
+          //}
           // this.userService.getUser().subscribe(
           //   (response: any) => {
           //     this.user = Object.assign

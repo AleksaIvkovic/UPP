@@ -6,7 +6,9 @@ import { Observable } from 'rxjs/internal/Observable';
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   getRegisterForm() : Observable<any>{
     return this.http.get("http://localhost:8081/api/register/form/".concat(sessionStorage.getItem("processId"))) as Observable<any>;
@@ -30,13 +32,5 @@ export class UserService {
     };
 
     return this.http.post("http://localhost:8081/api/register/confirm-email/".concat(processId), object);
-  }
-
-  login(username, password){
-    var user = {
-      Username: username,
-      Password: password
-    }
-    return this.http.post("http://localhost:8081/api/register/login/", user);
   }
 }
