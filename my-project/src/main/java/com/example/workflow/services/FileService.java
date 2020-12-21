@@ -24,30 +24,12 @@ public class FileService {
     public void savePDF(FileDTO fileDto, String taskId){
         //log.info("Save PDF");
         MultipartFile multipartFile = fileDto.getFile();
-        Path filepath = Paths.get("C:\\Users\\sarap\\Desktop\\Master", multipartFile.getOriginalFilename());
+        Path filepath = Paths.get(".\\src\\main\\resources\\PDFFiles", multipartFile.getOriginalFilename());
 
         try (OutputStream os = Files.newOutputStream(filepath)) {
             os.write(multipartFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*Task task = this.taskService.createTaskQuery()
-                .active()
-                .taskId(taskId)
-                .singleResult();
-
-        if (task == null){
-            //log.info("Task doesn't exist");
-            throw new NotFoundException("Task exception");
-        }
-        ScientificWork scientificWork = (ScientificWork) this.runtimeService.getVariable(task.getProcessInstanceId(), "scientific_work");
-        scientificWork.setFilePath(filepath.toString());
-        this.scientificWorkRepository.save(scientificWork);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("pdf_fajl", filepath.toString());
-        formService.submitTaskForm(taskId, map);
-        log.info("Form submitted");*/
     }
-
 }

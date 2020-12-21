@@ -17,10 +17,11 @@ export class RegistrationComponent implements OnInit {
   enumValues = new Map();
   processInstance;
   formFieldsDto = null;
-  files = [];
+  files = new Map();
+  filesString = [];
+  requiredFiles = 0;
 
   registerForm: FormGroup = new FormGroup({});
-  enumForm = new Map();
   formControls: FormControl[] = [];
   uploadResponse = { status: '', message: '' };
 
@@ -80,13 +81,37 @@ export class RegistrationComponent implements OnInit {
 
   initForm(res){
     console.log(res);
-        //this.categories = res;
         this.formFieldsDto = res;
         this.formFields = res.formFields;
         this.processInstance = res.processInstanceId;
         this.formFields.map( (field) => {
 
-          if(!field.type.name.includes("multipleEnum")){
+          if(field.type.name.includes("multipleEnum")){
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempForm = new FormGroup({}, this.checkFiles);
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let enumId of value){
+                  tempForm.addControl(enumId, new FormControl(false));
+                }
+              }
+            }
+
+            this.registerForm.addControl(
+              field.id, tempForm
+            );
+          }
+          else if(field.type.name.includes("files")){
+            this.requiredFiles = 2;
+            let tempForm = new FormControl([], this.checkFiles.bind(this));
+            this.files.set(field.id, []);
+            this.registerForm.addControl(
+              field.id, tempForm
+            );
+          }
+          else{
             let temp = new FormControl(field.defaultValue);
             this.formControls.push(temp);
             this.registerForm.addControl(field.id, temp);
@@ -99,10 +124,6 @@ export class RegistrationComponent implements OnInit {
                   validators.push(Validators.required);
                   break;
                 }
-                //  case 'email' : {
-                //   validators.push(Validators.email);
-                //   break;
-                // }
                 case 'minlength' : {
                   validators.push(Validators.minLength(<number>validation.configuration));
                   break;
@@ -113,57 +134,14 @@ export class RegistrationComponent implements OnInit {
             this.registerForm.controls[field.id].setValidators(
               validators
             );
-
-            // if(field.type.name == "boolean"){
-            //   let element = document.getElementById(field.id);
-            //   console.log(element);
-            //   //element.nodeValue = field.defaultValue.toString();
-            //   //temp.setValue(field.defaultValue);
-            // }
-          }
-          else{
-            this.enumValues.set(field.id, Object.keys(field.type.values));
-
-            let tempForm = new FormGroup({}, this.checkArray);
-
-            for (let [key, value] of this.enumValues) {
-              if(key == field.id){
-                for(let genreId of value){
-                  tempForm.addControl(genreId, new FormControl(false));
-                }
-              }
-            }
-
-            this.registerForm.addControl(
-              field.id, tempForm
-            );
           }
         });
         console.log(this.registerForm);
-
-        // this.formFields.map( (field) =>{
-        //   field.validationConstraints.map( (validation) => {
-        //     switch(validation){
-        //        case 'required' : {
-        //           break;
-        //        }
-        //     }
-        //   })
-
-        //   if( field.type.name=='enum'){
-        //     this.enumValues = Object.keys(field.type.values);
-        //   }
-        // });
   }
 
   onSubmit(value, form) {
     let o = new Array();
     for (var property in value) {
-      console.log(property);
-      console.log(value[property]);
-      if(property == "files"){
-        value[property] = this.files;
-      }
       o.push({fieldId : property, fieldValue : value[property]});
     }
 
@@ -171,52 +149,39 @@ export class RegistrationComponent implements OnInit {
 
     if(this.submitWork){
 
-      let tempFiles = [];
-      for(let file of this.files){
-        const fd = new FormData();
-        fd.append('file',file);
-        tempFiles.push(fd);
-      }
+      for(let filesList of this.files.values()){
+        let tempFiles = [];
 
-      let requests = [];
-      
-      for(let fd of tempFiles){
-        requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
-      }
-
-      forkJoin(requests).subscribe(
-        (res:any) => {
-          this.uploadResponse = res
-          if (this.uploadResponse.status === 'finish') {
-            console.log("Uspesan upload.")
-            this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
-              (res: any) =>{
-                alert("Successful work submission.")
-              },
-            (err) => console.log(err)
-            );
-          }
-        },
-        (err) => {
-          console.log(err);
+        for(let file of filesList){
+          const fd = new FormData();
+          fd.append('file',file);
+          tempFiles.push(fd);
         }
-      )
-
-      // this.uploadService.upload(formData, this.formFieldsDto.taskId).subscribe(
-      //   (res: any) => {
-      //     this.uploadResponse = res
-      //     if (this.uploadResponse.status === 'finish') {
-      //       console.log("Uspesan upload.")
-      //       this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
-      //         (res: any) =>{
-      //           alert("Successful work submission.")
-      //         },
-      //       (err) => console.log(err)
-      //       );
-      //     }
-      //     },
-      //   (err) => console.log(err)
-      // );
+  
+        let requests = [];
+        
+        for(let fd of tempFiles){
+          requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
+        }
+  
+        forkJoin(requests).subscribe(
+          (res:any) => {
+            this.uploadResponse = res
+            if (this.uploadResponse.status.includes('finish')) {
+              console.log("Successful upload.")
+              this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
+                (res: any) =>{
+                  alert("Successful work submission.")
+                },
+              (err) => console.log(err)
+              );
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        )
+      }
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
@@ -256,17 +221,28 @@ export class RegistrationComponent implements OnInit {
       return null
     }
     else{
-      return {'none are chosen': true}
+      return {'None are chosen': true}
     }
   }
 
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      for(let file of event.target.files)
-        this.files.push(file);
-     // this.registerForm.controls["files"].setValue((<Array>this.registerForm.controls["files"].value));
-      console.log(this.files.length);
+  checkFiles(control: FormControl): {[s:string]:boolean}{
+    if((<File[]>control.value).length < this.requiredFiles)
+      return {'More files are needed' : true};
+    else
+      return null;
+  }
 
+  onFileChange(event, id) {
+    if (event.target.files.length > 0) {
+      for(let file of event.target.files){
+        this.filesString = (<String[]>this.registerForm.controls[id].value);
+        this.filesString.push(file.name);
+        this.registerForm.controls[id].setValue(this.filesString);
+        let listOfFiles;
+        listOfFiles = (<File[]>this.files.get(id));
+        listOfFiles.push(file); 
+        this.files.set(id,listOfFiles);
+      }
     }
   }
 

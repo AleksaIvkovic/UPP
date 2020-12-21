@@ -37,16 +37,20 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="col-md-2" *ngIf="field.type.name == 'files'" >
-        <div class="row">
-          <input type="file" #file placeholder="Choose file" (change)="onFileChange($event)" style="display:none;" multiple>
+      <div class="col-md-6" *ngIf="field.type.name == 'files'" >
+        <div class="row" style="margin-left: 9px; margin-bottom: 10px;" >
+          <mat-label>{{field.label}}</mat-label>
+          <br>
+          <input type="file" #file placeholder="Choose file" (change)="onFileChange($event, field.id)" style="display:none;" multiple>
           <button mat-fab color="accent" type="button" (click)="file.click()"  matTooltip="upload image file">
             <mat-icon> attach_file</mat-icon>
           </button>
         </div>
-        <div class="row" *ngIf="uploadedFile != null">
-          <div class="mat-h3">
-            {{uploadedFile.name}}
+        <div class="row" *ngIf="registerForm.controls[field.id].value != null">
+          <div  *ngFor="let uploadedFile of filesString">
+            <mat-label>{{uploadedFile}}</mat-label>
+            <br>
+            <br>
           </div>
         </div>
       </div>
@@ -71,9 +75,9 @@
             <ul style="list-style-type:none;">
               <div *ngFor="let element of enumValues| keyvalue">
                 <div *ngIf="element.key == field.id">
-                  <li *ngFor="let genre of element.value">
-                    <mat-checkbox [formControlName]="genre">
-                      {{field.type.values[genre]}}
+                  <li *ngFor="let enum of element.value">
+                    <mat-checkbox [formControlName]="enum">
+                      {{field.type.values[enum]}}
                     </mat-checkbox>
                   </li>
                 </div>
@@ -83,7 +87,6 @@
         </mat-card>
         <br>
       </div>
-      
   </div>
   
   <button mat-raised-button color="primary" type="submit" [disabled]="f.form.invalid">Submit</button>

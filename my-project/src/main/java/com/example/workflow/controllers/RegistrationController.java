@@ -115,14 +115,8 @@ public class RegistrationController {
                 .taskId(taskId)
                 .singleResult();
 
-
-        //ScientificWork scientificWork = (ScientificWork) this.runtimeService.getVariable(task.getProcessInstanceId(), "scientific_work");
-        //scientificWork.setFilePath(filepath.toString());
-        //this.scientificWorkRepository.save(scientificWork);
         HashMap<String, Object> map = new HashMap<>();
-        //map.put("pdf_fajl", filepath.toString());
         formService.submitTaskForm(taskId, map);
-        //log.info("Form submitted");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

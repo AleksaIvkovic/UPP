@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.List;
 
-@SpringBootApplication//(exclude = { SecurityAutoConfiguration.class })
+@SpringBootApplication (exclude = { SecurityAutoConfiguration.class })
 public class Application {
 
   @Autowired
