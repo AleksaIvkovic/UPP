@@ -2,6 +2,7 @@ package com.example.workflow.services;
 
 import com.example.workflow.intefaces.IGenre;
 import com.example.workflow.intefaces.ISystemUser;
+import com.example.workflow.models.Authority;
 import com.example.workflow.models.Genre;
 import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.IdentityService;
@@ -9,6 +10,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,14 +20,17 @@ public class StoreSystemUserService implements JavaDelegate {
     @Autowired
     private IdentityService identityService;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
-
     @Autowired
     private IGenre genreService;
 
     @Autowired
     private ISystemUser systemUserService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthorityService authorityService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -34,6 +39,22 @@ public class StoreSystemUserService implements JavaDelegate {
         String group = "";
         //boolean isBeta = (boolean)systemUserForm.get("isBeta");
         String role = execution.getVariable("systemUserRole").toString();
+
+        SysUser newSysUser = new SysUser(
+                systemUserForm.get("firstname").toString(),
+                systemUserForm.get("lastname").toString(),
+                systemUserForm.get("city").toString(),
+                systemUserForm.get("country").toString(),
+                systemUserForm.get("username").toString(),
+                passwordEncoder.encode(systemUserForm.get("password").toString()),
+                //systemUserForm.get("password").toString(),
+                systemUserForm.get("email").toString()
+        );
+
+        Authority authoritie = authorityService.findByname(role);
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(authoritie);
+        newSysUser.setAuthorities(authorities);
 
         if (role.equals("READER")) {
             isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
@@ -47,27 +68,6 @@ public class StoreSystemUserService implements JavaDelegate {
         else{
             group = "writers";
         }
-
-        User user = identityService.newUser(systemUserForm.get("username").toString());
-        user.setPassword(systemUserForm.get("password").toString());
-        user.setFirstName(systemUserForm.get("firstname").toString());
-        user.setLastName(systemUserForm.get("lastname").toString());
-        user.setEmail(systemUserForm.get("email").toString());
-        identityService.saveUser(user);
-        identityService.createMembership(user.getId(), group);
-
-        SysUser newSysUser = new SysUser(
-                systemUserForm.get("firstname").toString(),
-                systemUserForm.get("lastname").toString(),
-                systemUserForm.get("city").toString(),
-                systemUserForm.get("country").toString(),
-                systemUserForm.get("username").toString(),
-                //passwordEncoder.encode(systemUserForm.get("password").toString()),
-                systemUserForm.get("password").toString(),
-                systemUserForm.get("email").toString(),
-                role //Dodati isBeta vrednost
-        );
-
 
         List<Genre> genres = new ArrayList<>();
         HashMap<String, Boolean> genresHM = (HashMap<String, Boolean>)(systemUserForm.get("genres"));
@@ -99,7 +99,6 @@ public class StoreSystemUserService implements JavaDelegate {
             newSysUser.setActive(false);
         }
 
-        //Repository za SysUser-a i Genre-ove
         try {
             systemUserService.storeSystemUser(newSysUser);
             execution.setVariable("invalidSave", false);
@@ -108,6 +107,14 @@ public class StoreSystemUserService implements JavaDelegate {
             throw new Exception("Something went wrong");
             //Poslati na front da je nesto poslo naopako
         }
+
+        User user = identityService.newUser(systemUserForm.get("username").toString());
+        user.setPassword(systemUserForm.get("password").toString());
+        user.setFirstName(systemUserForm.get("firstname").toString());
+        user.setLastName(systemUserForm.get("lastname").toString());
+        user.setEmail(systemUserForm.get("email").toString());
+        identityService.saveUser(user);
+        identityService.createMembership(user.getId(), group);
 
         String token = UUID.randomUUID().toString();
         systemUserService.createVerificationToken(newSysUser, token);

@@ -1,10 +1,15 @@
 package com.example.workflow.models;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class SysUser{
+public class SysUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +51,15 @@ public class SysUser{
     @ManyToMany
     private List<Genre> betaGenres;
 
-    @Column(nullable = false)
-    private String role;
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
+
 
     public String getFirstname() {
         return firstname;
@@ -85,8 +97,37 @@ public class SysUser{
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
     public String getPassword() {
@@ -145,14 +186,6 @@ public class SysUser{
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -165,7 +198,7 @@ public class SysUser{
         this.isConfirmed = false;
     }
 
-    public SysUser(String firstname, String lastname, String city, String country, String username, String password, String email, String role) {
+    public SysUser(String firstname, String lastname, String city, String country, String username, String password, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.city = city;
@@ -173,7 +206,14 @@ public class SysUser{
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
         this.isConfirmed = false;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 }
