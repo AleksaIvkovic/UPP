@@ -1,17 +1,13 @@
 package com.example.workflow.controllers;
 
-import com.example.workflow.models.FormSubmissionDTO;
-import com.example.workflow.models.FormFieldsDTO;
-import com.example.workflow.models.TokenConfirmation;
-import com.example.workflow.models.ValidationError;
+import com.example.workflow.models.*;
+import com.example.workflow.services.FileService;
 import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -42,6 +38,9 @@ public class RegistrationController {
 
     @Autowired
     FormService formService;
+
+    @Autowired
+    FileService fileService;
 
 
     @GetMapping(path = "/registration-form/{processId}", produces = "application/json")
@@ -115,9 +114,20 @@ public class RegistrationController {
                 .taskId(taskId)
                 .singleResult();
 
-        //HashMap<String, Object> map = new HashMap<>();
-        formService.submitTaskForm(taskId, map);
+        String processInstanceId = task.getProcessInstanceId();
+        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)runtimeService.getVariable(processInstanceId,"newSysUser");
 
+        String username = systemUserForm.get("username").toString();
+
+        for (Map.Entry mapElement: map.entrySet()) {
+            ArrayList<String> fileNames = (ArrayList<String>)mapElement.getValue();
+            for (String name : fileNames){
+                SubmittedFile newFile = new SubmittedFile(name,processInstanceId,username);
+                fileService.storeSubmittedFile(newFile);
+            }
+        }
+
+        formService.submitTaskForm(taskId, map);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

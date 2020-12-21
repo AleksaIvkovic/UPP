@@ -1,6 +1,9 @@
 package com.example.workflow.services;
 
+import com.example.workflow.intefaces.IFile;
 import com.example.workflow.models.FileDTO;
+import com.example.workflow.models.SubmittedFile;
+import com.example.workflow.repositories.FileRepository;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +17,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Properties;
 
 @Service
-public class FileService {
+public class FileService implements IFile {
 
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     public void savePDF(FileDTO fileDto, String taskId){
         //log.info("Save PDF");
@@ -31,5 +38,10 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void storeSubmittedFile(SubmittedFile newSubmittedFile) {
+        fileRepository.save(newSubmittedFile);
     }
 }

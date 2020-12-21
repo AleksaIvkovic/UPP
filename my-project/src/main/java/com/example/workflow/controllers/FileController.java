@@ -41,9 +41,6 @@ public class FileController {
     public ResponseEntity<Void> uploadPDF(@ModelAttribute FileDTO fileDto, @PathVariable String taskId) {
         this.fileService.savePDF(fileDto, taskId);
         System.out.println(fileDto);
-
-
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
