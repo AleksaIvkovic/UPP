@@ -9,11 +9,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getRegisterForm() : Observable<any>{
-    return this.http.get("http://localhost:8081/api/register/registration-form/".concat(sessionStorage.getItem("processId"))) as Observable<any>;
+    return this.http.get("http://localhost:8081/api/register/form/".concat(sessionStorage.getItem("processId"))) as Observable<any>;
   }
 
   submitRegisterForm(user, taskId){
-    return this.http.post("http://localhost:8081/api/register/submit-form/".concat(taskId), user);
+    return this.http.post("http://localhost:8081/api/register/submit-registration-form/".concat(taskId), user);
   }
 
   submitBetaForm(genres, taskId){

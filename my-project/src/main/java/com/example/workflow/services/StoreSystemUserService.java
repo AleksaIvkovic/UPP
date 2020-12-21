@@ -35,10 +35,11 @@ public class StoreSystemUserService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-        boolean isBeta = false;
+        boolean isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
         String group = "";
         //boolean isBeta = (boolean)systemUserForm.get("isBeta");
         String role = execution.getVariable("systemUserRole").toString();
+        role = (isBeta && role.equals("READER")) ? "BETA-READER" : role;
 
         SysUser newSysUser = new SysUser(
                 systemUserForm.get("firstname").toString(),
@@ -57,7 +58,7 @@ public class StoreSystemUserService implements JavaDelegate {
         newSysUser.setAuthorities(authorities);
 
         if (role.equals("READER")) {
-            isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
+            //isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
             if(isBeta){
                 group = "betaReaders";
             }

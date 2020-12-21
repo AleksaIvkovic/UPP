@@ -42,8 +42,8 @@ public class RegistrationController {
     FormService formService;
 
 
-    @GetMapping(path = "/registration-form/{processId}", produces = "application/json")
-    public @ResponseBody FormFieldsDTO getRegistrationForm(@PathVariable String processId) {
+    @GetMapping(path = "/form/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDTO getForm(@PathVariable String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
 
         TaskFormData tfd = formService.getTaskFormData(task.getId());
@@ -55,7 +55,7 @@ public class RegistrationController {
         return new FormFieldsDTO(task.getId(), properties, processId);
     }
 
-    @PostMapping(path="/submit-form/{taskId}", consumes = "application/json")
+    @PostMapping(path="/submit-registration-form/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postReaderForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
