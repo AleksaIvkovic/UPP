@@ -35,7 +35,11 @@ public class StoreSystemUserService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-        boolean isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
+        boolean isBeta = false;
+        if(systemUserForm.get("isBeta") == null)
+            isBeta = false;
+        else
+            isBeta = systemUserForm.get("isBeta")=="" ? false:(boolean)systemUserForm.get("isBeta");
         String group = "";
         //boolean isBeta = (boolean)systemUserForm.get("isBeta");
         String role = execution.getVariable("systemUserRole").toString();
