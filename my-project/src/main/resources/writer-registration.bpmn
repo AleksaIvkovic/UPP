@@ -129,7 +129,7 @@
     <bpmn:userTask id="Activity_0vti6s4" name="Review writer for membership" camunda:assignee="${committeeMember}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="vote" label="Opinion: " type="enum">
+          <camunda:formField id="vote" label="Opinion" type="enum">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
@@ -137,11 +137,12 @@
             <camunda:value id="For_Id" name="For" />
             <camunda:value id="Against_Id" name="Against" />
           </camunda:formField>
-          <camunda:formField id="comment" label="Comment: " type="string_textArea">
+          <camunda:formField id="comment" label="Comment" type="string_textArea">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
           </camunda:formField>
+          <camunda:formField id="works" label="Works:" type="notEditableEnum_works" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_03d7r2g</bpmn:incoming>

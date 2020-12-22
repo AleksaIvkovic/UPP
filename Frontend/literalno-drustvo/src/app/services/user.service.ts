@@ -37,4 +37,8 @@ export class UserService {
   getTasks() {
     return this.http.get("http://localhost:8081/api/tasks/get");
   }
+
+  getTask(taskId) {
+    return this.http.get("http://localhost:8081/api/tasks/getSingleTask/".concat(taskId));
+  }
 }

@@ -37,7 +37,7 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="col-md-6" *ngIf="field.type.name.includes('files')" >
+      <div class="col-md-6" *ngIf="field.type.name.includes('files_')" >
         <div class="row" style="margin-left: 9px; margin-bottom: 10px;" >
           <mat-label>{{field.label}}</mat-label>
           <br>
@@ -53,6 +53,46 @@
             <br>
           </div>
         </div>
+      </div>
+
+      <mat-form-field appearance="fill" *ngIf="field.type.name == 'string_textArea'">
+        <mat-label>{{field.label}}</mat-label>
+        <textarea matInput formControlName={{field.id}} style=" height: 150px; width: 300px;" ngModel name={{field.id}} required></textarea>
+        <mat-error *ngIf="registerForm.controls[field.id].hasError('required')">
+          {{field.id}} is <strong>required</strong>
+        </mat-error>  
+        <mat-error *ngIf="registerForm.controls[field.id].hasError('minlength')">
+          {{field.id}} must be <strong>longer</strong> than {{registerForm.controls[field.id].errors.minlength.requiredLength}}
+        </mat-error>
+      </mat-form-field>
+
+      <div *ngIf="field.type.name=='enum'">
+        <mat-form-field appearance="fill">
+          <mat-label>{{field.id}}</mat-label>
+          <mat-select formControlName={{field.id}} required>
+            <mat-select>
+              "Nista"
+            </mat-select>
+            <mat-option *ngFor="let enum of field.type.values| keyvalue" [value]="enum.key">
+              {{enum.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="field.type.name.includes('notEditableEnum')">
+        <br>
+        <mat-label>{{field.label}</mat-label>
+          <ul style="list-style-type:none;">
+            <div *ngFor="let element of enumValues| keyvalue">
+              <div *ngIf="element.key == field.id">
+                <li *ngFor="let enum of element.value">
+                  <a>{{field.type.values[enum]}}</a>
+                </li>
+              </div>
+            </div>
+          </ul>
+        <br>
       </div>
 
       <div *ngIf="field.type.name=='boolean'">

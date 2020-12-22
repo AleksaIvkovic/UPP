@@ -1,7 +1,7 @@
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
@@ -29,7 +29,8 @@ export class RegistrationComponent implements OnInit {
   isBetaReader = false;
   isWriter = false;
   submitWork = false;
-
+  isTask = false;
+  isCommitee = false;
 
   constructor( 
     private userService: UserService,
@@ -79,6 +80,26 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
+    else if (this.router.url.includes('tasks')) {
+      this.isCommitee = true;
+      this.isTask = true;
+
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.userService.getTask(params['taskId']).subscribe(
+            res => {
+              this.initForm(res);
+            },
+            err => {
+              console.log(err);
+            }
+          )
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
   }
 
   initForm(res){
@@ -110,6 +131,23 @@ export class RegistrationComponent implements OnInit {
             let maxFiles = <number>field.type.name.split('_')[2]
             let tempForm = new FormControl([], this.checkFiles(minFiles, maxFiles));
             this.files.set(field.id, []);
+            this.registerForm.addControl(
+              field.id, tempForm
+            );
+          }
+          else if(field.type.name.includes("notEditableEnum")){
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempForm = new FormGroup({}, this.checkArray);
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let enumId of value){
+                  tempForm.addControl(enumId, new FormControl(false));
+                }
+              }
+            }
+
             this.registerForm.addControl(
               field.id, tempForm
             );
