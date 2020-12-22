@@ -33,4 +33,8 @@ export class UserService {
 
     return this.http.post("http://localhost:8081/api/register/confirm-email/".concat(processId), object);
   }
+
+  getTasks() {
+    return this.http.get("http://localhost:8081/api/tasks/get");
+  }
 }

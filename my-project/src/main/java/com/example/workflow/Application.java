@@ -92,7 +92,7 @@ public class Application {
       Group sysAdminGroup = identityService.newGroup("sysAdmins");
       identityService.saveGroup(sysAdminGroup);
     }
-
+    /*
     List<User> users = identityService.createUserQuery().userIdIn("editor1","editor2","committee1","committee2","committee3","lector","headCommittee","sysAdmin").list();
     if (users.isEmpty()) {
 
@@ -114,6 +114,7 @@ public class Application {
       identityService.createMembership("headCommittee", "headCommittee");
       identityService.createMembership("sysAdmin", "sysAdmins");
     }
+    */
   }
 
   private void registerInCamunda(String username, String password, String firstname, String lastname, String email) {

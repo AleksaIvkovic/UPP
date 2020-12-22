@@ -8,42 +8,42 @@ INSERT INTO genre(name) VALUES ('History');
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Marko','true',null,'true','Markovic','pass','editor1')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Marko','true','false','true','Markovic','pass','editor1')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Nikola','true',null,'true','Nikolic','pass','editor2')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Nikola','true','false','true','Nikolic','pass','editor2')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Pera','true',null,'true','Peric','pass','committee1')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Pera','true','false','true','Peric','pass','committee1')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Aleksa','true',null,'true','Aleksic','pass','committee2')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Aleksa','true','false','true','Aleksic','pass','committee2')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Sara','true',null,'true','Saric','pass','committee3')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Sara','true','false','true','Saric','pass','committee3')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Zeljko','true',null,'true','Zeljkovic','pass','lector')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Zeljko','true','false','true','Zeljkovic','pass','lector')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Mitar','true',null,'true','Mitrovic','pass','headCommittee')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Mitar','true','false','true','Mitrovic','pass','headCommittee')
 
 INSERT INTO sys_user
 ([city],[country],[email],[firstname],[is_active],[is_beta],[is_confirmed],[lastname],[password],[username])
 VALUES
-('Novi Sad','Serbia','upppomocninalog@gmail.com','Jelena','true',null,'true','Jelenic','pass','sysAdmin')
+('Novi Sad','Serbia','upppomocninalog@gmail.com','Jelena','true','false','true','Jelenic','pass','sysAdmin')
 
 INSERT INTO authority ([name]) values ('READER');
 INSERT INTO authority ([name]) values ('BETA-READER');

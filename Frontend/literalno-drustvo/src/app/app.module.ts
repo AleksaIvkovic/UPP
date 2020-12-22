@@ -52,6 +52,9 @@ import {MatTreeModule} from '@angular/material/tree';
 
 import { MainComponent } from './components/main/main.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { TasksComponent } from './components/tasks/tasks.component';
+import { TaskComponent } from './components/tasks/task/task.component';
+import { TaskDetailsComponent } from './components/tasks/task-details/task-details.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     StarterComponent,
     EmailConfirmationComponent,
     NavigationComponent,
-    MainComponent
+    MainComponent,
+    TasksComponent,
+    TaskComponent,
+    TaskDetailsComponent
   ],
   imports: [
     BrowserModule,

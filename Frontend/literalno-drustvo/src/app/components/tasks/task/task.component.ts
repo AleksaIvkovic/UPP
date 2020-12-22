@@ -1,0 +1,25 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-task',
+  templateUrl: './task.component.html',
+  styleUrls: ['./task.component.css']
+})
+export class TaskComponent implements OnInit {
+
+  @Input() task: any;
+
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    console.log(this.task);
+  }
+
+  getTask() {
+    this.router.navigate([this.task.id], {relativeTo: this.activeRoute});
+  }
+}

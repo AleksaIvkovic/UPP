@@ -107,7 +107,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${invalidSave == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1d6exoj" sourceRef="Activity_16gxu2t" targetRef="Activity_1mmat6m" />
-    <bpmn:userTask id="Activity_1mmat6m" name="Submit works">
+    <bpmn:userTask id="Activity_1mmat6m" name="Submit works" camunda:assignee="${username}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="files_2_10" label="Please submit your works (at least 2):" type="files_2_10">
@@ -126,7 +126,7 @@
       <bpmn:outgoing>Flow_0qdalny</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0qdalny" sourceRef="Activity_1mmat6m" targetRef="Gateway_0zwgjf6" />
-    <bpmn:userTask id="Activity_0vti6s4" name="Committee vote and comment" camunda:assignee="${committeeMember}">
+    <bpmn:userTask id="Activity_0vti6s4" name="Review writer for membership" camunda:assignee="${committeeMember}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="vote" label="Opinion: " type="enum">
@@ -137,7 +137,7 @@
             <camunda:value id="For_Id" name="For" />
             <camunda:value id="Against_Id" name="Against" />
           </camunda:formField>
-          <camunda:formField id="comment" type="string">
+          <camunda:formField id="comment" label="Comment: " type="string_textArea">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
@@ -255,7 +255,7 @@
   </bpmn:process>
   <bpmn:message id="Message_1dob6i9" name="SendSystemUserVerification" />
   <bpmn:message id="Message_1vnpduc" name="ReceiveSystemUserVerification" />
-  <bpmn:message id="Message_00ad7dv" />
+  <bpmn:message id="Message_00ad7dv" name="NotifyCommittee" />
   <bpmn:message id="Message_00k0aqe" name="MoreWorkNeeded" />
   <bpmn:message id="Message_11goiy6" name="SendReceipt" />
   <bpmn:message id="Message_136eyxd" name="NotifyOfCanceledMembership" />
