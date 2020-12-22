@@ -139,7 +139,7 @@ public class RegistrationController {
     }
 
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
-    public ResponseEntity<?> postBetaForm(@RequestBody TokenConfirmation object, @PathVariable String processId) {
+    public ResponseEntity<?> EmailVerification(@RequestBody TokenConfirmation object, @PathVariable String processId) {
         runtimeService.setVariable(processId, "TokenValidationToken", object.getToken());
 
         MessageCorrelationResult results = runtimeService.createMessageCorrelation("ReceiveSystemUserVerification")
@@ -148,7 +148,29 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(path="/submit-vote-new-writer/{processId}", consumes = "application/json")
+    public ResponseEntity<?> postVoteNewWriterForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
 
+        ArrayList<String> committeeVotes;
+        if (runtimeService.getVariable(processInstanceId, "committeeVotes") == null) {
+            runtimeService.setVariable(processInstanceId, "committeeVotes", new ArrayList<String>());
+        } else {
+            committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
+        }
+
+
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
     {

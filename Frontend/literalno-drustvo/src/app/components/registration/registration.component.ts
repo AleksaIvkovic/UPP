@@ -236,6 +236,15 @@ export class RegistrationComponent implements OnInit {
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
+    else if(this.isTask && this.isCommitee) {
+      this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Vote successful.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
     else {
       this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {

@@ -144,6 +144,7 @@
           </camunda:formField>
           <camunda:formField id="works" label="Works:" type="notEditableEnum_works" />
         </camunda:formData>
+        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_03d7r2g</bpmn:incoming>
       <bpmn:outgoing>Flow_14n7nqy</bpmn:outgoing>
