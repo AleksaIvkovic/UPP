@@ -4,6 +4,7 @@ import { EmailConfirmationComponent } from './components/email-confirmation/emai
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { TaskDetailsComponent } from './components/tasks/task-details/task-details.component';
+import { StarterComponent } from './components/starter/starter.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
     {path: 'submit-work/:processId', component: RegistrationComponent},
     {path: 'email-confirmation/:token/:processId', component: EmailConfirmationComponent},
     {path: 'tasks', component: TasksComponent, children: [
-      {path: ':taskId', component: TaskDetailsComponent}
+      {path: ':taskId/:taskName', component: RegistrationComponent}
     ]},
     {path: 'submit-new-book', component: RegistrationComponent},
   ]},

@@ -26,6 +26,10 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/register/submit-work/".concat(taskId), data);
   }
 
+  submitVoteForNewWriter(data, taskId) {
+    return this.http.post("http://localhost:8081/api/register/submit-vote-new-writer/".concat(taskId), data);
+  }
+
   confirmEmail(token, processId) {
     let object = {
       "token": token
@@ -36,5 +40,9 @@ export class UserService {
 
   getTasks() {
     return this.http.get("http://localhost:8081/api/tasks/get");
+  }
+
+  getTask(taskId) {
+    return this.http.get("http://localhost:8081/api/tasks/getSingleTask/".concat(taskId));
   }
 }

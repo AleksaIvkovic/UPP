@@ -1,7 +1,8 @@
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { disableDebugTools } from '@angular/platform-browser';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
@@ -29,7 +30,8 @@ export class RegistrationComponent implements OnInit {
   isBetaReader = false;
   isWriter = false;
   submitWork = false;
-
+  isTask = false;
+  isCommitee = false;
 
   constructor( 
     private userService: UserService,
@@ -50,11 +52,11 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
-    else if(this.router.url.includes('beta')){
+    else if(this.router.url.includes('register-beta')){
       this.isBetaReader = true;
       this.initForm(JSON.parse(sessionStorage.getItem('betaForm')));
     }
-    else if(this.router.url.includes('writer')){
+    else if(this.router.url.includes('register-writer')){
       this.isWriter = true;
       this.userService.getRegisterForm().subscribe(
         res => {
@@ -89,7 +91,35 @@ export class RegistrationComponent implements OnInit {
           console.log("Error occured");
         }
       );
-    };
+    }
+    else if (this.router.url.includes('tasks')) {
+      this.route.params.subscribe(
+        (params: Params) => {
+          if(params['taskName'] == 'Submit works'){
+            this.submitWork = true;
+          }
+          else if(params['taskName'] == 'Review writer for membership'){
+            this.isCommitee = true;
+            this.isTask = true;
+          }
+          else if(params['taskName'] == 'Deliver more work'){
+            this.submitWork = true;
+          }
+          
+          this.userService.getTask(params['taskId']).subscribe(
+            res => {
+              this.initForm(res);
+            },
+            err => {
+              console.log(err);
+            }
+          )
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
   }
 
   initForm(res){
@@ -123,6 +153,26 @@ export class RegistrationComponent implements OnInit {
             this.files.set(field.id, []);
             this.registerForm.addControl(
               field.id, tempForm
+            );
+          }
+          else if(field.type.name.includes("notEditableEnum")){
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempControl = new FormControl([]);
+            let temp = [];
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let enumId of value){
+                  temp.push(field.type.values[enumId]);
+                }
+              }
+            }
+
+            tempControl.setValue(temp);
+
+            this.registerForm.addControl(
+              field.id, tempControl
             );
           }
           else{
@@ -193,6 +243,15 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
+    }
+    else if(this.isTask && this.isCommitee) {
+      this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Vote successful.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
