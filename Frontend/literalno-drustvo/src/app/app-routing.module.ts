@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { EmailConfirmationComponent } from './components/email-confirmation/email-confirmation.component';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { StarterComponent } from './components/starter/starter.component';
 import { TaskDetailsComponent } from './components/tasks/task-details/task-details.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 
@@ -18,8 +17,7 @@ const routes: Routes = [
     {path: 'tasks', component: TasksComponent, children: [
       {path: ':taskId', component: TaskDetailsComponent}
     ]},
-
-
+    {path: 'submit-new-book', component: RegistrationComponent},
   ]},
 ];
 
