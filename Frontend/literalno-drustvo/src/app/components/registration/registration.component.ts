@@ -307,4 +307,18 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  download(name){
+    this.uploadService.download(name).subscribe(
+      (blob: any) => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(blob)
+        a.href = objectUrl
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      (error) => {
+        console.log('Error: ' + error);;
+      });
+  }
 }

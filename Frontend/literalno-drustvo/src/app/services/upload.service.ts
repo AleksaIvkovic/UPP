@@ -37,4 +37,8 @@ export class UploadService {
     return this.httpClient.get('/api/file/upload/'.concat(processInstanceId));
   }*/
 
+  public download(name) {
+    return this.httpClient.get('http://localhost:8081/api/file/downloadFile/'.concat(name), { responseType: 'blob' });
+  }
+
 }

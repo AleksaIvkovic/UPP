@@ -183,7 +183,7 @@
     <bpmn:boundaryEvent id="Event_06e1gl2" attachedToRef="Activity_132racf">
       <bpmn:outgoing>Flow_10s7okz</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0n6b46e">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="Event_0ootk52">

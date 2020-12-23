@@ -87,7 +87,9 @@
             <div *ngFor="let element of enumValues| keyvalue">
               <div *ngIf="element.key == field.id">
                 <li *ngFor="let enum of element.value">
-                  <a>{{field.type.values[enum]}}</a>
+                  <div (click)="download(field.type.values[enum])">
+                    {{field.type.values[enum]}}
+                  </div>
                 </li>
               </div>
             </div>
