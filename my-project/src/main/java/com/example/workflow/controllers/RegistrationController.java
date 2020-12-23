@@ -109,6 +109,12 @@ public class RegistrationController {
     public ResponseEntity<?> submitWork(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        runtimeService.setVariable(processInstanceId,"worksToStore", map);
+
+        /*
         Task task = this.taskService.createTaskQuery()
                 .active()
                 .taskId(taskId)
@@ -126,6 +132,7 @@ public class RegistrationController {
                 fileService.storeSubmittedFile(newFile);
             }
         }
+         */
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -167,7 +174,7 @@ public class RegistrationController {
         committeeVotes.add(map.get("vote").toString());
         committeeComments.add(map.get("comment").toString());
         int round = Integer.parseInt(runtimeService.getVariable(processInstanceId,"Round").toString());
-        runtimeService.setVariable(processInstanceId,"Round", round++);
+        runtimeService.setVariable(processInstanceId,"Round", round + 1);
 
         runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
         runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);
