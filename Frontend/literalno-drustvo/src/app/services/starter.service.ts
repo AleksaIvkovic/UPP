@@ -16,4 +16,8 @@ export class StarterService {
   startWriterRegistration() : Observable<any>{
     return this.http.get("http://localhost:8081/api/starter/start/registerWriter") as Observable<any>;
   }
+
+  startBookPublishing() : Observable<any>{
+    return this.http.get("http://localhost:8081/api/starter/start/bookPublishing") as Observable<any>;
+  }
 }

@@ -2,6 +2,7 @@ package com.example.workflow.controllers;
 
 import camundajar.impl.scala.util.parsing.json.JSON;
 import com.example.workflow.models.FormFieldsDTO;
+import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -10,6 +11,8 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +45,11 @@ public class StarterController {
             runtimeService.setVariable(pi.getId(), "systemUserRole", "READER");
         } else if (processName.equals("registerWriter")) {
             runtimeService.setVariable(pi.getId(), "systemUserRole", "WRITER");
+        }
+        else if(processName.equals("bookPublishing")){
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            SysUser sysUser = (SysUser) auth.getPrincipal();
+            runtimeService.setVariable(pi.getId(), "loggedInWriter", sysUser);
         }
         HashMap<String,Object> hm = new HashMap<>();
         hm.put("processId", pi.getId());

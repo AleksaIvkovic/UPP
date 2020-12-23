@@ -67,11 +67,22 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
-    else if(this.router.url.includes('submit')){
+    else if(this.router.url.includes('submit-work')){
       this.isWriter = true;
       this.submitWork = true;
       sessionStorage.setItem("processId", this.router.url.split("/")[3] );
       this.userService.getRegisterForm().subscribe(
+        res => {
+          this.initForm(res);
+        },
+        err => {
+          console.log(err);
+          console.log("Error occured");
+        }
+      );
+    }
+    else if(this.router.url.includes('submit-new-book')){
+     this.userService.getRegisterForm().subscribe(
         res => {
           this.initForm(res);
         },
