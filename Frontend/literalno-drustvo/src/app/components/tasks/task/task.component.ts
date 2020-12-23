@@ -20,6 +20,6 @@ export class TaskComponent implements OnInit {
   }
 
   getTask() {
-    this.router.navigate([this.task.id], {relativeTo: this.activeRoute});
+    this.router.navigate([this.task.id, this.task.name], {relativeTo: this.activeRoute});
   }
 }

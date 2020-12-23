@@ -15,7 +15,7 @@ const routes: Routes = [
     {path: 'submit-work/:processId', component: RegistrationComponent},
     {path: 'email-confirmation/:token/:processId', component: EmailConfirmationComponent},
     {path: 'tasks', component: TasksComponent, children: [
-      {path: ':taskId', component: RegistrationComponent}
+      {path: ':taskId/:taskName', component: RegistrationComponent}
     ]},
 
 

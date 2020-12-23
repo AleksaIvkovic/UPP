@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +41,6 @@ public class RegistrationController {
 
     @Autowired
     FileService fileService;
-
 
     @GetMapping(path = "/form/{processId}", produces = "application/json")
     public @ResponseBody FormFieldsDTO getForm(@PathVariable String processId) {
@@ -148,25 +146,37 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(path="/submit-vote-new-writer/{processId}", consumes = "application/json")
+    @PostMapping(path="/submit-vote-new-writer/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postVoteNewWriterForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> committeeVotes;
+        ArrayList<String> committeeVotes = new ArrayList<>();
+        ArrayList<String> committeeComments = new ArrayList<>();
+
         if (runtimeService.getVariable(processInstanceId, "committeeVotes") == null) {
             runtimeService.setVariable(processInstanceId, "committeeVotes", new ArrayList<String>());
+            runtimeService.setVariable(processInstanceId, "committeeComments", new ArrayList<String>());
+            runtimeService.setVariable(processInstanceId, "Round", 0);
         } else {
             committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
+            committeeComments = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeComments");
         }
 
+        committeeVotes.add(map.get("vote").toString());
+        committeeComments.add(map.get("comment").toString());
+        int round = Integer.parseInt(runtimeService.getVariable(processInstanceId,"Round").toString());
+        runtimeService.setVariable(processInstanceId,"Round", round++);
 
+        runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
+        runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);
 
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

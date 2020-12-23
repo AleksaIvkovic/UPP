@@ -1,6 +1,7 @@
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
@@ -51,11 +52,11 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
-    else if(this.router.url.includes('beta')){
+    else if(this.router.url.includes('register-beta')){
       this.isBetaReader = true;
       this.initForm(JSON.parse(sessionStorage.getItem('betaForm')));
     }
-    else if(this.router.url.includes('writer')){
+    else if(this.router.url.includes('register-writer')){
       this.isWriter = true;
       this.userService.getRegisterForm().subscribe(
         res => {
@@ -81,11 +82,19 @@ export class RegistrationComponent implements OnInit {
       );
     }
     else if (this.router.url.includes('tasks')) {
-      this.isCommitee = true;
-      this.isTask = true;
-
       this.route.params.subscribe(
         (params: Params) => {
+          if(params['taskName'] == 'Submit works'){
+            this.submitWork = true;
+          }
+          else if(params['taskName'] == 'Review writer for membership'){
+            this.isCommitee = true;
+            this.isTask = true;
+          }
+          else if(params['taskName'] == 'Deliver more work'){
+            this.submitWork = true;
+          }
+          
           this.userService.getTask(params['taskId']).subscribe(
             res => {
               this.initForm(res);
@@ -138,18 +147,21 @@ export class RegistrationComponent implements OnInit {
           else if(field.type.name.includes("notEditableEnum")){
             this.enumValues.set(field.id, Object.keys(field.type.values));
 
-            let tempForm = new FormGroup({}, this.checkArray);
+            let tempControl = new FormControl([]);
+            let temp = [];
 
             for (let [key, value] of this.enumValues) {
               if(key == field.id){
                 for(let enumId of value){
-                  tempForm.addControl(enumId, new FormControl(false));
+                  temp.push(field.type.values[enumId]);
                 }
               }
             }
 
+            tempControl.setValue(temp);
+
             this.registerForm.addControl(
-              field.id, tempForm
+              field.id, tempControl
             );
           }
           else{
@@ -221,6 +233,15 @@ export class RegistrationComponent implements OnInit {
         )
       }
     }
+    else if(this.isTask && this.isCommitee) {
+      this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Vote successful.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
@@ -232,15 +253,6 @@ export class RegistrationComponent implements OnInit {
             this.router.navigate(['main/register-beta']);
           }
       }, (error : any)  => {
-        console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
-      });
-    }
-    else if(this.isTask && this.isCommitee) {
-      this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          alert('Vote successful.');
-      }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
