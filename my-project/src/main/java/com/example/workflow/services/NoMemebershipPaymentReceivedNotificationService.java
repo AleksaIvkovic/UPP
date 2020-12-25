@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 @Service
-public class SendSuspensionNoticeEmailService implements JavaDelegate {
+public class NoMemebershipPaymentReceivedNotificationService implements JavaDelegate {
     @Autowired
     IMailing mailingService;
 
@@ -17,9 +17,11 @@ public class SendSuspensionNoticeEmailService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
 
-        String text = "Dear " + execution.getVariable("firstname") + ",\n\n\t" + "We are sad to inform you that the request for your membership has been denied.";
+        String text = "Dear " + execution.getVariable("firstname") + ",\n\n\t" +
+        "We are sad to inform you that your membership request has been denied due " +
+        "to the failed payment of your membership fee.";
 
-        String subject = "Suspension notice";
-        mailingService.sendMail(subject,text,execution.getVariable("email").toString());
+        String subject = "Membership denied";
+        mailingService.sendMail(subject, text, execution.getVariable("email").toString());
     }
 }

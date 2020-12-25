@@ -18,7 +18,7 @@ public class NeedMoreWorkNotificationService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
 
-        String text = "Dear " + execution.getVariable("firstname") + ",\n\n\t" + "We would kindly ask you to send as more work, beacuse committee needs to read more of your work before they make a decision. " +
+        String text = "Dear " + execution.getVariable("firstname") + ",\n\n\t" + "We would kindly ask you to send us more work, beacuse committee needs to read more of your work before they make a decision. " +
                 "To make it more easy for you, the committee members have left comments: " + "\n\n";
 
         ArrayList<String> comments = (ArrayList<String>) execution.getVariable("committeeComments");

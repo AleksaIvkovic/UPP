@@ -32,6 +32,7 @@ export class RegistrationComponent implements OnInit {
   submitWork = false;
   isTask = false;
   isCommitee = false;
+  payMembership = false;
 
   constructor( 
     private userService: UserService,
@@ -104,6 +105,8 @@ export class RegistrationComponent implements OnInit {
           }
           else if(params['taskName'] == 'Deliver more work'){
             this.submitWork = true;
+          } else if (params['taskName'] == 'Pay membership') {
+            this.payMembership = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -243,6 +246,14 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
+    } else if (this.payMembership) {
+      this.userService.submitPaymentDetails(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Payment details submitted succesfully.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
     }
     else if(this.isTask && this.isCommitee) {
       this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
