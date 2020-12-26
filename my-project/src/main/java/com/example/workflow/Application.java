@@ -65,7 +65,7 @@ public class Application {
   @PostConstruct
   private void InitGroups(){
     List<Group> groups = identityService.createGroupQuery()
-            .groupIdIn("readers", "betaReaders", "writers", "editors", "committee", "lectors", "headCommittee", "sysAdmins").list();
+            .groupIdIn("readers", "betaReaders", "writers", "editors", "committee", "lectors", "headCommittee", "sysAdmins", "headEditor").list();
     if (groups.isEmpty()) {
 
       Group readerGroup = identityService.newGroup("readers");
@@ -91,6 +91,9 @@ public class Application {
 
       Group sysAdminGroup = identityService.newGroup("sysAdmins");
       identityService.saveGroup(sysAdminGroup);
+
+      Group headEditorGroup = identityService.newGroup("headEditor");
+      identityService.saveGroup(headEditorGroup);
     }
     /*
     List<User> users = identityService.createUserQuery().userIdIn("editor1","editor2","committee1","committee2","committee3","lector","headCommittee","sysAdmin").list();
