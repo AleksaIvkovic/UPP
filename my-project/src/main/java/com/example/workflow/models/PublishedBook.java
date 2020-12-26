@@ -13,33 +13,40 @@ public class PublishedBook {
     private  String  title;
 
     @ManyToOne
-    private SysUser user;
+    private SysUser writer;
 
     @ManyToOne
     private Genre genre;
 
-    @Column(nullable = false)
+    @Column
     private  String ISBN;
 
-    @Column(nullable = false)
+    @Column
     private String  keyWords;
 
-    @Column(nullable = false)
+    @Column
     private  String publisher;
 
-    @Column(nullable = false)
+    @Column
     private Integer yearOfPublication;
 
-    @Column(nullable = false)
+    @Column
     private  String  placeOfPublication;
 
-    @Column(nullable = false)
+    @Column
     private  Integer numberOfPages;
+
+    @Column
+    private String fileName;
 
     @Column(nullable = false)
     private String synopsis;
 
+    @Column(nullable = false)
+    private boolean isPublished;
+
     //podaci o urednicima i lektorisanju
+
 
 
     public PublishedBook() {
@@ -61,12 +68,12 @@ public class PublishedBook {
         this.title = title;
     }
 
-    public SysUser getUser() {
-        return user;
+    public SysUser getWriter() {
+        return writer;
     }
 
-    public void setUser(SysUser user) {
-        this.user = user;
+    public void setWriter(SysUser user) {
+        this.writer = user;
     }
 
     public Genre getGenre() {
@@ -101,17 +108,13 @@ public class PublishedBook {
         this.publisher = publisher;
     }
 
-    public Integer getYearOfPublication() {
-        return yearOfPublication;
-    }
+    public Integer getYearOfPublication() { return yearOfPublication; }
 
     public void setYearOfPublication(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
     }
 
-    public String getPlaceOfPublication() {
-        return placeOfPublication;
-    }
+    public String getPlaceOfPublication() { return placeOfPublication; }
 
     public void setPlaceOfPublication(String placeOfPublication) {
         this.placeOfPublication = placeOfPublication;
@@ -125,6 +128,10 @@ public class PublishedBook {
         this.numberOfPages = numberOfPages;
     }
 
+    public String getFileName() { return fileName; }
+
+    public void setFileName(String fileName) { this.fileName = fileName; }
+
     public String getSynopsis() {
         return synopsis;
     }
@@ -132,4 +139,8 @@ public class PublishedBook {
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
     }
+
+    public boolean isPublished() { return isPublished; }
+
+    public void setPublished(boolean published) { isPublished = published; }
 }

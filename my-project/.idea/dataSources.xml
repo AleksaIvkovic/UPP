@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:sqlserver://localhost:1433;databaseName=uppDB;integratedSecurity=true</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="uppDB@localhost [3]" uuid="c10aa508-5eb2-4ebc-996e-99c28fabd1d9">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://localhost:1433;databaseName=uppDB;integratedSecurity=true</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

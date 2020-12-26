@@ -1,6 +1,7 @@
 package com.example.workflow.services;
 
 import com.example.workflow.intefaces.IMailing;
+import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -23,7 +24,9 @@ public class NotifyHeadCommitteeEmailService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-        String text = "Writer wants to submit new book. Please review theirs synopsis.";
+        SysUser systemUser = (SysUser)execution.getVariable("loggedInWriter");
+
+        String text = "Writer "  + systemUser.getFirstname() + " " + systemUser.getLastname() +" wants to submit new book. Please review theirs synopsis.";
 
         ArrayList<User> headCommittee = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("headCommittee").list();
         mailingService.sendMail("New book review",text, headCommittee.get(0).getEmail());

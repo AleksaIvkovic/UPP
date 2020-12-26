@@ -50,6 +50,7 @@ public class StarterController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             SysUser sysUser = (SysUser) auth.getPrincipal();
             runtimeService.setVariable(pi.getId(), "loggedInWriter", sysUser);
+            runtimeService.setVariable(pi.getId(), "loggedInEmail", sysUser.getEmail());
         }
         HashMap<String,Object> hm = new HashMap<>();
         hm.put("processId", pi.getId());

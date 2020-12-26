@@ -30,8 +30,11 @@ export class RegistrationComponent implements OnInit {
   isBetaReader = false;
   isWriter = false;
   submitWork = false;
+  submitNewBook = false;
   isTask = false;
   isCommitee = false;
+  synopsisReview = false;
+  explanation = false;
 
   constructor( 
     private userService: UserService,
@@ -82,6 +85,7 @@ export class RegistrationComponent implements OnInit {
       );
     }
     else if(this.router.url.includes('submit-new-book')){
+      this.submitNewBook = true;
      this.userService.getRegisterForm().subscribe(
         res => {
           this.initForm(res);
@@ -104,6 +108,10 @@ export class RegistrationComponent implements OnInit {
           }
           else if(params['taskName'] == 'Deliver more work'){
             this.submitWork = true;
+          } else if(params['taskName'] == 'Synopsis review') {
+            this.synopsisReview = true;
+          } else if(params['taskName'] == 'Give an explanation') {
+            this.explanation = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -243,6 +251,46 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
+    }
+    else if(this.submitNewBook){
+      this.userService.submitBookSynopsis(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Book synopsis successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
+    else if (this.synopsisReview) {
+      this.userService.submitBookSynopsisReview(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Book synopsis review successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
+    }
+    else if (this.explanation) {
+      this.userService.submitExplanation(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Explanation successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
     }
     else if(this.isTask && this.isCommitee) {
       this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(

@@ -26,6 +26,18 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/register/submit-work/".concat(taskId), data);
   }
 
+  submitBookSynopsis(data, taskId){
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-synopsis-form/".concat(taskId), data);
+  }
+
+  submitBookSynopsisReview(data, taskId){
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-synopsis-review/".concat(taskId), data);
+  }
+
+  submitExplanation(data, taskId){
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-explanation/".concat(taskId), data);
+  }
+
   submitVoteForNewWriter(data, taskId) {
     return this.http.post("http://localhost:8081/api/register/submit-vote-new-writer/".concat(taskId), data);
   }

@@ -2,6 +2,7 @@ package com.example.workflow.controllers;
 
 import com.example.workflow.models.PublishedBook;
 import com.example.workflow.models.FormSubmissionDTO;
+import com.example.workflow.models.SysUser;
 import com.example.workflow.models.ValidationError;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -34,17 +35,55 @@ public class BookPublishingController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        PublishedBook newPublishedBook = new PublishedBook();
-        newPublishedBook.setTitle(map.get("title").toString());
-        //newPublishedBook.setGenre(map.get("genre").toString());
-        newPublishedBook.setSynopsis(map.get("synopsis").toString());
-
-        runtimeService.setVariable(processInstanceId, "newPublishedBook", newPublishedBook);
+        runtimeService.setVariable(processInstanceId, "newPublishedBookForm", map);
 
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-explanation/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postExplanation(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        runtimeService.setVariable(processInstanceId, "explanation", map);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-synopsis-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postSynopsisReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        boolean denied;
+
+        if (map.get("decision").toString().contains("Yes")) {
+            denied = false;
+        } else {
+            denied = true;
+        }
+
+        runtimeService.setVariable(processInstanceId, "deniedSynopsis", denied);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
