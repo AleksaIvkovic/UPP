@@ -96,8 +96,7 @@ public class BookPublishingController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        runtimeService.setVariable(processInstanceId,"manuscriptToStore", map);
-
+        runtimeService.setVariable(processInstanceId,"worksToStore", map);
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
@@ -122,6 +121,31 @@ public class BookPublishingController {
         }
 
         runtimeService.setVariable(processInstanceId, "isPlagiarism", isPlagiarism);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-manuscript-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postManuscriptReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        boolean manuscriptApproved;
+
+        if (map.get("manuscriptDecision").toString().contains("Yes")) {
+            manuscriptApproved = true;
+        } else {
+            manuscriptApproved = false;
+        }
+
+        runtimeService.setVariable(processInstanceId, "manuscriptApproved", manuscriptApproved);
 
         try {
             formService.submitTaskForm(taskId, map);

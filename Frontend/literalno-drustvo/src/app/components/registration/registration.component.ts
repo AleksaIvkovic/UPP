@@ -38,6 +38,7 @@ export class RegistrationComponent implements OnInit {
   payMembership = false;
   manuscriptUpload = false;
   plagiarismReview = false;
+  downloadManuscript = false;
 
   constructor( 
     private userService: UserService,
@@ -120,6 +121,8 @@ export class RegistrationComponent implements OnInit {
             this.manuscriptUpload = true;
           }else if (params['taskName'] == 'Plagiarism review') {
             this.plagiarismReview = true;
+          }else if (params['taskName'] == 'Download manuscript') {
+            this.downloadManuscript = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -345,6 +348,19 @@ export class RegistrationComponent implements OnInit {
         (res) => {
           if(res == null){
             alert('Explanation successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
+    }
+    else if(this.downloadManuscript){
+      this.userService.submitManuscriptReview(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Manuscript review successfully submited.');
           }
           else{
            

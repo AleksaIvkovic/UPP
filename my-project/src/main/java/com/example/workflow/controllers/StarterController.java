@@ -51,7 +51,7 @@ public class StarterController {
             SysUser sysUser = (SysUser) auth.getPrincipal();
             runtimeService.setVariable(pi.getId(), "loggedInWriter", sysUser);
             runtimeService.setVariable(pi.getId(), "loggedInEmail", sysUser.getEmail());
-            runtimeService.setVariable(pi.getId(), "loggedInUsername", sysUser.getUsername());
+            runtimeService.setVariable(pi.getId(), "username", sysUser.getUsername());
             runtimeService.setVariable(pi.getId(), "firstname", sysUser.getFirstname());
         }
         HashMap<String,Object> hm = new HashMap<>();

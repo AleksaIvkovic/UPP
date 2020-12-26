@@ -58,7 +58,7 @@
             <camunda:value id="Yes_Id" name="Yes" />
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
-          <camunda:formField id="titleReadOnly" label="Title:" type="readOnly_string" />
+          <camunda:formField id="titleReadOnly" label="Title:" type="string_label" />
           <camunda:formField id="genreReadOnly" label="Genre: " type="string_label" />
           <camunda:formField id="synopsisReadOnly" label="Synopsis:" type="string_label" />
         </camunda:formData>
@@ -110,7 +110,7 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1nkrqya</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_1tlls1k" name="Manuscript upload" camunda:assignee="${loggedInUsername}">
+    <bpmn:userTask id="Activity_1tlls1k" name="Manuscript upload" camunda:assignee="${username}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="files_1_1" label="Upload your manuscript: " type="files_1_1">
@@ -129,10 +129,10 @@
       <bpmn:outgoing>Flow_0k499tm</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="Activity_0qogdf1" name="Find possible plagiarism" camunda:class="com.example.workflow.services.CheckPlagiarismService">
-      <bpmn:incoming>Flow_0k499tm</bpmn:incoming>
+      <bpmn:incoming>Flow_1tv2p4s</bpmn:incoming>
       <bpmn:outgoing>Flow_1datctj</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0k499tm" sourceRef="Activity_1tlls1k" targetRef="Activity_0qogdf1" />
+    <bpmn:sequenceFlow id="Flow_0k499tm" sourceRef="Activity_1tlls1k" targetRef="Activity_0hs2bjm" />
     <bpmn:sequenceFlow id="Flow_1datctj" sourceRef="Activity_0qogdf1" targetRef="Activity_02eoyxg" />
     <bpmn:userTask id="Activity_02eoyxg" name="Plagiarism review" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
@@ -157,20 +157,29 @@
     <bpmn:sequenceFlow id="Flow_1h47lua" name="Not plagiarized" sourceRef="Gateway_0x5keim" targetRef="Activity_1sxub61">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!isPlagiarism}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Activity_1sxub61" name="Download" camunda:assignee="${headEditor}">
+    <bpmn:userTask id="Activity_1sxub61" name="Download manuscript" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:formData>
+          <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
+          <camunda:formField id="manuscriptDecision" label="Do you approve manuscript?" type="enum">
+            <camunda:value id="Yes_Id" name="Yes" />
+            <camunda:value id="No_Id" name="No" />
+          </camunda:formField>
+        </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1h47lua</bpmn:incoming>
       <bpmn:outgoing>Flow_0y94fep</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_11iwhnv" default="Flow_0rurf89">
+    <bpmn:exclusiveGateway id="Gateway_11iwhnv">
       <bpmn:incoming>Flow_0y94fep</bpmn:incoming>
       <bpmn:outgoing>Flow_0rurf89</bpmn:outgoing>
       <bpmn:outgoing>Flow_06qkucv</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0y94fep" sourceRef="Activity_1sxub61" targetRef="Gateway_11iwhnv" />
-    <bpmn:sequenceFlow id="Flow_0rurf89" name="Manuscript approved" sourceRef="Gateway_11iwhnv" targetRef="Activity_1w7ug4k" />
+    <bpmn:sequenceFlow id="Flow_0rurf89" name="Manuscript approved" sourceRef="Gateway_11iwhnv" targetRef="Activity_1w7ug4k">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${manuscriptApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_1w7ug4k" name="Send to beta?" camunda:assignee="${headEditor}">
       <bpmn:incoming>Flow_0rurf89</bpmn:incoming>
       <bpmn:outgoing>Flow_161ft42</bpmn:outgoing>
@@ -422,8 +431,13 @@
     <bpmn:sequenceFlow id="Flow_15byn50" sourceRef="Event_1splnd5" targetRef="Gateway_1acgpkh" />
     <bpmn:sequenceFlow id="Flow_0pqj448" sourceRef="Event_15xfnkd" targetRef="Gateway_1acgpkh" />
     <bpmn:sequenceFlow id="Flow_06qkucv" name="Manuscript denied" sourceRef="Gateway_11iwhnv" targetRef="Gateway_00u3f3e">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!manuscriptApproved}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_0hs2bjm" name="Store the manuscript" camunda:class="com.example.workflow.services.StoreWorkService">
+      <bpmn:incoming>Flow_0k499tm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tv2p4s</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1tv2p4s" sourceRef="Activity_0hs2bjm" targetRef="Activity_0qogdf1" />
   </bpmn:process>
   <bpmn:message id="Message_0gy1adh" name="NofityWriterOfDenial" />
   <bpmn:message id="Message_06ro9fx" name="NotifyWriterAboutTimeExpiration" />
@@ -604,17 +618,17 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_14ot6qs_di" bpmnElement="Flow_14ot6qs">
-        <di:waypoint x="1900" y="550" />
+        <di:waypoint x="1900" y="730" />
         <di:waypoint x="1900" y="800" />
         <di:waypoint x="1795" y="800" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1datctj_di" bpmnElement="Flow_1datctj">
-        <di:waypoint x="1900" y="297" />
-        <di:waypoint x="1900" y="470" />
+        <di:waypoint x="1900" y="500" />
+        <di:waypoint x="1900" y="650" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0k499tm_di" bpmnElement="Flow_0k499tm">
         <di:waypoint x="1690" y="257" />
-        <di:waypoint x="1850" y="257" />
+        <di:waypoint x="1780" y="257" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0motsjd_di" bpmnElement="Flow_0motsjd">
         <di:waypoint x="1640" y="408" />
@@ -700,6 +714,11 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1292" y="596" width="55" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tv2p4s_di" bpmnElement="Flow_1tv2p4s">
+        <di:waypoint x="1880" y="257" />
+        <di:waypoint x="1900" y="257" />
+        <di:waypoint x="1900" y="420" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_05mrakh_di" bpmnElement="Activity_1niwl2m">
         <dc:Bounds x="290" y="217" width="100" height="80" />
@@ -806,12 +825,6 @@
       <bpmndi:BPMNShape id="Event_0iu2jtf_di" bpmnElement="Event_0iu2jtf">
         <dc:Bounds x="1622" y="692" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_16orwkj_di" bpmnElement="Activity_0qogdf1">
-        <dc:Bounds x="1850" y="217" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1vhseiy_di" bpmnElement="Activity_02eoyxg">
-        <dc:Bounds x="1850" y="470" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0x5keim_di" bpmnElement="Gateway_0x5keim" isMarkerVisible="true">
         <dc:Bounds x="1745" y="775" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -889,6 +902,15 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0r6fni5_di" bpmnElement="Event_0r6fni5">
         <dc:Bounds x="502" y="582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vhseiy_di" bpmnElement="Activity_02eoyxg">
+        <dc:Bounds x="1850" y="650" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16orwkj_di" bpmnElement="Activity_0qogdf1">
+        <dc:Bounds x="1850" y="420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hs2bjm_di" bpmnElement="Activity_0hs2bjm">
+        <dc:Bounds x="1780" y="217" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_058zkqk_di" bpmnElement="Event_19hsyfq">
         <dc:Bounds x="322" y="742" width="36" height="36" />
