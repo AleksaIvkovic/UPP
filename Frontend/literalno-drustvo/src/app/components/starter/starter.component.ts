@@ -13,7 +13,7 @@ import { LogInComponent } from '../log-in/log-in.component';
 })
 export class StarterComponent implements OnInit {
   user: SysUser = null;
-  loggedIn: boolean = true;
+  loggedIn: boolean = false;
 
   constructor(
     private activeRoute: ActivatedRoute,

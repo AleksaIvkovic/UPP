@@ -53,6 +53,7 @@ INSERT INTO authority ([name]) values ('COMMITTEE');
 INSERT INTO authority ([name]) values ('LECTOR');
 INSERT INTO authority ([name]) values ('HEAD-COMMITTEE');
 INSERT INTO authority ([name]) values ('SYS-ADMIN');
+INSERT INTO authority ([name]) values ('HEAD-EDITOR');
 
 INSERT INTO user_authority ([user_id], authority_id) values (1, 4); --editor
 INSERT INTO user_authority ([user_id], authority_id) values (2, 4); --editor
