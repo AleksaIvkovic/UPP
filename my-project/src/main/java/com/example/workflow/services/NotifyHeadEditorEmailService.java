@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
-public class NotifyHeadCommitteeEmailService implements JavaDelegate {
+public class NotifyHeadEditorEmailService implements JavaDelegate {
 
     @Autowired
     IMailing mailingService;
@@ -28,8 +28,8 @@ public class NotifyHeadCommitteeEmailService implements JavaDelegate {
 
         String text = "Writer "  + systemUser.getFirstname() + " " + systemUser.getLastname() +" wants to submit new book. Please review theirs synopsis.";
 
-        ArrayList<User> headCommittee = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("headCommittee").list();
-        mailingService.sendMail("New book review",text, headCommittee.get(0).getEmail());
-        execution.setVariable("headCommittee", headCommittee.get(0).getId());
+        ArrayList<User> headEditor = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("headEditor").list();
+        mailingService.sendMail("New book review",text, headEditor.get(0).getEmail());
+        execution.setVariable("headEditor", headEditor.get(0).getId());
     }
 }

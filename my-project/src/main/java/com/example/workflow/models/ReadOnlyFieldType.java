@@ -5,20 +5,21 @@ import org.camunda.bpm.engine.impl.form.type.StringFormType;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.TypedValue;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class CustomStringFormType extends StringFormType {
+public class ReadOnlyFieldType extends StringFormType {
     private String typeName;
-    private  String value;
 
-    public CustomStringFormType(String  typeName) {
-        super();
+    public ReadOnlyFieldType() {
+    }
+
+    public ReadOnlyFieldType(String typeName) {
         this.typeName = typeName;
     }
 
-    @Override
     public String getName() {
-        return "string_".concat(typeName);
+        return "readOnly_".concat(typeName);
     }
 
     public TypedValue convertValue(TypedValue propertyValue) {
@@ -33,19 +34,14 @@ public class CustomStringFormType extends StringFormType {
     public String convertModelValueToFormValue(Object modelValue) {
         if (modelValue != null) {
             if (!(modelValue instanceof List)) {
-                throw new ProcessEngineException("Model value should be a List customstringformtype");
+               // throw new ProcessEngineException("Model value should be a List");
             }
         }
 
         return modelValue.toString();
     }
 
-    public String getValue() {
-        return value;
-    }
+    public void setValue(String title) {
 
-    public void setValue(String value) {
-        this.value = value;
     }
 }
-

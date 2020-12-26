@@ -89,6 +89,49 @@ public class BookPublishingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(path="/submit-manuscript/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> submitManuscript(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        runtimeService.setVariable(processInstanceId,"manuscriptToStore", map);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-plagiarism-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postPlagiarismReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        boolean isPlagiarism;
+
+        if (map.get("plagiarismDecision").toString().contains("Yes")) {
+            isPlagiarism = true;
+        } else {
+            isPlagiarism = false;
+        }
+
+        runtimeService.setVariable(processInstanceId, "isPlagiarism", isPlagiarism);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
     {
         HashMap<String, Object> map = new HashMap<String, Object>();

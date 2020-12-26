@@ -38,7 +38,7 @@ public class TasksController {
     private FormService formService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/get")
-    @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE', 'WRITER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE', 'WRITER', 'HEAD-EDITOR')")
     public ResponseEntity<?> GetTasks() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();
@@ -55,7 +55,7 @@ public class TasksController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getSingleTask/{taskId}")
-    @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE','WRITER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE','WRITER', 'HEAD-EDITOR')")
     public @ResponseBody FormFieldsDTO GetTaskForm(@PathVariable String taskId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();

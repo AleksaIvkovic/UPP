@@ -21,11 +21,13 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
         List<AbstractFormFieldType> formTypes = processEngineConfiguration.getCustomFormTypes();
         formTypes.add(new FileFormType("2_10"));
         formTypes.add(new FileFormType("1_10"));
+        formTypes.add(new FileFormType("1_1"));
         formTypes.add(new MultipleEnumFormType("genres"));
         formTypes.add(new CustomStringFormType("email"));
         formTypes.add(new CustomStringFormType("password"));
         formTypes.add(new CustomStringFormType("textArea"));
         formTypes.add(new CustomStringFormType("label"));
         formTypes.add(new NonEditableMultipleEnumFormType("works"));
+        formTypes.add(new ReadOnlyFieldType("string"));
     }
 }
