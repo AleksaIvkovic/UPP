@@ -13,6 +13,7 @@ import { LogInComponent } from '../log-in/log-in.component';
 })
 export class StarterComponent implements OnInit {
   user: SysUser = null;
+  loggedIn: boolean = true;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -67,6 +68,8 @@ export class StarterComponent implements OnInit {
             (res : SysUser) => {
               alert("Uspesno logovanje");
               sessionStorage.setItem("loggedInUser", JSON.stringify(res));
+              this.loggedIn = true;
+              this.router.navigate(['/main']);
             }, 
             error => {
               console.log(error);
@@ -91,5 +94,11 @@ export class StarterComponent implements OnInit {
           
         }
     })
+  }
+
+  LogOut(){
+    sessionStorage.clear();
+    this.loggedIn = false;
+    this.router.navigate(['/main']);
   }
 }

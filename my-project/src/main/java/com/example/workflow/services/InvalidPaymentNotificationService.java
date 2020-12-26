@@ -4,9 +4,11 @@ import com.example.workflow.intefaces.IMailing;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+@Service
 public class InvalidPaymentNotificationService implements JavaDelegate {
     @Autowired
     IMailing mailingService;

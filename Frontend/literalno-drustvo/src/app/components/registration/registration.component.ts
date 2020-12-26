@@ -343,4 +343,32 @@ export class RegistrationComponent implements OnInit {
         console.log('Error: ' + error);;
       });
   }
+
+  RemoveFile(name, fieldId){
+
+    this.filesString = (<String[]>this.registerForm.controls[fieldId].value);
+    for(let s of this.filesString){
+      console.log(s);
+    }
+    let id = this.filesString.findIndex(element => {
+      if(element == name){
+        return true;
+      }
+    });
+    this.filesString.splice(id,1);
+    this.registerForm.controls[fieldId].setValue(this.filesString);
+
+    let listOfFiles;
+    listOfFiles = (<File[]>this.files.get(fieldId));
+    id = listOfFiles.findIndex(element => {
+      if(element.name == name){
+        return true;
+      }
+    });
+    listOfFiles.splice(id,1);
+    this.files.set(id,listOfFiles);
+
+    console.log(this.registerForm);
+    console.log(this.files);
+  }
 }

@@ -24,9 +24,11 @@ public class CheckCommitteeVotesService implements JavaDelegate {
 
         if(counts[0] == (int)delegateExecution.getVariable("committeeSize"))
             delegateExecution.setVariable("committeeDecision", "Approved");
+        else if(counts[2] != 0)
+            delegateExecution.setVariable("committeeDecision", "NeedMoreWork");
         else if(counts[1] >= (int)delegateExecution.getVariable("committeeSize") / 2)
             delegateExecution.setVariable("committeeDecision", "Denied");
         else
-            delegateExecution.setVariable("committeeDecision", "NeedMoreWork");
+            delegateExecution.setVariable("committeeDecision", "VoteAgain");
     }
 }

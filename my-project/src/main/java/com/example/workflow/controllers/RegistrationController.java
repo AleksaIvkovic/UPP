@@ -180,19 +180,8 @@ public class RegistrationController {
         ArrayList<String> committeeVotes = new ArrayList<>();
         ArrayList<String> committeeComments = new ArrayList<>();
 
-        if (runtimeService.getVariable(processInstanceId, "committeeVotes") == null) {
-            runtimeService.setVariable(processInstanceId, "committeeVotes", new ArrayList<String>());
-            runtimeService.setVariable(processInstanceId, "committeeComments", new ArrayList<String>());
-            runtimeService.setVariable(processInstanceId, "Round", 0);
-        } else {
-            committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
-            committeeComments = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeComments");
-        }
-
         committeeVotes.add(map.get("vote").toString());
         committeeComments.add(map.get("comment").toString());
-        int round = Integer.parseInt(runtimeService.getVariable(processInstanceId,"Round").toString());
-        runtimeService.setVariable(processInstanceId,"Round", round + 1);
 
         runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
         runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);

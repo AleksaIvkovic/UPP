@@ -49,7 +49,8 @@
         </div>
         <div class="row" *ngIf="registerForm.controls[field.id].value != null">
           <div  *ngFor="let uploadedFile of filesString">
-            <mat-label>{{uploadedFile}}</mat-label>
+            <mat-label>{{uploadedFile}}</mat-label> &nbsp;&nbsp;&nbsp;
+            <button mat-mini-fab color="warn" (click)="RemoveFile(uploadedFile, field.id)">X</button>
             <br>
             <br>
           </div>

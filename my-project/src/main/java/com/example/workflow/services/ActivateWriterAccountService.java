@@ -5,8 +5,11 @@ import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ActivateWriterAccountService implements JavaDelegate {
+
     @Autowired
     private ISystemUser systemUserService;
 
