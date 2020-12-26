@@ -39,5 +39,17 @@ export class NavigationComponent {
       );
     }
 
+    fileAnAppeal(){
+      this.starterService.startWriterProcess("Plagiarism").subscribe(
+        (res) => {
+          sessionStorage.setItem("processId", res.processId );
+          this.router.navigate(['file-an-appeal'], {relativeTo : this.activeRoute});
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+
 }
 

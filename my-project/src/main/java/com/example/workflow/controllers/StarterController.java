@@ -11,6 +11,9 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -55,5 +58,26 @@ public class StarterController {
         HashMap<String,Object> hm = new HashMap<>();
         hm.put("processId", pi.getId());
         return hm;
+    }
+
+    @GetMapping(path = "/start-writer-process/{processName}", produces = "application/json")
+    @PreAuthorize("hasAnyAuthority('WRITER')")
+    public @ResponseBody
+    ResponseEntity<?> startWriterProcess(@PathVariable String processName) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        SysUser sysUser = (SysUser) auth.getPrincipal();
+
+        if(sysUser.isActive()){
+            ProcessInstance pi = runtimeService.startProcessInstanceByKey(processName);
+
+            runtimeService.setVariable(pi.getId(), "loggedInWriter", sysUser);
+            runtimeService.setVariable(pi.getId(), "loggedInEmail", sysUser.getEmail());
+
+            HashMap<String,Object> hm = new HashMap<>();
+            hm.put("processId", pi.getId());
+            return new ResponseEntity<>(hm, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

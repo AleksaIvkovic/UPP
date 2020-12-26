@@ -17,7 +17,7 @@ public class SaveEmailConfirmationService implements JavaDelegate {
         SysUser sysUser = systemUserService.findSystemUserByToken(token);
 
         if(sysUser != null){
-            sysUser.setConfirmed(true);
+            sysUser.setActive(true);
             systemUserService.storeSystemUser(sysUser);
         }
     }

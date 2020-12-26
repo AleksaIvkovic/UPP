@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,13 +80,19 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
 
     @Override
     public boolean checkIfWriterExists(String fullname) {
-        SysUser user = sysUserRepository.getSysUserByFirstnameAndLastname(fullname.split(" ")[0], fullname.split(" ")[1]);
+        ArrayList<SysUser> users = sysUserRepository.getSysUsersByFirstnameAndLastname(fullname.split(" ")[0], fullname.split(" ")[1]);
 
-        if (user == null) {
+        if (users == null) {
             return false;
         }
 
-        return ((List<Authority>)user.getAuthorities()).get(0).getName().equals("WRITER");
+        for(SysUser user: users){
+            if(((List<Authority>)user.getAuthorities()).get(0).getName().equals("WRITER")){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
