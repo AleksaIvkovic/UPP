@@ -118,6 +118,7 @@ public class StoreSystemUserService implements JavaDelegate {
         user.setFirstName(systemUserForm.get("firstname").toString());
         user.setLastName(systemUserForm.get("lastname").toString());
         user.setEmail(systemUserForm.get("email").toString());
+
         identityService.saveUser(user);
         identityService.createMembership(user.getId(), group);
 

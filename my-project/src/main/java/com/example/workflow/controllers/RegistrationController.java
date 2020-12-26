@@ -153,6 +153,24 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(path="/submit-payment-details/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> SubmitPaymentDetails(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        runtimeService.setVariable(processInstanceId,"creditCard", map);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(path="/submit-vote-new-writer/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postVoteNewWriterForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
@@ -162,19 +180,8 @@ public class RegistrationController {
         ArrayList<String> committeeVotes = new ArrayList<>();
         ArrayList<String> committeeComments = new ArrayList<>();
 
-        if (runtimeService.getVariable(processInstanceId, "committeeVotes") == null) {
-            runtimeService.setVariable(processInstanceId, "committeeVotes", new ArrayList<String>());
-            runtimeService.setVariable(processInstanceId, "committeeComments", new ArrayList<String>());
-            runtimeService.setVariable(processInstanceId, "Round", 0);
-        } else {
-            committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
-            committeeComments = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeComments");
-        }
-
         committeeVotes.add(map.get("vote").toString());
         committeeComments.add(map.get("comment").toString());
-        int round = Integer.parseInt(runtimeService.getVariable(processInstanceId,"Round").toString());
-        runtimeService.setVariable(processInstanceId,"Round", round + 1);
 
         runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
         runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);

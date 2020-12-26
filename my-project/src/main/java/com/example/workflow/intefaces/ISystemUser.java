@@ -5,6 +5,7 @@ import com.example.workflow.models.SysUser;
 public interface ISystemUser {
     SysUser getSystemUserById(Long id);
     SysUser getSystemUserByUsername(String username);
+    SysUser getSystemUserByEmail(String email);
     SysUser findSystemUserByToken(String token);
     void storeSystemUser(SysUser newSysUser);
     boolean checkUniqueUsername(String username);

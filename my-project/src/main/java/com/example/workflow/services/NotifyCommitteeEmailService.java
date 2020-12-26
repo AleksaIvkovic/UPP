@@ -27,23 +27,10 @@ public class NotifyCommitteeEmailService implements JavaDelegate {
 
         String text = "New writer " + systemUserForm.get("firstname").toString() + " " + systemUserForm.get("lastname").toString() + " submitted theirs works which you have to review.";
 
-        ArrayList<User> committee = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("committee").list();
-        ArrayList<User> headCommittee = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("headCommittee").list();
-
-        for (User user: headCommittee) {
-            committee.add(user);
-        }
-
-        ArrayList<String> committeeUsernames = new ArrayList<String>();
+        ArrayList<User> committee = (ArrayList<User>)execution.getVariable("committee");
 
         for (User user: committee) {
             mailingService.sendMail("New writer review",text,user.getEmail());
-            committeeUsernames.add(user.getId());
         }
-
-        execution.setVariable("committeeSize", committee.size());
-
-        execution.setVariable("committeeMembers", committeeUsernames);
-
     }
 }

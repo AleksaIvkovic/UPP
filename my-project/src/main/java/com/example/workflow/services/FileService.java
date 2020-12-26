@@ -7,12 +7,19 @@ import com.example.workflow.repositories.FileRepository;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.NotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,6 +44,33 @@ public class FileService implements IFile {
             os.write(multipartFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public ResponseEntity<?> download(String name) throws MalformedURLException {
+
+        Path filepath = Paths.get("src\\main\\resources\\PDFFiles", name);
+
+        File file = new File(filepath.toAbsolutePath().toString());
+
+        UrlResource urlResource = new UrlResource("file:///" + filepath.toAbsolutePath().toString());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+
+        return new ResponseEntity<>(urlResource, httpHeaders, HttpStatus.OK);
+    }
+
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = Paths.get("src\\main\\resources\\PDFFiles", fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new NotFoundException();
+            }
+        } catch (MalformedURLException ex) {
+            throw new NotFoundException();
         }
     }
 

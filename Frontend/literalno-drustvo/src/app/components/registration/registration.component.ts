@@ -35,6 +35,7 @@ export class RegistrationComponent implements OnInit {
   isCommitee = false;
   synopsisReview = false;
   explanation = false;
+  payMembership = false;
 
   constructor( 
     private userService: UserService,
@@ -112,6 +113,8 @@ export class RegistrationComponent implements OnInit {
             this.synopsisReview = true;
           } else if(params['taskName'] == 'Give an explanation') {
             this.explanation = true;
+          } else if (params['taskName'] == 'Pay membership') {
+            this.payMembership = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -251,6 +254,14 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
+    } else if (this.payMembership) {
+      this.userService.submitPaymentDetails(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Payment details submitted succesfully.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
     }
     else if(this.submitNewBook){
       this.userService.submitBookSynopsis(o, this.formFieldsDto.taskId).subscribe(
@@ -366,4 +377,46 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  download(name){
+    this.uploadService.download(name).subscribe(
+      (blob: any) => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(blob)
+        a.href = objectUrl
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      (error) => {
+        console.log('Error: ' + error);;
+      });
+  }
+
+  RemoveFile(name, fieldId){
+
+    this.filesString = (<String[]>this.registerForm.controls[fieldId].value);
+    for(let s of this.filesString){
+      console.log(s);
+    }
+    let id = this.filesString.findIndex(element => {
+      if(element == name){
+        return true;
+      }
+    });
+    this.filesString.splice(id,1);
+    this.registerForm.controls[fieldId].setValue(this.filesString);
+
+    let listOfFiles;
+    listOfFiles = (<File[]>this.files.get(fieldId));
+    id = listOfFiles.findIndex(element => {
+      if(element.name == name){
+        return true;
+      }
+    });
+    listOfFiles.splice(id,1);
+    this.files.set(id,listOfFiles);
+
+    console.log(this.registerForm);
+    console.log(this.files);
+  }
 }

@@ -40,6 +40,15 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
     }
 
     @Override
+    public SysUser getSystemUserByEmail(String email) {
+        SysUser sysUser = sysUserRepository.getSystemUserByEmail(email);
+        if (sysUser == null) {
+            throw new NotFoundException();
+        }
+        return sysUser;
+    }
+
+    @Override
     public SysUser findSystemUserByToken(String token) {
         SysUser sysUser = verificationTokenRepository.findByToken(token).getReader();
         return sysUser;
@@ -71,7 +80,7 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
         SysUser user = sysUserRepository.getSystemUserByUsername(s);
 
         if(user == null)
-            throw new UsernameNotFoundException("User with "+ s+" doesn't exists!");
+            throw new UsernameNotFoundException("User with " + s + " doesn't exists!");
 
         return user;
     }
