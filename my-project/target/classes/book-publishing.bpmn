@@ -86,10 +86,10 @@
       <bpmn:outgoing>Flow_160mp1h</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_145shpd" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.NotifyWriterOfBookDenialNotification" />
     </bpmn:intermediateThrowEvent>
-    <bpmn:intermediateThrowEvent id="Event_0t3zm35">
+    <bpmn:intermediateThrowEvent id="Event_0t3zm35" name="Notify writer to upload manuscript">
       <bpmn:incoming>Flow_0ivnpld</bpmn:incoming>
       <bpmn:outgoing>Flow_0bx3h51</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.NotifyWriterToUploadManuscript" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0ivnpld" sourceRef="Gateway_1wy1a8l" targetRef="Event_0t3zm35">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${deniedSynopsis == false}</bpmn:conditionExpression>
@@ -396,6 +396,7 @@
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_0gy1adh" name="NofityWriterOfDenial" />
+  <bpmn:message id="Message_06ro9fx" name="NotifyWriterToUploadManuscript" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="bookPublishing">
       <bpmndi:BPMNEdge id="Flow_0352cbh_di" bpmnElement="Flow_0352cbh">
@@ -828,6 +829,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0y08u8e_di" bpmnElement="Event_0t3zm35">
         <dc:Bounds x="1202" y="239" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1188" y="282" width="71" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0a8cham_di" bpmnElement="Event_165gitk">
         <dc:Bounds x="1282" y="1022" width="36" height="36" />
