@@ -39,6 +39,7 @@ export class RegistrationComponent implements OnInit {
   payMembership = false;
   fileAnAppeal = false;
   chooseEditors = false;
+  editorPlagiarismBookReview = false;
 
   constructor( 
     private userService: UserService,
@@ -121,6 +122,8 @@ export class RegistrationComponent implements OnInit {
             this.payMembership = true;
           } else if(params['taskName'] == 'Choose editors'){
             this.chooseEditors = true;
+          } else if(params['taskName'] == 'Review books'){
+            this.editorPlagiarismBookReview = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(

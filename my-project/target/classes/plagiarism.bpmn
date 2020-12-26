@@ -42,7 +42,7 @@
     <bpmn:intermediateThrowEvent id="Event_0hhxfnl" name="Notify editors of new plagiarism report">
       <bpmn:incoming>Flow_036pwdk</bpmn:incoming>
       <bpmn:outgoing>Flow_0zlvwbv</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_09c9s6x" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_09c9s6x" camunda:class="com.example.workflow.services.EditorsNewPlagiarismReportNotificationService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_13zej4q" sourceRef="Activity_0mnltni" targetRef="Gateway_0olz8jc" />
     <bpmn:sequenceFlow id="Flow_0zlvwbv" sourceRef="Event_0hhxfnl" targetRef="Activity_1m3qd8a" />
@@ -52,11 +52,28 @@
           <camunda:formField id="editors" label="Editors" type="multipleEnum_editors" />
         </camunda:formData>
         <camunda:taskListener class="com.example.workflow.handlers.GetEditorsHandler" event="create" />
+        <camunda:inputOutput>
+          <camunda:outputParameter name="editors">
+            <camunda:map />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_05ae2hm</bpmn:incoming>
       <bpmn:outgoing>Flow_13zej4q</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:userTask id="Activity_0wuvhgn" name="Review books" camunda:assignee="${editor}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="original" label="Original" type="notEditableEnum_works" />
+          <camunda:formField id="plagiarism" label="Possible plagiarism" type="notEditableEnum_works" />
+          <camunda:formField id="note" label="Note" type="string_textArea">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_17ml558</bpmn:incoming>
       <bpmn:outgoing>Flow_1fjjy07</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="${editorsUsernames}" camunda:elementVariable="editor" />
@@ -124,7 +141,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${IsPlag == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_17ml558" sourceRef="Activity_1m3qd8a" targetRef="Activity_0wuvhgn" />
-    <bpmn:serviceTask id="Activity_1m3qd8a" name="Initialize votes and notes" camunda:expression="${true}">
+    <bpmn:serviceTask id="Activity_1m3qd8a" name="Initialize votes and notes" camunda:class="com.example.workflow.services.InitializeVotesAndNotesService">
       <bpmn:incoming>Flow_0zlvwbv</bpmn:incoming>
       <bpmn:outgoing>Flow_17ml558</bpmn:outgoing>
     </bpmn:serviceTask>
