@@ -46,6 +46,13 @@ public class GetDownloadableFilesHandler implements TaskListener {
                     nonEditableMultipleEnumFormType.getValues().put(book.getTitle(), book.getFileName());
                 }
             }
+            if (f.getId().equals("work")) {
+                NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
+
+                for (SubmittedFile file : files) {
+                    nonEditableMultipleEnumFormType.getValues().put(Long.toString(file.getId()), file.getName());
+                }
+            }
         }
     }
 }

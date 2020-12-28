@@ -14,7 +14,7 @@ public class MailingService implements IMailing {
 
     @Override
     public void sendMail(String subject, String text, String receiverEmail) {
-        text += "/n/n/n/tKind regards,/n/tFoxy team";
+        text += "\n\n\t Kind regards,\n\tFoxy team";
 
         Email email = new SimpleEmail();
         email.setCharset("utf-8");

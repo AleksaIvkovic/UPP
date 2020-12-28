@@ -37,6 +37,9 @@ export class RegistrationComponent implements OnInit {
   synopsisReview = false;
   explanation = false;
   payMembership = false;
+  manuscriptUpload = false;
+  plagiarismReview = false;
+  downloadManuscript = false;
   fileAnAppeal = false;
   chooseEditors = false;
   editorPlagiarismBookReview = false;
@@ -111,8 +114,7 @@ export class RegistrationComponent implements OnInit {
           else if(params['taskName'] == 'Review writer for membership'){
             this.isCommitee = true;
             this.isTask = true;
-          }
-          else if(params['taskName'] == 'Deliver more work'){
+          } else if(params['taskName'] == 'Deliver more work'){
             this.submitWork = true;
           } else if(params['taskName'] == 'Synopsis review') {
             this.synopsisReview = true;
@@ -120,6 +122,12 @@ export class RegistrationComponent implements OnInit {
             this.explanation = true;
           } else if (params['taskName'] == 'Pay membership') {
             this.payMembership = true;
+          } else if (params['taskName'] == 'Manuscript upload') {
+            this.manuscriptUpload = true;
+          }else if (params['taskName'] == 'Plagiarism review') {
+            this.plagiarismReview = true;
+          }else if (params['taskName'] == 'Download manuscript') {
+            this.downloadManuscript = true;
           } else if(params['taskName'] == 'Choose editors'){
             this.chooseEditors = true;
           } else if(params['taskName'] == 'Review books'){
@@ -210,6 +218,26 @@ export class RegistrationComponent implements OnInit {
           else if(field.type.name == "string_labels"){
             this.enumValues.set(field.id, Object.keys(field.defaultValue));
           }
+          else if(field.type.name.includes("label")){
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempControl = new FormControl([]);
+            let temp = [];
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let enumId of value){
+                  temp.push(field.type.values[enumId]);
+                }
+              }
+            }
+
+            tempControl.setValue(temp);
+
+            this.registerForm.addControl(
+              field.id, tempControl
+            );
+          }
           else{
             let temp = new FormControl(field.defaultValue);
             this.formControls.push(temp);
@@ -278,7 +306,39 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
-    } else if (this.payMembership) {
+    } else if(this.manuscriptUpload) {
+      for(let filesList of this.files.values()){
+        let tempFiles = [];
+
+        for(let file of filesList){
+          const fd = new FormData();
+          fd.append('file',file);
+          tempFiles.push(fd);
+        }
+  
+        let requests = [];
+        
+        for(let fd of tempFiles){
+          requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
+        }
+  
+        forkJoin(requests).subscribe(
+          (res:any) => {
+            console.log("Successful upload.")
+            this.userService.submitManuscript(o, this.formFieldsDto.taskId).subscribe(
+              (res: any) =>{
+                alert("Successful work submission.")
+              },
+            (err) => console.log(err)
+            );
+          },
+          (err) => {
+            console.log(err);
+          }
+        )
+      }
+    }
+     else if (this.payMembership) {
       this.userService.submitPaymentDetails(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Payment details submitted succesfully.');
@@ -314,11 +374,37 @@ export class RegistrationComponent implements OnInit {
         console.log(error);
       });
     }
+    else if(this.plagiarismReview){
+      this.userService.submitPlagiarismReview(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Plagiarism review successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
+    }
     else if (this.explanation) {
       this.userService.submitExplanation(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Explanation successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
+    }
+    else if(this.downloadManuscript){
+      this.userService.submitManuscriptReview(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Manuscript review successfully submited.');
           }
           else{
            

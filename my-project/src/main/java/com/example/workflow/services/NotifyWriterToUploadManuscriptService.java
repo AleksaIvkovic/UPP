@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotifyWriterToUploadManuscript implements JavaDelegate {
+public class NotifyWriterToUploadManuscriptService implements JavaDelegate {
 
     @Autowired
     private MailingService mailingService;
