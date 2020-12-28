@@ -4,6 +4,20 @@
 <br>
 <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" [formGroup]="registerForm">
   <div *ngFor="let field of formFields; let i=index" >
+      <div *ngIf="field.type.name == 'string_labels'">
+        <ul style="list-style-type:none;">
+          <div *ngFor="let element of enumValues| keyvalue">
+            <div *ngIf="element.key == field.id">
+              <li *ngFor="let enum of element.value">
+                <div (click)="download(enum)">
+                  {{enum}}
+                </div>
+              </li>
+            </div>
+          </div>
+        </ul>
+      </div>
+
       <mat-form-field appearance="fill" *ngIf="field.type.name == 'string'">
         <mat-label>{{field.label}}</mat-label>
         <input matInput formControlName={{field.id}} required type="text" name={{field.id}} ngModel>
@@ -38,7 +52,7 @@
         </mat-error>
       </mat-form-field>
 
-      <div *ngIf="field.type.name.includes('label')">
+      <div *ngIf="field.type.name == 'label'">
         <mat-label>{{field.label}}</mat-label>
         <mat-label>{{field.value}}</mat-label>
       </div>

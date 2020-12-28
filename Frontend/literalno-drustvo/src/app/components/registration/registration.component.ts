@@ -207,6 +207,9 @@ export class RegistrationComponent implements OnInit {
               field.id, tempControl
             );
           }
+          else if(field.type.name == "string_labels"){
+            this.enumValues.set(field.id, Object.keys(field.defaultValue));
+          }
           else{
             let temp = new FormControl(field.defaultValue);
             this.formControls.push(temp);
@@ -345,6 +348,16 @@ export class RegistrationComponent implements OnInit {
     }
     else if(this.chooseEditors){
       this.plagiarismService.submitChosenEditorsForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if(this.editorPlagiarismBookReview){
+      this.plagiarismService.submitEditorReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
         },

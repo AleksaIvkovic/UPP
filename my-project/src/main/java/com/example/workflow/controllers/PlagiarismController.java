@@ -56,7 +56,7 @@ public class PlagiarismController {
     }
 
     @PostMapping(path="/submit-chosen-editors/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> postEditorChoiceForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+    public ResponseEntity<?> postHeadEditorChoiceForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
@@ -77,6 +77,25 @@ public class PlagiarismController {
 
         runtimeService.setVariable(processInstanceId,"editorsUsers",editors);
         runtimeService.setVariable(processInstanceId,"editorsUsernames",editorUsernames);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-editor-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postEditorReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        ArrayList<String> comments = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"editorsNotes");
+        comments.add(map.get("note").toString());
 
         try {
             formService.submitTaskForm(taskId, map);

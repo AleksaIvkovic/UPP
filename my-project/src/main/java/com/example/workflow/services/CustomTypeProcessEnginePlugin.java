@@ -27,6 +27,7 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
         formTypes.add(new CustomStringFormType("password"));
         formTypes.add(new CustomStringFormType("textArea"));
         formTypes.add(new CustomStringFormType("label"));
+        formTypes.add(new CustomStringFormType("labels"));
         formTypes.add(new NonEditableMultipleEnumFormType("works"));
     }
 }
