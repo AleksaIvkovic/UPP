@@ -13,6 +13,8 @@ import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +41,9 @@ public class PlagiarismController {
     @Autowired
     SystemUserService systemUserService;
 
+    @Autowired
+    IdentityService identityService;
+
     @PostMapping(path="/submit-appeal/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postAppealForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
@@ -61,22 +66,33 @@ public class PlagiarismController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        List<SysUser> editors = new ArrayList<>();
+        List<User> chosenEditors = new ArrayList<>();
+        List<User> remainingEditors = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"remainingEditorsUsers");
         HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors"));
+
         for (Map.Entry mapElement: editorsHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {
-                editors.add(systemUserService.getSystemUserByUsername(mapElement.getKey().toString()));
+                User temp = identityService.createUserQuery().userId(mapElement.getKey().toString()).singleResult();
+                chosenEditors.add(temp);
+                remainingEditors.remove(temp);
             }
         }
 
         ArrayList<String> editorUsernames = new ArrayList<>();
+        ArrayList<String> remainingEditorUsernames = new ArrayList<>();
 
-        for(SysUser editor: editors){
-            editorUsernames.add(editor.getUsername());
+        for(User editor: chosenEditors){
+            editorUsernames.add(editor.getId());
         }
 
-        runtimeService.setVariable(processInstanceId,"editorsUsers",editors);
-        runtimeService.setVariable(processInstanceId,"editorsUsernames",editorUsernames);
+        for(User editor: remainingEditors){
+            remainingEditorUsernames.add(editor.getId());
+        }
+
+        runtimeService.setVariable(processInstanceId,"editorsUsers", chosenEditors);
+        runtimeService.setVariable(processInstanceId,"remainingEditorsUsers", remainingEditors);
+        runtimeService.setVariable(processInstanceId,"editorsUsernames", editorUsernames);
+        runtimeService.setVariable(processInstanceId,"remainingEditorsUsernames", remainingEditorUsernames);
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -90,14 +106,16 @@ public class PlagiarismController {
 
     @PostMapping(path="/submit-editor-review/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postEditorReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        SysUser sysUser = (SysUser) auth.getPrincipal();
+
         HashMap<String, Object> map = this.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
         ArrayList<String> notes = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"editorsNotes");
         notes.add(map.get("note").toString());
-        runtimeService.setVariable(processInstanceId,"editorsNotes",notes);
-
+        runtimeService.setVariable(processInstanceId,"editorsNotes", notes);
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -105,6 +123,10 @@ public class PlagiarismController {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
+
+        ArrayList<User> haveVoted = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"haveVoted");
+        haveVoted.add(identityService.createUserQuery().userId(sysUser.getUsername()).singleResult());
+        runtimeService.setVariable(processInstanceId,"haveVoted", haveVoted);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

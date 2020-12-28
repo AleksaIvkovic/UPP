@@ -1,7 +1,3 @@
-<br>
-<br>
-<br>
-<br>
 <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" [formGroup]="registerForm">
   <div *ngFor="let field of formFields; let i=index" >
       <div *ngIf="field.type.name == 'string_labels'">

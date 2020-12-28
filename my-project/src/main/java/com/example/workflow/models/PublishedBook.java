@@ -45,6 +45,9 @@ public class PublishedBook {
     @Column(nullable = false)
     private boolean isPublished;
 
+    @Column
+    private boolean isPlagiarism;
+
     //podaci o urednicima i lektorisanju
 
 
@@ -143,4 +146,8 @@ public class PublishedBook {
     public boolean isPublished() { return isPublished; }
 
     public void setPublished(boolean published) { isPublished = published; }
+
+    public boolean isPlagiarism() { return isPlagiarism; }
+
+    public void setPlagiarism(boolean plagiarism) { isPlagiarism = plagiarism; }
 }
