@@ -21,19 +21,24 @@ public class GetBookSynopsisHandler implements TaskListener {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
         PublishedBook publishedBook = bookService.GetBookByTitle(delegateTask.getExecution().getVariable("bookTitle").toString());
 
-        for (FormField f : taskFormFields.getFormFields()) {
+        delegateTask.getExecution().setVariable("titleReadOnly",publishedBook.getTitle());
+        delegateTask.getExecution().setVariable("genreReadOnly",publishedBook.getGenre().getName());
+        delegateTask.getExecution().setVariable("synopsisReadOnly",publishedBook.getTitle());
+
+        /*for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("titleReadOnly")) {
-                CustomStringFormType customStringFormType = (CustomStringFormType) f.getType();
-                customStringFormType.setValue(publishedBook.getTitle());
+                CustomStringFormType customStringFormType1 = new CustomStringFormType();
+                customStringFormType1 = (CustomStringFormType) f.getType();
+                customStringFormType1.setValue(publishedBook.getTitle());
             }
             if (f.getId().equals("genreReadOnly")) {
-                CustomStringFormType customStringFormType = (CustomStringFormType) f.getType();
-                customStringFormType.setValue(publishedBook.getGenre().getName());
+                CustomStringFormType customStringFormType2 = (CustomStringFormType) f.getType();
+                customStringFormType2.setValue(publishedBook.getGenre().getName());
             }
             if (f.getId().equals("synopsisReadOnly")) {
-                CustomStringFormType customStringFormType = (CustomStringFormType) f.getType();
-                customStringFormType.setValue(publishedBook.getSynopsis());
+                CustomStringFormType customStringFormType3 = (CustomStringFormType) f.getType();
+                customStringFormType3.setValue(publishedBook.getSynopsis());
             }
-        }
+        }*/
     }
 }

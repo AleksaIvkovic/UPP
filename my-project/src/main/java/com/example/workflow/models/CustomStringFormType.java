@@ -11,6 +11,10 @@ public class CustomStringFormType extends StringFormType {
     private String typeName;
     private  String value;
 
+    public CustomStringFormType() {
+        super();
+    }
+
     public CustomStringFormType(String  typeName) {
         super();
         this.typeName = typeName;

@@ -1,5 +1,6 @@
 package com.example.workflow.handlers;
 
+import com.example.workflow.models.CustomStringFormType;
 import com.example.workflow.models.NonEditableMultipleEnumFormType;
 import com.example.workflow.models.ReadOnlyFieldType;
 import com.example.workflow.models.SubmittedFile;
@@ -17,14 +18,13 @@ public class GetPossiblePlagiarismsHandler implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        //List<SubmittedFile> files = fileRepository.getAllByProcesId(delegateTask.getProcessInstanceId());
         ArrayList<String> possiblePlagiarisms = (ArrayList<String>) delegateTask.getExecution().getVariable("possiblePlagiarisms");
 
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("possiblePlagiarisms")) {
-                ReadOnlyFieldType readOnlyFieldType = (ReadOnlyFieldType) f.getType();
+                CustomStringFormType customStringFormType = (CustomStringFormType) f.getType();
 
-                readOnlyFieldType.convertModelValueToFormValue(possiblePlagiarisms);
+                customStringFormType.convertModelValueToFormValue(possiblePlagiarisms);
             }
         }
     }

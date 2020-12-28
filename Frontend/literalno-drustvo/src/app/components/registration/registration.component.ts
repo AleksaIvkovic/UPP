@@ -194,6 +194,26 @@ export class RegistrationComponent implements OnInit {
               field.id, tempControl
             );
           }
+          else if(field.type.name.includes("label")){
+            this.enumValues.set(field.id, Object.keys(field.type.values));
+
+            let tempControl = new FormControl([]);
+            let temp = [];
+
+            for (let [key, value] of this.enumValues) {
+              if(key == field.id){
+                for(let enumId of value){
+                  temp.push(field.type.values[enumId]);
+                }
+              }
+            }
+
+            tempControl.setValue(temp);
+
+            this.registerForm.addControl(
+              field.id, tempControl
+            );
+          }
           else{
             let temp = new FormControl(field.defaultValue);
             this.formControls.push(temp);

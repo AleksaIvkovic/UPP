@@ -40,7 +40,7 @@
 
       <div *ngIf="field.type.name.includes('label')">
         <mat-label>{{field.label}}</mat-label>
-        <mat-label>{{field.value}}</mat-label>
+        <mat-label>{{field.type.value}}</mat-label>
       </div>
       
       <div class="col-md-6" *ngIf="field.type.name.includes('files_')" >
