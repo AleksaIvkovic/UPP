@@ -232,7 +232,7 @@
     </schema>
     <schema id="42" parent="6" name="dbo">
       <ObjectId>1</ObjectId>
-      <IntrospectionTimestamp>2020-12-24.21:00:27.763</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2020-12-26.20:13:40.883</IntrospectionTimestamp>
       <Current>1</Current>
     </schema>
     <schema id="43" parent="6" name="guest">
@@ -563,12 +563,12 @@
     <table id="107" parent="42" name="genre">
       <ObjectId>613577224</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.677</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:07.210</ModifiedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.447</ModifiedTimestamp>
     </table>
     <table id="108" parent="42" name="published_book">
-      <ObjectId>1106102981</ObjectId>
-      <CreatedTimestamp>2020-12-24.20:50:06.273</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:07.323</ModifiedTimestamp>
+      <ObjectId>1314103722</ObjectId>
+      <CreatedTimestamp>2020-12-26.20:13:09.093</CreatedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.450</ModifiedTimestamp>
     </table>
     <table id="109" parent="42" name="submitted_file">
       <ObjectId>1074102867</ObjectId>
@@ -578,7 +578,7 @@
     <table id="110" parent="42" name="sys_user">
       <ObjectId>645577338</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.677</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:07.440</ModifiedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.450</ModifiedTimestamp>
     </table>
     <table id="111" parent="42" name="sys_user_beta_genres">
       <ObjectId>677577452</ObjectId>
@@ -5595,116 +5595,119 @@ NAME_</ColNames>
     <column id="1145" parent="108" name="isbn">
       <Position>2</Position>
       <DataType>varchar(255 char)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="1146" parent="108" name="key_words">
+    <column id="1146" parent="108" name="file_name">
       <Position>3</Position>
       <DataType>varchar(255 char)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="1147" parent="108" name="number_of_pages">
+    <column id="1147" parent="108" name="is_published">
       <Position>4</Position>
-      <DataType>int|0s</DataType>
+      <DataType>bit|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1148" parent="108" name="place_of_publication">
+    <column id="1148" parent="108" name="key_words">
       <Position>5</Position>
       <DataType>varchar(255 char)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="1149" parent="108" name="publisher">
+    <column id="1149" parent="108" name="number_of_pages">
       <Position>6</Position>
-      <DataType>varchar(255 char)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>int|0s</DataType>
     </column>
-    <column id="1150" parent="108" name="synopsis">
+    <column id="1150" parent="108" name="place_of_publication">
       <Position>7</Position>
       <DataType>varchar(255 char)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="1151" parent="108" name="title">
+    <column id="1151" parent="108" name="publisher">
       <Position>8</Position>
+      <DataType>varchar(255 char)|0s</DataType>
+    </column>
+    <column id="1152" parent="108" name="synopsis">
+      <Position>9</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1152" parent="108" name="year_of_publication">
-      <Position>9</Position>
-      <DataType>int|0s</DataType>
+    <column id="1153" parent="108" name="title">
+      <Position>10</Position>
+      <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1153" parent="108" name="genre_id">
-      <Position>10</Position>
-      <DataType>bigint|0s</DataType>
-    </column>
-    <column id="1154" parent="108" name="user_id">
+    <column id="1154" parent="108" name="year_of_publication">
       <Position>11</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="1155" parent="108" name="genre_id">
+      <Position>12</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <index id="1155" parent="108" name="PK__publishe__3213E83F5F8D449A">
+    <column id="1156" parent="108" name="writer_id">
+      <Position>13</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <index id="1157" parent="108" name="PK__publishe__3213E83F02D3741A">
       <Position>1</Position>
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="1156" parent="108" name="PK__publishe__3213E83F5F8D449A">
-      <ObjectId>1122103038</ObjectId>
+    <key id="1158" parent="108" name="PK__publishe__3213E83F02D3741A">
+      <ObjectId>1330103779</ObjectId>
       <NameSurrogate>1</NameSurrogate>
-      <CreatedTimestamp>2020-12-24.20:50:06.813</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:06.813</ModifiedTimestamp>
+      <CreatedTimestamp>2020-12-26.20:13:09.357</CreatedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.357</ModifiedTimestamp>
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>PK__publishe__3213E83F5F8D449A</UnderlyingIndexName>
+      <UnderlyingIndexName>PK__publishe__3213E83F02D3741A</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="1157" parent="108" name="FK3nmws16decefu1i8v6mc30mdq">
-      <ObjectId>1138103095</ObjectId>
-      <CreatedTimestamp>2020-12-24.20:50:06.987</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:06.987</ModifiedTimestamp>
+    <foreign-key id="1159" parent="108" name="FK3nmws16decefu1i8v6mc30mdq">
+      <ObjectId>1346103836</ObjectId>
+      <CreatedTimestamp>2020-12-26.20:13:09.433</CreatedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.433</ModifiedTimestamp>
       <ColNames>genre_id</ColNames>
       <RefTableId>613577224</RefTableId>
       <RefTableName>genre</RefTableName>
       <RefKeyName>PK__genre__3213E83F7F1EF9A0</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="1158" parent="108" name="FKg0a7miyllfmyyio8cx5fkqy5n">
-      <ObjectId>1154103152</ObjectId>
-      <CreatedTimestamp>2020-12-24.20:50:07.340</CreatedTimestamp>
-      <ModifiedTimestamp>2020-12-24.20:50:07.340</ModifiedTimestamp>
-      <ColNames>user_id</ColNames>
+    <foreign-key id="1160" parent="108" name="FK26cm4xg07n6rj8pa7vom42ile">
+      <ObjectId>1362103893</ObjectId>
+      <CreatedTimestamp>2020-12-26.20:13:09.450</CreatedTimestamp>
+      <ModifiedTimestamp>2020-12-26.20:13:09.450</ModifiedTimestamp>
+      <ColNames>writer_id</ColNames>
       <RefTableId>645577338</RefTableId>
       <RefTableName>sys_user</RefTableName>
       <RefKeyName>PK__sys_user__3213E83FAA4813BB</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="1159" parent="109" name="id">
+    <column id="1161" parent="109" name="id">
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1160" parent="109" name="name">
+    <column id="1162" parent="109" name="name">
       <Position>2</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1161" parent="109" name="proces_id">
+    <column id="1163" parent="109" name="proces_id">
       <Position>3</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1162" parent="109" name="writer_username">
+    <column id="1164" parent="109" name="writer_username">
       <Position>4</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="1163" parent="109" name="PK__submitte__3213E83F0BF1D6BD">
+    <index id="1165" parent="109" name="PK__submitte__3213E83F0BF1D6BD">
       <Position>1</Position>
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="1164" parent="109" name="PK__submitte__3213E83F0BF1D6BD">
+    <key id="1166" parent="109" name="PK__submitte__3213E83F0BF1D6BD">
       <ObjectId>1090102924</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2020-12-22.18:10:18.037</CreatedTimestamp>
@@ -5713,72 +5716,72 @@ NAME_</ColNames>
       <UnderlyingIndexName>PK__submitte__3213E83F0BF1D6BD</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="1165" parent="110" name="id">
+    <column id="1167" parent="110" name="id">
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1166" parent="110" name="city">
+    <column id="1168" parent="110" name="city">
       <Position>2</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1167" parent="110" name="country">
+    <column id="1169" parent="110" name="country">
       <Position>3</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1168" parent="110" name="email">
+    <column id="1170" parent="110" name="email">
       <Position>4</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1169" parent="110" name="firstname">
+    <column id="1171" parent="110" name="firstname">
       <Position>5</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1170" parent="110" name="is_active">
+    <column id="1172" parent="110" name="is_active">
       <Position>6</Position>
       <DataType>bit|0s</DataType>
     </column>
-    <column id="1171" parent="110" name="is_beta">
+    <column id="1173" parent="110" name="is_beta">
       <Position>7</Position>
       <DataType>bit|0s</DataType>
     </column>
-    <column id="1172" parent="110" name="is_confirmed">
+    <column id="1174" parent="110" name="is_confirmed">
       <Position>8</Position>
       <DataType>bit|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1173" parent="110" name="last_password_reset_date">
+    <column id="1175" parent="110" name="last_password_reset_date">
       <Position>9</Position>
       <DataType>datetime2|0s</DataType>
     </column>
-    <column id="1174" parent="110" name="lastname">
+    <column id="1176" parent="110" name="lastname">
       <Position>10</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1175" parent="110" name="password">
+    <column id="1177" parent="110" name="password">
       <Position>11</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1176" parent="110" name="username">
+    <column id="1178" parent="110" name="username">
       <Position>12</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="1177" parent="110" name="PK__sys_user__3213E83FAA4813BB">
+    <index id="1179" parent="110" name="PK__sys_user__3213E83FAA4813BB">
       <Position>1</Position>
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="1178" parent="110" name="PK__sys_user__3213E83FAA4813BB">
+    <key id="1180" parent="110" name="PK__sys_user__3213E83FAA4813BB">
       <ObjectId>661577395</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2020-12-21.21:36:28.680</CreatedTimestamp>
@@ -5787,17 +5790,17 @@ NAME_</ColNames>
       <UnderlyingIndexName>PK__sys_user__3213E83FAA4813BB</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="1179" parent="111" name="sys_user_id">
+    <column id="1181" parent="111" name="sys_user_id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1180" parent="111" name="beta_genres_id">
+    <column id="1182" parent="111" name="beta_genres_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <foreign-key id="1181" parent="111" name="FKqnj92e4fucrdjpwp846ghim7d">
+    <foreign-key id="1183" parent="111" name="FKqnj92e4fucrdjpwp846ghim7d">
       <ObjectId>789577851</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.697</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.697</ModifiedTimestamp>
@@ -5807,7 +5810,7 @@ NAME_</ColNames>
       <RefKeyName>PK__sys_user__3213E83FAA4813BB</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="1182" parent="111" name="FKs8jm3fum3lo4vctqaibsoblts">
+    <foreign-key id="1184" parent="111" name="FKs8jm3fum3lo4vctqaibsoblts">
       <ObjectId>773577794</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.690</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.690</ModifiedTimestamp>
@@ -5817,17 +5820,17 @@ NAME_</ColNames>
       <RefKeyName>PK__genre__3213E83F7F1EF9A0</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="1183" parent="112" name="sys_user_id">
+    <column id="1185" parent="112" name="sys_user_id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1184" parent="112" name="genres_id">
+    <column id="1186" parent="112" name="genres_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <foreign-key id="1185" parent="112" name="FK6cnwotibbbjxm6a916034dx9l">
+    <foreign-key id="1187" parent="112" name="FK6cnwotibbbjxm6a916034dx9l">
       <ObjectId>821577965</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.700</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.700</ModifiedTimestamp>
@@ -5837,7 +5840,7 @@ NAME_</ColNames>
       <RefKeyName>PK__sys_user__3213E83FAA4813BB</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="1186" parent="112" name="FKba9us4xxp0hd4qudvx6xosw1o">
+    <foreign-key id="1188" parent="112" name="FKba9us4xxp0hd4qudvx6xosw1o">
       <ObjectId>805577908</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.697</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.697</ModifiedTimestamp>
@@ -5847,17 +5850,17 @@ NAME_</ColNames>
       <RefKeyName>PK__genre__3213E83F7F1EF9A0</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="1187" parent="113" name="user_id">
+    <column id="1189" parent="113" name="user_id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1188" parent="113" name="authority_id">
+    <column id="1190" parent="113" name="authority_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <foreign-key id="1189" parent="113" name="FKaf4shg0k2kkls8gp5g234t35j">
+    <foreign-key id="1191" parent="113" name="FKaf4shg0k2kkls8gp5g234t35j">
       <ObjectId>853578079</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.703</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.703</ModifiedTimestamp>
@@ -5867,7 +5870,7 @@ NAME_</ColNames>
       <RefKeyName>PK__sys_user__3213E83FAA4813BB</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="1190" parent="113" name="FKgvxjs381k6f48d5d2yi11uh89">
+    <foreign-key id="1192" parent="113" name="FKgvxjs381k6f48d5d2yi11uh89">
       <ObjectId>837578022</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.700</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.700</ModifiedTimestamp>
@@ -5877,32 +5880,32 @@ NAME_</ColNames>
       <RefKeyName>PK__authorit__3213E83FAFCADE74</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="1191" parent="114" name="id">
+    <column id="1193" parent="114" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="1192" parent="114" name="expiry_date">
+    <column id="1194" parent="114" name="expiry_date">
       <Position>2</Position>
       <DataType>datetime2|0s</DataType>
     </column>
-    <column id="1193" parent="114" name="token">
+    <column id="1195" parent="114" name="token">
       <Position>3</Position>
       <DataType>varchar(255 char)|0s</DataType>
     </column>
-    <column id="1194" parent="114" name="reader_id">
+    <column id="1196" parent="114" name="reader_id">
       <Position>4</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="1195" parent="114" name="PK__verifica__3213E83F30DA99F5">
+    <index id="1197" parent="114" name="PK__verifica__3213E83F30DA99F5">
       <Position>1</Position>
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="1196" parent="114" name="PK__verifica__3213E83F30DA99F5">
+    <key id="1198" parent="114" name="PK__verifica__3213E83F30DA99F5">
       <ObjectId>741577680</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2020-12-21.21:36:28.683</CreatedTimestamp>
@@ -5911,7 +5914,7 @@ NAME_</ColNames>
       <UnderlyingIndexName>PK__verifica__3213E83F30DA99F5</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="1197" parent="114" name="FKeybnl2xwyyatnea4qqsjceoco">
+    <foreign-key id="1199" parent="114" name="FKeybnl2xwyyatnea4qqsjceoco">
       <ObjectId>869578136</ObjectId>
       <CreatedTimestamp>2020-12-21.21:36:28.703</CreatedTimestamp>
       <ModifiedTimestamp>2020-12-21.21:36:28.703</ModifiedTimestamp>

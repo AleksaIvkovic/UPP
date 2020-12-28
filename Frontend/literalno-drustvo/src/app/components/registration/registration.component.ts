@@ -6,6 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
+import { PlagiarismService} from '../../services/plagiarism.service'
 
 @Component({
   selector: 'app-registration',
@@ -39,12 +40,16 @@ export class RegistrationComponent implements OnInit {
   manuscriptUpload = false;
   plagiarismReview = false;
   downloadManuscript = false;
+  fileAnAppeal = false;
+  chooseEditors = false;
+  editorPlagiarismBookReview = false;
 
   constructor( 
     private userService: UserService,
     private uploadService: UploadService,
     private route: ActivatedRoute,
-    private router: Router) {}
+    private router: Router,
+    private plagiarismService: PlagiarismService) {}
   
   ngOnInit(): void {
 
@@ -123,6 +128,10 @@ export class RegistrationComponent implements OnInit {
             this.plagiarismReview = true;
           }else if (params['taskName'] == 'Download manuscript') {
             this.downloadManuscript = true;
+          } else if(params['taskName'] == 'Choose editors'){
+            this.chooseEditors = true;
+          } else if(params['taskName'] == 'Review books'){
+            this.editorPlagiarismBookReview = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -138,6 +147,18 @@ export class RegistrationComponent implements OnInit {
           console.log(err);
         }
       )
+    }
+    else if (this.router.url.includes('file-an-appeal')){
+      this.fileAnAppeal = true;
+      this.userService.getRegisterForm().subscribe(
+        res => {
+          this.initForm(res);
+        },
+        err => {
+          console.log(err);
+          console.log("Error occured");
+        }
+      );
     }
   }
 
@@ -397,6 +418,26 @@ export class RegistrationComponent implements OnInit {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
+    }
+    else if(this.fileAnAppeal){
+      this.plagiarismService.submitAppealForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if(this.chooseEditors){
+      this.plagiarismService.submitChosenEditorsForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(

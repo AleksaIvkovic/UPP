@@ -19,6 +19,7 @@ const routes: Routes = [
       {path: ':taskId/:taskName', component: RegistrationComponent}
     ]},
     {path: 'submit-new-book', component: RegistrationComponent},
+    {path: 'file-an-appeal', component: RegistrationComponent},
   ]},
 ];
 

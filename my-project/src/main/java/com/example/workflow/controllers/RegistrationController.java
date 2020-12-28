@@ -177,8 +177,8 @@ public class RegistrationController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> committeeVotes = new ArrayList<>();
-        ArrayList<String> committeeComments = new ArrayList<>();
+        ArrayList<String> committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
+        ArrayList<String> committeeComments = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
 
         committeeVotes.add(map.get("vote").toString());
         committeeComments.add(map.get("comment").toString());

@@ -1,8 +1,8 @@
 package com.example.workflow.handlers;
 
 import com.example.workflow.models.Genre;
-import com.example.workflow.models.MultipleEnumFormType;
 import com.example.workflow.services.GenreService;
+import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.form.FormField;
@@ -12,24 +12,25 @@ import org.camunda.bpm.engine.impl.form.type.EnumFormType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetGenresEnumHandler implements TaskListener {
+public class GetEditorsHandler implements TaskListener {
 
     @Autowired
-    GenreService genreService;
+    IdentityService identityService;
 
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        List<Genre> genres = genreService.getGenres();
+        ArrayList<User> editors = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("editors").list();
 
         for (FormField f : taskFormFields.getFormFields()) {
-            if (f.getId().equals("genre")) {
+            if (f.getId().equals("editors")) {
                 EnumFormType enumFormType = (EnumFormType) f.getType();
 
-                for (Genre genre : genres) {
-                    enumFormType.getValues().put(Long.toString(genre.getId()), genre.getName());
+                for (User editor : editors) {
+                    enumFormType.getValues().put(editor.getId(), editor.getFirstName().concat(" ").concat(editor.getLastName()) );
                 }
             }
         }

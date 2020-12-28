@@ -11,4 +11,5 @@ public interface ISystemUser {
     boolean checkUniqueUsername(String username);
     boolean checkUniqueEmail(String email);
     void createVerificationToken(SysUser sysUser, String token);
+    boolean checkIfWriterExists(String fullname);
 }

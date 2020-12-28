@@ -1,6 +1,7 @@
 package com.example.workflow.services;
 
 import com.example.workflow.intefaces.ISystemUser;
+import com.example.workflow.models.Authority;
 import com.example.workflow.models.SysUser;
 import com.example.workflow.repositories.SysUserRepository;
 import com.example.workflow.models.VerificationToken;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SystemUserService implements ISystemUser, UserDetailsService {
@@ -73,6 +76,23 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
     public void createVerificationToken(SysUser sysUser, String token) {
         VerificationToken myToken = new VerificationToken(token, sysUser);
         verificationTokenRepository.save(myToken);
+    }
+
+    @Override
+    public boolean checkIfWriterExists(String fullname) {
+        ArrayList<SysUser> users = sysUserRepository.getSysUsersByFirstnameAndLastname(fullname.split(" ")[0], fullname.split(" ")[1]);
+
+        if (users == null) {
+            return false;
+        }
+
+        for(SysUser user: users){
+            if(((List<Authority>)user.getAuthorities()).get(0).getName().equals("WRITER")){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
