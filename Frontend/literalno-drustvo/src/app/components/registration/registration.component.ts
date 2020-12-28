@@ -43,6 +43,7 @@ export class RegistrationComponent implements OnInit {
   fileAnAppeal = false;
   chooseEditors = false;
   editorPlagiarismBookReview = false;
+  commiteReview = false;
 
   constructor( 
     private userService: UserService,
@@ -132,6 +133,8 @@ export class RegistrationComponent implements OnInit {
             this.chooseEditors = true;
           } else if(params['taskName'] == 'Review books'){
             this.editorPlagiarismBookReview = true;
+          } else if(params['taskName'] == 'Committee review'){
+            this.commiteReview = true;
           }
           
           this.userService.getTask(params['taskId']).subscribe(
@@ -444,6 +447,16 @@ export class RegistrationComponent implements OnInit {
     }
     else if(this.editorPlagiarismBookReview){
       this.plagiarismService.submitEditorReviewForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if(this.commiteReview){
+      this.plagiarismService.submitCommitteeReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
         },

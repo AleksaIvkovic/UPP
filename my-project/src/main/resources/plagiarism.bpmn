@@ -120,13 +120,13 @@
     <bpmn:sequenceFlow id="Flow_14gpnfn" sourceRef="Gateway_03003zw" targetRef="Activity_0f3wcdv" />
     <bpmn:sequenceFlow id="Flow_11yjzb3" sourceRef="Activity_1b5xbik" targetRef="Activity_1bpmz1j" />
     <bpmn:sequenceFlow id="Flow_0w69ska" name="Vote again" sourceRef="Gateway_0wtq30y" targetRef="Gateway_03003zw">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${voteAgain == true}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isPlag == "VoteAgain"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0nfupcz">
       <bpmn:incoming>Flow_1av55qc</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1av55qc" name="Is not plagiarism" sourceRef="Gateway_0wtq30y" targetRef="Event_0nfupcz">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isPlag == false}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isPlag == "False"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="Gateway_0olz8jc">
       <bpmn:incoming>Flow_13zej4q</bpmn:incoming>
@@ -141,7 +141,7 @@
       <bpmn:outgoing>Flow_15cz6wx</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_09l9l7x" sourceRef="Activity_1bpmz1j" targetRef="Gateway_0wtq30y" />
-    <bpmn:serviceTask id="Activity_1bpmz1j" name="Check vote outcome" camunda:expression="${true}">
+    <bpmn:serviceTask id="Activity_1bpmz1j" name="Check vote outcome" camunda:class="com.example.workflow.services.CheckCommitteePlagiarismVoteService">
       <bpmn:incoming>Flow_11yjzb3</bpmn:incoming>
       <bpmn:outgoing>Flow_09l9l7x</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -149,7 +149,7 @@
       <bpmn:incoming>Flow_1dikit3</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_09fzgb5" name="Is plagiarism" sourceRef="Gateway_0wtq30y" targetRef="Activity_05i1tfe">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${IsPlag == true}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isPlag == "True"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_17ml558" sourceRef="Activity_1m3qd8a" targetRef="Activity_0wuvhgn" />
     <bpmn:serviceTask id="Activity_1m3qd8a" name="Initialize votes and notes" camunda:class="com.example.workflow.services.InitializeVotesAndNotesService">

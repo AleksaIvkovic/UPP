@@ -94,8 +94,30 @@ public class PlagiarismController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> comments = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"editorsNotes");
-        comments.add(map.get("note").toString());
+        ArrayList<String> notes = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"editorsNotes");
+        notes.add(map.get("note").toString());
+        runtimeService.setVariable(processInstanceId,"editorsNotes",notes);
+
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-committee-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postCommitteeReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        ArrayList<String> votes = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"committeeVotes");
+        votes.add(map.get("vote").toString());
+        runtimeService.setVariable(processInstanceId,"committeeVotes",votes);
 
         try {
             formService.submitTaskForm(taskId, map);

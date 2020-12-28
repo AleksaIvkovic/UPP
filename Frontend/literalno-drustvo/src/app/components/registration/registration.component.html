@@ -5,12 +5,12 @@
 <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" [formGroup]="registerForm">
   <div *ngFor="let field of formFields; let i=index" >
       <div *ngIf="field.type.name == 'string_labels'">
-        <ul style="list-style-type:none;">
+        <ul>
           <div *ngFor="let element of enumValues| keyvalue">
             <div *ngIf="element.key == field.id">
               <li *ngFor="let enum of element.value">
                 <div (click)="download(enum)">
-                  {{enum}}
+                  {{field.defaultValue[enum]}}
                 </div>
               </li>
             </div>
