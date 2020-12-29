@@ -43,6 +43,8 @@ export class RegistrationComponent implements OnInit {
   fileAnAppeal = false;
   chooseEditors = false;
   editorPlagiarismBookReview = false;
+  sendToBeta = false;
+  selectBetas = false;
 
   constructor( 
     private userService: UserService,
@@ -132,7 +134,12 @@ export class RegistrationComponent implements OnInit {
             this.chooseEditors = true;
           } else if(params['taskName'] == 'Review books'){
             this.editorPlagiarismBookReview = true;
+          } else if(params['taskName'] == 'Send to beta?'){
+            this.sendToBeta = true;
+          } else if(params['taskName'] == 'Select beta readers'){
+            this.selectBetas = true;
           }
+
           
           this.userService.getTask(params['taskId']).subscribe(
             res => {
@@ -171,7 +178,7 @@ export class RegistrationComponent implements OnInit {
 
           if(field.type.name.includes("multipleEnum")){
             this.enumValues.set(field.id, Object.keys(field.type.values));
-
+          
             let tempForm = new FormGroup({}, this.checkArray);
 
             for (let [key, value] of this.enumValues) {
@@ -383,12 +390,37 @@ export class RegistrationComponent implements OnInit {
       }, (error : any)  => {
         console.log(error);
       });
+    } else if(this.sendToBeta){
+      this.userService.submitSendToBeta(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Send to beta decision successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
     }
     else if (this.explanation) {
       this.userService.submitExplanation(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Explanation successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
+    }
+    else if (this.selectBetas) {
+      this.userService.submitBetaSelection(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('Beta selection successfully submited.');
           }
           else{
            

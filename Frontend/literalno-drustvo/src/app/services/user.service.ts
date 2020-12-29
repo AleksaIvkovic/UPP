@@ -46,6 +46,10 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/book-publishing/submit-manuscript-review/".concat(taskId), data);
   }
 
+  submitSendToBeta(data, taskId){
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-sendToBeta-review/".concat(taskId), data);
+  }
+
   submitExplanation(data, taskId){
     return this.http.post("http://localhost:8081/api/book-publishing/submit-explanation/".concat(taskId), data);
   }
@@ -56,6 +60,9 @@ export class UserService {
 
   submitPaymentDetails(data, taskId) {
     return this.http.post("http://localhost:8081/api/register/submit-payment-details/".concat(taskId), data);
+  }
+  submitBetaSelection(data, taskId) {
+    return this.http.post("http://localhost:8081/api/register/submit-betaSelection-form/".concat(taskId), data);
   }
 
   confirmEmail(token, processId) {

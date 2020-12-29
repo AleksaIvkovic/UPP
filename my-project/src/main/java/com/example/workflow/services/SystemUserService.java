@@ -2,6 +2,7 @@ package com.example.workflow.services;
 
 import com.example.workflow.intefaces.ISystemUser;
 import com.example.workflow.models.Authority;
+import com.example.workflow.models.Genre;
 import com.example.workflow.models.SysUser;
 import com.example.workflow.repositories.SysUserRepository;
 import com.example.workflow.models.VerificationToken;

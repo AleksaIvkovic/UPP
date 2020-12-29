@@ -62,13 +62,10 @@ public class StoreSystemUserService implements JavaDelegate {
         newSysUser.setAuthorities(authorities);
 
         if (role.equals("READER")) {
-            //isBeta = systemUserForm.get("isBeta").equals("") ? false:(boolean)systemUserForm.get("isBeta");
-            if(isBeta){
-                group = "betaReaders";
-            }
-            else{
-                group = "readers";
-            }
+            group = "readers";
+        }
+        else if(role.equals("BETA-READER")){
+            group = "betaReaders";
         }
         else{
             group = "writers";
@@ -97,7 +94,6 @@ public class StoreSystemUserService implements JavaDelegate {
                     betaGenres.add(genreService.getGenre(Long.parseLong(mapElement.getKey().toString())));
                 }
             }
-
             newSysUser.setBetaGenres(betaGenres);
         }
         else{

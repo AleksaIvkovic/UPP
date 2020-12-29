@@ -156,6 +156,48 @@ public class BookPublishingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(path="/submit-sendToBeta-review/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postSendToBetaForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        boolean sendToBeta;
+
+        if (map.get("sendToBetaDecision").toString().contains("Yes")) {
+            sendToBeta = true;
+        } else {
+            sendToBeta = false;
+        }
+
+        runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-betaSelection-form/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postBetaSelectionForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        runtimeService.setVariable(processInstanceId, "selectedBetaReadersForm", map.get("betaReaders"));
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
     {
         HashMap<String, Object> map = new HashMap<String, Object>();

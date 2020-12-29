@@ -1,5 +1,6 @@
 package com.example.workflow.intefaces;
 
+import com.example.workflow.models.Genre;
 import com.example.workflow.models.SysUser;
 
 public interface ISystemUser {
