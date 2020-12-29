@@ -23,16 +23,19 @@ public class GetEditorsHandler implements TaskListener {
 
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        ArrayList<User> editors = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("editors").list();
+        ArrayList<User> editors = (ArrayList<User>)delegateTask.getExecution().getVariable("remainingEditorsUsers");
 
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("editors")) {
                 EnumFormType enumFormType = (EnumFormType) f.getType();
 
+                enumFormType.getValues().clear();
                 for (User editor : editors) {
                     enumFormType.getValues().put(editor.getId(), editor.getFirstName().concat(" ").concat(editor.getLastName()) );
                 }
             }
         }
+
+
     }
 }

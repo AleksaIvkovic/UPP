@@ -24,6 +24,9 @@ export class StarterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem('token') != null) {
+      this.loggedIn = true;
+    }
   }
 
   StartReaderRegistrationProcess(){
@@ -66,7 +69,6 @@ export class StarterComponent implements OnInit {
           //this.role = localStorage.getItem('role');
           this.authService.getLoggedInUser().subscribe(
             (res : SysUser) => {
-              alert("Uspesno logovanje");
               sessionStorage.setItem("loggedInUser", JSON.stringify(res));
               this.loggedIn = true;
               this.router.navigate(['/main']);

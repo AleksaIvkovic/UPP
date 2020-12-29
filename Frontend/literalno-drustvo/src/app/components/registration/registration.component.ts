@@ -45,6 +45,8 @@ export class RegistrationComponent implements OnInit {
   editorPlagiarismBookReview = false;
   sendToBeta = false;
   selectBetas = false;
+  commiteReview = false;
+  chooseSubstitute = false;
 
   constructor( 
     private userService: UserService,
@@ -138,6 +140,10 @@ export class RegistrationComponent implements OnInit {
             this.sendToBeta = true;
           } else if(params['taskName'] == 'Select beta readers'){
             this.selectBetas = true;
+          } else if(params['taskName'] == 'Committee review'){
+            this.commiteReview = true;
+          } else if(params['taskName'] == 'Choose substitute'){
+            this.chooseSubstitute = true;
           }
 
           
@@ -221,6 +227,9 @@ export class RegistrationComponent implements OnInit {
             this.registerForm.addControl(
               field.id, tempControl
             );
+          }
+          else if(field.type.name == "string_labels"){
+            this.enumValues.set(field.id, Object.keys(field.defaultValue));
           }
           else if(field.type.name.includes("label")){
             this.enumValues.set(field.id, Object.keys(field.type.values));
@@ -468,6 +477,37 @@ export class RegistrationComponent implements OnInit {
         },
         err => {
           console.log(err);
+        }
+      )
+    }
+    else if(this.editorPlagiarismBookReview){
+      this.plagiarismService.submitEditorReviewForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if(this.commiteReview){
+      this.plagiarismService.submitCommitteeReviewForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if(this.chooseSubstitute){
+      this.plagiarismService.submitSubstituteChoiceForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+          alert(err);
         }
       )
     }
