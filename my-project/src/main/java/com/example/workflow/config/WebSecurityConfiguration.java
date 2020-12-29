@@ -1,10 +1,8 @@
 package com.example.workflow.config;
 
-import com.example.workflow.intefaces.ISystemUser;
 import com.example.workflow.security.TokenUtils;
-import com.example.workflow.security.auth.RestAuthenticationEntryPoint;
 import com.example.workflow.security.auth.TokenAuthenticationFilter;
-import com.example.workflow.services.SystemUserService;
+import com.example.workflow.services.systemServices.SystemUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

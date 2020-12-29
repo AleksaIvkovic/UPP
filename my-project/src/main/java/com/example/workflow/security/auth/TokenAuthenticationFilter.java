@@ -1,10 +1,9 @@
 package com.example.workflow.security.auth;
 
 import com.example.workflow.security.TokenUtils;
-import com.example.workflow.services.SystemUserService;
+import com.example.workflow.services.systemServices.SystemUserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

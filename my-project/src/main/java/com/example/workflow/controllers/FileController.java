@@ -2,14 +2,10 @@ package com.example.workflow.controllers;
 
 
 import com.example.workflow.models.FileDTO;
-import com.example.workflow.models.FormFieldsDTO;
-import com.example.workflow.services.FileService;
+import com.example.workflow.services.systemServices.FileService;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.form.FormField;
-import org.camunda.bpm.engine.form.TaskFormData;
-import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,14 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/file")

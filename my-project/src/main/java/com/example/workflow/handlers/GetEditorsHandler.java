@@ -1,7 +1,5 @@
 package com.example.workflow.handlers;
 
-import com.example.workflow.models.Genre;
-import com.example.workflow.services.GenreService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GetEditorsHandler implements TaskListener {

@@ -1,13 +1,11 @@
 package com.example.workflow.handlers;
 
 import com.example.workflow.models.Genre;
-import com.example.workflow.models.MultipleEnumFormType;
-import com.example.workflow.services.GenreService;
+import com.example.workflow.services.systemServices.GenreService;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
-import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.form.type.EnumFormType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
