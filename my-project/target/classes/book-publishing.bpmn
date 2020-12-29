@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0uyq0ta" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
   <bpmn:process id="bookPublishing" name="Book publishing" isExecutable="true">
-    <bpmn:serviceTask id="Activity_1niwl2m" name="Check if writer is active" camunda:class="com.example.workflow.services.CheckIfWriterIsActive">
+    <bpmn:serviceTask id="Activity_1niwl2m" name="Check if writer is active" camunda:class="com.example.workflow.services.checkServices.CheckIfWriterIsActive">
       <bpmn:incoming>Flow_1nkrqya</bpmn:incoming>
       <bpmn:outgoing>Flow_0i8ddml</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -36,7 +36,7 @@
     <bpmn:intermediateThrowEvent id="Event_1twywuo" name="Notify head editor">
       <bpmn:incoming>Flow_0u899b6</bpmn:incoming>
       <bpmn:outgoing>Flow_0mg9w6o</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_06egb6h" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.NotifyHeadEditorEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_06egb6h" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.NotifyHeadEditorEmailService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0mg9w6o" sourceRef="Event_1twywuo" targetRef="Activity_04k4gu8" />
     <bpmn:exclusiveGateway id="Gateway_1wy1a8l">
@@ -80,12 +80,12 @@
     <bpmn:intermediateThrowEvent id="Event_15xfnkd" name="Notify writer of denial of book">
       <bpmn:incoming>Flow_1h5asps</bpmn:incoming>
       <bpmn:outgoing>Flow_0pqj448</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_145shpd" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.NotifyWriterOfBookDenialNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_145shpd" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.NotifyWriterOfBookDenialNotificationService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateThrowEvent id="Event_0t3zm35" name="Notify writer to upload manuscript">
       <bpmn:incoming>Flow_0ivnpld</bpmn:incoming>
       <bpmn:outgoing>Flow_0bx3h51</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.NotifyWriterToUploadManuscriptService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.NotifyWriterToUploadManuscriptService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0ivnpld" name="Synopsis approved" sourceRef="Gateway_1wy1a8l" targetRef="Event_0t3zm35">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${deniedSynopsis == false}</bpmn:conditionExpression>
@@ -101,7 +101,7 @@
     <bpmn:intermediateThrowEvent id="Event_10if649" name="Notify writer about time expiration">
       <bpmn:incoming>Flow_10rvb7k</bpmn:incoming>
       <bpmn:outgoing>Flow_0motsjd</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_11mylw1" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_11mylw1" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
     </bpmn:intermediateThrowEvent>
     <bpmn:endEvent id="Event_0iu2jtf">
       <bpmn:incoming>Flow_0hdurj1</bpmn:incoming>
@@ -221,7 +221,7 @@
       <bpmn:incoming>Flow_0usuplq</bpmn:incoming>
       <bpmn:outgoing>Flow_0l0fue4</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_1yr2jt6" name="Get beta readers" camunda:class="com.example.workflow.services.GetBetaReadersService">
+    <bpmn:serviceTask id="Activity_1yr2jt6" name="Get beta readers" camunda:class="com.example.workflow.services.db.GetBetaReadersService">
       <bpmn:incoming>Flow_1joh0fn</bpmn:incoming>
       <bpmn:outgoing>Flow_0usuplq</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -416,11 +416,11 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!isActive}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0ximdcu" sourceRef="Activity_0mp0wtw" targetRef="Activity_0zsiqmj" />
-    <bpmn:serviceTask id="Activity_0mp0wtw" name="Store synopsis to DB" camunda:class="com.example.workflow.services.StoreSynopsisService">
+    <bpmn:serviceTask id="Activity_0mp0wtw" name="Store synopsis to DB" camunda:class="com.example.workflow.services.db.StoreSynopsisService">
       <bpmn:incoming>Flow_0o3w2mb</bpmn:incoming>
       <bpmn:outgoing>Flow_0ximdcu</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0o9b0j3" name="Remove book" camunda:class="com.example.workflow.services.RemoveBookService">
+    <bpmn:serviceTask id="Activity_0o9b0j3" name="Remove book" camunda:class="com.example.workflow.services.db.RemoveBookService">
       <bpmn:incoming>Flow_0pwb7y9</bpmn:incoming>
       <bpmn:outgoing>Flow_0hdurj1</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -434,7 +434,7 @@
     <bpmn:intermediateThrowEvent id="Event_1splnd5" name="Notify writer about plagiarism">
       <bpmn:incoming>Flow_1ahkg4j</bpmn:incoming>
       <bpmn:outgoing>Flow_15byn50</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0u41054" messageRef="Message_0ylje4t" camunda:class="com.example.workflow.services.NotifyWriterAboutPlagiarismService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0u41054" messageRef="Message_0ylje4t" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutPlagiarismService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1ahkg4j" name="Is plagiarized" sourceRef="Gateway_0x5keim" targetRef="Event_1splnd5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isPlagiarism}</bpmn:conditionExpression>
@@ -451,12 +451,12 @@
     <bpmn:sequenceFlow id="Flow_06qkucv" name="Manuscript denied" sourceRef="Gateway_11iwhnv" targetRef="Gateway_00u3f3e">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!manuscriptApproved}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Activity_0hs2bjm" name="Store the manuscript" camunda:class="com.example.workflow.services.StoreWorkService">
+    <bpmn:serviceTask id="Activity_0hs2bjm" name="Store the manuscript" camunda:class="com.example.workflow.services.db.StoreWorkService">
       <bpmn:incoming>Flow_0k499tm</bpmn:incoming>
       <bpmn:outgoing>Flow_1tv2p4s</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1tv2p4s" sourceRef="Activity_0hs2bjm" targetRef="Activity_0qogdf1" />
-    <bpmn:serviceTask id="Activity_0zsiqmj" name="Get head editor" camunda:class="com.example.workflow.services.GetHeadEditorService">
+    <bpmn:serviceTask id="Activity_0zsiqmj" name="Get head editor" camunda:class="com.example.workflow.services.db.GetHeadEditorService">
       <bpmn:incoming>Flow_0ximdcu</bpmn:incoming>
       <bpmn:outgoing>Flow_0u899b6</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -476,7 +476,7 @@
     <bpmn:intermediateThrowEvent id="Event_1mo4uw8" name="Notify beta readers about manuscript">
       <bpmn:incoming>Flow_0l0fue4</bpmn:incoming>
       <bpmn:outgoing>Flow_187kp2x</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_00vdlwc" messageRef="Message_13x3ysa" camunda:class="com.example.workflow.services.NotifyBetaReadersAboutManuscriptService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_00vdlwc" messageRef="Message_13x3ysa" camunda:class="com.example.workflow.services.notifications.NotifyBetaReadersAboutManuscriptService" />
     </bpmn:intermediateThrowEvent>
   </bpmn:process>
   <bpmn:message id="Message_0gy1adh" name="NofityWriterOfDenial" />

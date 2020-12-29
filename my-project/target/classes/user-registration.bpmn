@@ -107,7 +107,7 @@
       <bpmn:outgoing>Flow_0oudang</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0ywcmyy" sourceRef="Activity_1pocx9o" targetRef="Gateway_1jhh0vy" />
-    <bpmn:serviceTask id="Activity_1pocx9o" name="Write reader to DB" camunda:class="com.example.workflow.services.StoreSystemUserService">
+    <bpmn:serviceTask id="Activity_1pocx9o" name="Write reader to DB" camunda:class="com.example.workflow.services.db.StoreSystemUserService">
       <bpmn:incoming>Flow_1jd8qk1</bpmn:incoming>
       <bpmn:outgoing>Flow_0ywcmyy</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -115,7 +115,7 @@
     <bpmn:intermediateThrowEvent id="Event_0cmfax6" name="Send verification email">
       <bpmn:incoming>Flow_125ore5</bpmn:incoming>
       <bpmn:outgoing>Flow_0wczb2c</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1tags6m" messageRef="Message_0tusknh" camunda:class="com.example.workflow.services.SendVerificationEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1tags6m" messageRef="Message_0tusknh" camunda:class="com.example.workflow.services.notifications.SendVerificationEmailService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:exclusiveGateway id="Gateway_1jhh0vy">
       <bpmn:incoming>Flow_0ywcmyy</bpmn:incoming>
@@ -140,7 +140,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_0wobk3w" messageRef="Message_1wqkqih" />
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_1chhjtn" sourceRef="Event_0qd293q" targetRef="Activity_188j24h" />
-    <bpmn:serviceTask id="Activity_188j24h" name="Save email confirmation" camunda:class="com.example.workflow.services.SaveEmailConfirmationService">
+    <bpmn:serviceTask id="Activity_188j24h" name="Save email confirmation" camunda:class="com.example.workflow.services.db.SaveEmailConfirmationService">
       <bpmn:incoming>Flow_1chhjtn</bpmn:incoming>
       <bpmn:outgoing>Flow_0umx2mo</bpmn:outgoing>
     </bpmn:serviceTask>
