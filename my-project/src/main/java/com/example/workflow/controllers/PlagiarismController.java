@@ -74,7 +74,12 @@ public class PlagiarismController {
             if ((boolean)mapElement.getValue()) {
                 User temp = identityService.createUserQuery().userId(mapElement.getKey().toString()).singleResult();
                 chosenEditors.add(temp);
-                remainingEditors.remove(temp);
+                for(User remaining: remainingEditors){
+                    if(remaining.getId().toString().equals(temp.getId().toString())){
+                        remainingEditors.remove(remaining);
+                        break;
+                    }
+                }
             }
         }
 
@@ -93,6 +98,34 @@ public class PlagiarismController {
         runtimeService.setVariable(processInstanceId,"remainingEditorsUsers", remainingEditors);
         runtimeService.setVariable(processInstanceId,"editorsUsernames", editorUsernames);
         runtimeService.setVariable(processInstanceId,"remainingEditorsUsernames", remainingEditorUsernames);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-chosen-substitutes/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postSubstituteChoiceForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        ArrayList<User> chosenSubstitutes = new ArrayList<>();
+
+        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("substitutes"));
+
+        for (Map.Entry mapElement: editorsHM.entrySet()) {
+            if ((boolean)mapElement.getValue()) {
+                User temp = identityService.createUserQuery().userId(mapElement.getKey().toString()).singleResult();
+                chosenSubstitutes.add(temp);
+            }
+        }
+        runtimeService.setVariable(processInstanceId,"chosenSubstitutes", chosenSubstitutes);
 
         try {
             formService.submitTaskForm(taskId, map);

@@ -24,4 +24,8 @@ export class PlagiarismService {
   submitCommitteeReviewForm(form, taskId){
     return this.http.post("http://localhost:8081/api/plagiarism/submit-committee-review/".concat(taskId), form);
   }
+
+  submitSubstituteChoiceForm(form, taskId){
+    return this.http.post("http://localhost:8081/api/plagiarism/submit-chosen-substitutes/".concat(taskId), form);
+  }
 }

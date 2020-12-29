@@ -23,7 +23,7 @@ public class GetEditorsHandler implements TaskListener {
 
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        ArrayList<User> editors = (ArrayList<User>)delegateTask.getExecution().getVariable("remainingEditors");
+        ArrayList<User> editors = (ArrayList<User>)delegateTask.getExecution().getVariable("remainingEditorsUsers");
 
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("editors") || f.getId().equals("substitutes")) {
