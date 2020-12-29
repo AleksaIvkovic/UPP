@@ -117,7 +117,7 @@ public class PlagiarismController {
 
         ArrayList<User> chosenSubstitutes = new ArrayList<>();
 
-        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("substitutes"));
+        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors"));
 
         for (Map.Entry mapElement: editorsHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {

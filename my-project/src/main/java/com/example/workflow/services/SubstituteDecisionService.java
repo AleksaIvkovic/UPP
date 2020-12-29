@@ -19,7 +19,14 @@ public class SubstituteDecisionService implements JavaDelegate {
         ArrayList<User> forbiddenEditors = (ArrayList<User>)delegateExecution.getVariable("forbiddenEditors");
 
         int didNotVote = chosenEditors.size() - haveVoted.size();
-        chosenEditors.removeAll(haveVoted); //Koji nisu glasali
+        for (User votedEditor: haveVoted) {
+            for (User editor: chosenEditors) {
+                if (editor.getId().toString().equals(votedEditor.getId().toString())) {
+                    chosenEditors.remove(editor);
+                    break;
+                }
+            }
+        }
         forbiddenEditors.addAll(chosenEditors);
         delegateExecution.setVariable("forbiddenEditors", forbiddenEditors);
 

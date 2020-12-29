@@ -26,9 +26,10 @@ public class GetEditorsHandler implements TaskListener {
         ArrayList<User> editors = (ArrayList<User>)delegateTask.getExecution().getVariable("remainingEditorsUsers");
 
         for (FormField f : taskFormFields.getFormFields()) {
-            if (f.getId().equals("editors") || f.getId().equals("substitutes")) {
+            if (f.getId().equals("editors")) {
                 EnumFormType enumFormType = (EnumFormType) f.getType();
 
+                enumFormType.getValues().clear();
                 for (User editor : editors) {
                     enumFormType.getValues().put(editor.getId(), editor.getFirstName().concat(" ").concat(editor.getLastName()) );
                 }

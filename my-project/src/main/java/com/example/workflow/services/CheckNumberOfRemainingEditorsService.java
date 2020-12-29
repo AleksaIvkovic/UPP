@@ -11,19 +11,23 @@ import java.util.ArrayList;
 public class CheckNumberOfRemainingEditorsService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        ArrayList<User> chosenEditors = (ArrayList<User>)delegateExecution.getVariable("editorsUsers");
-        ArrayList<User> remainingEditors = (ArrayList<User>)delegateExecution.getVariable("remainingEditorsUsers");
         ArrayList<User> forbiddenEditors = (ArrayList<User>)delegateExecution.getVariable("forbiddenEditors");
-        ArrayList<User> haveVoted = (ArrayList<User>)delegateExecution.getVariable("haveVoted");
+        ArrayList<User> allEditors = (ArrayList<User>)delegateExecution.getVariable("allEditors");
 
-        if (remainingEditors.size() < 2) {
-            remainingEditors.addAll(forbiddenEditors);
-            remainingEditors.addAll(chosenEditors);
-            delegateExecution.setVariable("forbiddenEditors", new ArrayList<User>());
-        } else {
-            remainingEditors.addAll(haveVoted);
+        for (User forbiddenEditor: forbiddenEditors) {
+            for (User editor: allEditors) {
+                if (forbiddenEditor.getId().toString().equals(editor.getId().toString())) {
+                    allEditors.remove(editor);
+                    break;
+                }
+            }
         }
 
-        delegateExecution.setVariable("remainingEditorsUsers", remainingEditors);
+        if (allEditors.size() < 2) {
+            allEditors.addAll(forbiddenEditors);
+            delegateExecution.setVariable("forbiddenEditors", new ArrayList<User>());
+        }
+
+        delegateExecution.setVariable("remainingEditorsUsers", allEditors);
     }
 }

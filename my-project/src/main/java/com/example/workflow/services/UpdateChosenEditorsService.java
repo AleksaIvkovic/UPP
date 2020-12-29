@@ -15,9 +15,20 @@ public class UpdateChosenEditorsService implements JavaDelegate {
         ArrayList<User> chosenEditors = (ArrayList<User>)delegateExecution.getVariable("editorsUsers");
         ArrayList<User> remainingEditors = (ArrayList<User>)delegateExecution.getVariable("remainingEditorsUsers");
         ArrayList<User> chosenSubstitutes = (ArrayList<User>)delegateExecution.getVariable("chosenSubstitutes");
+        ArrayList<User> haveVoted = (ArrayList<User>)delegateExecution.getVariable("haveVoted");
 
-        remainingEditors.removeAll(chosenSubstitutes);
+        chosenEditors = new ArrayList<>();
+        chosenEditors.addAll(haveVoted);
         chosenEditors.addAll(chosenSubstitutes);
+
+        for (User substitute: chosenSubstitutes) {
+            for (User editor: remainingEditors) {
+                if (editor.getId().toString().equals(substitute.getId().toString())) {
+                    remainingEditors.remove(editor);
+                    break;
+                }
+            }
+        }
 
         delegateExecution.setVariable("remainingEditorsUsers", remainingEditors);
         delegateExecution.setVariable("editorsUsers", chosenEditors);

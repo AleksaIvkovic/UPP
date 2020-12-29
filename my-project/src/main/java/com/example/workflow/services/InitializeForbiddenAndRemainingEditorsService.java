@@ -21,5 +21,6 @@ public class InitializeForbiddenAndRemainingEditorsService implements JavaDelega
 
         ArrayList<User> editors = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("editors").list();
         delegateExecution.setVariable("remainingEditorsUsers", editors);
+        delegateExecution.setVariable("allEditors", editors);
     }
 }
