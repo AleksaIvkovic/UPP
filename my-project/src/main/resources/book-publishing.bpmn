@@ -498,7 +498,7 @@
       <bpmn:incoming>Flow_187kp2x</bpmn:incoming>
       <bpmn:outgoing>Flow_06j9pg5</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0hocz2k" name="Lose beta status">
+    <bpmn:serviceTask id="Activity_0hocz2k" name="Lose beta status" camunda:class="com.example.workflow.services.db.LoseBetaStatusService">
       <bpmn:incoming>Flow_0dfjf4o</bpmn:incoming>
       <bpmn:outgoing>Flow_0q9q9x4</bpmn:outgoing>
     </bpmn:serviceTask>
