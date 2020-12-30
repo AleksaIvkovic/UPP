@@ -326,7 +326,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_11bvx3c" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.InvalidPaymentNotificationService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0hu9dfu" sourceRef="Activity_0ge77vk" targetRef="Event_0ootk52" />
-    <bpmn:serviceTask id="Activity_0ge77vk" name="Activate writer account" camunda:class="com.example.workflow.services.db.SaveEmailConfirmationService">
+    <bpmn:serviceTask id="Activity_0ge77vk" name="Activate writer account" camunda:class="com.example.workflow.services.db.ActivateWriterAccountService">
       <bpmn:incoming>Flow_01aq8w4</bpmn:incoming>
       <bpmn:outgoing>Flow_0hu9dfu</bpmn:outgoing>
     </bpmn:serviceTask>

@@ -47,6 +47,7 @@ export class RegistrationComponent implements OnInit {
   selectBetas = false;
   commiteReview = false;
   chooseSubstitute = false;
+  commentManuscript = false;
 
   constructor( 
     private userService: UserService,
@@ -144,6 +145,8 @@ export class RegistrationComponent implements OnInit {
             this.commiteReview = true;
           } else if(params['taskName'] == 'Choose substitute'){
             this.chooseSubstitute = true;
+          } else if(params['taskName'] == 'Comment manuscript'){
+            this.commentManuscript = true;
           }
 
           
@@ -232,24 +235,7 @@ export class RegistrationComponent implements OnInit {
             this.enumValues.set(field.id, Object.keys(field.defaultValue));
           }
           else if(field.type.name.includes("label")){
-            this.enumValues.set(field.id, Object.keys(field.type.values));
-
-            let tempControl = new FormControl([]);
-            let temp = [];
-
-            for (let [key, value] of this.enumValues) {
-              if(key == field.id){
-                for(let enumId of value){
-                  temp.push(field.type.values[enumId]);
-                }
-              }
-            }
-
-            tempControl.setValue(temp);
-
-            this.registerForm.addControl(
-              field.id, tempControl
-            );
+            this.enumValues.set(field.id, field.defaultValue);
           }
           else{
             let temp = new FormControl(field.defaultValue);
@@ -355,6 +341,14 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitPaymentDetails(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Payment details submitted succesfully.');
+      }, error => {
+        console.log(error);
+        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    } else if (this.commentManuscript) {
+      this.userService.submitCommentManuscript(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Comment manuscript submitted succesfully.');
       }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());

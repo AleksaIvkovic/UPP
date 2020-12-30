@@ -67,6 +67,7 @@ public class StoreSystemUserService implements JavaDelegate {
         }
         else if(role.equals("BETA-READER")){
             group = "betaReaders";
+            newSysUser.setPoints(0);
         }
         else{
             group = "writers";

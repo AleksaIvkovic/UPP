@@ -62,7 +62,11 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/register/submit-payment-details/".concat(taskId), data);
   }
   submitBetaSelection(data, taskId) {
-    return this.http.post("http://localhost:8081/api/register/submit-betaSelection-form/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-betaSelection-form/".concat(taskId), data);
+  }
+
+  submitCommentManuscript(data, taskId) {
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-commentManuscript-form/".concat(taskId), data);
   }
 
   confirmEmail(token, processId) {

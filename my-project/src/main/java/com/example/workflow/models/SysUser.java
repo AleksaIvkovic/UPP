@@ -46,6 +46,9 @@ public class SysUser implements UserDetails {
     @Column(nullable = false)
     private boolean isConfirmed;
 
+    @Column(nullable = true)
+    private Integer points;
+
     @ManyToMany
     private List<Genre> genres;
 
@@ -217,4 +220,8 @@ public class SysUser implements UserDetails {
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
+
+    public Integer getPoints() { return points; }
+
+    public void setPoints(Integer points) { this.points = points; }
 }
