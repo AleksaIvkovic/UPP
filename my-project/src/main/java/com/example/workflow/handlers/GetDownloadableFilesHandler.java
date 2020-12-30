@@ -37,11 +37,15 @@ public class GetDownloadableFilesHandler implements TaskListener {
             if (f.getId().equals("works")) {
                 NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
 
+                nonEditableMultipleEnumFormType.getValues().clear();
+
                 for (SubmittedFile file : files) {
                     nonEditableMultipleEnumFormType.getValues().put(Long.toString(file.getId()), file.getName());
                 }
             } else if (f.getId().equals("books")) {
                 NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
+
+                nonEditableMultipleEnumFormType.getValues().clear();
 
                 for (PublishedBook book : books) {
                     nonEditableMultipleEnumFormType.getValues().put(book.getTitle(), book.getFileName());
@@ -50,12 +54,16 @@ public class GetDownloadableFilesHandler implements TaskListener {
             if (f.getId().equals("work")) {
                 NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
 
+                nonEditableMultipleEnumFormType.getValues().clear();
+
                 for (SubmittedFile file : files) {
                     nonEditableMultipleEnumFormType.getValues().put(Long.toString(file.getId()), file.getName());
                 }
             }
             if (f.getId().equals("updatedManuscript")) {
                 NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
+
+                nonEditableMultipleEnumFormType.getValues().clear();
 
                 for (SubmittedFile file : files) {
                     nonEditableMultipleEnumFormType.getValues().put(Long.toString(file.getId()), file.getName());

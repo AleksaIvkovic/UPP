@@ -188,6 +188,7 @@ public class BookPublishingController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
         boolean sendToBeta;
+        boolean needMoreWork = false;
 
         if (map.get("sendToBetaDecision").toString().contains("Yes")) {
             sendToBeta = true;
@@ -196,6 +197,7 @@ public class BookPublishingController {
         }
 
         runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);
+        runtimeService.setVariable(processInstanceId, "needMoreWork", needMoreWork);
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -267,6 +269,19 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId,"comments",comments);
         runtimeService.setVariable(processInstanceId,"haveCommented",haveCommented);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-lectorNotes-form/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postLectorNotesForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
 
         try {
             formService.submitTaskForm(taskId, map);

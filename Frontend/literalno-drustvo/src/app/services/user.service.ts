@@ -77,6 +77,10 @@ export class UserService {
     return this.http.post("http://localhost:8081/api/book-publishing/submit-commentManuscript-form/".concat(taskId), data);
   }
 
+  submitLectorNotes(data, taskId) {
+    return this.http.post("http://localhost:8081/api/book-publishing/submit-lectorNotes-form/".concat(taskId), data);
+  }
+
   confirmEmail(token, processId) {
     let object = {
       "token": token
