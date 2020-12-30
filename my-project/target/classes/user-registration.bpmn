@@ -26,13 +26,11 @@
           <camunda:formField id="city" label="City" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
-              <camunda:constraint name="validator" config="com.example.workflow.validators.LettersValidator" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="country" label="Country" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
-              <camunda:constraint name="validator" config="com.example.workflow.validators.LettersValidator" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="email" label="Email" type="string_email">
@@ -91,7 +89,7 @@
     <bpmn:userTask id="Activity_172s4r7" name="Beta">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="betaGenres" label="Genres" type="multipleEnum_genres">
+          <camunda:formField id="betaGenres" label="Beta genres" type="multipleEnum_genres">
             <camunda:validation>
               <camunda:constraint name="validator" config="com.example.workflow.validators.GenresValidator" />
             </camunda:validation>

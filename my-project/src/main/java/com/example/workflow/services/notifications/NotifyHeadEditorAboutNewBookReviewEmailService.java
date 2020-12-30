@@ -13,23 +13,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
-public class NotifyHeadEditorEmailService implements JavaDelegate {
-
+public class NotifyHeadEditorAboutNewBookReviewEmailService implements JavaDelegate {
     @Autowired
     IMailing mailingService;
 
-    @Autowired
-    private IdentityService identityService;
-
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-
         SysUser systemUser = (SysUser)execution.getVariable("loggedInWriter");
+        User headEditor = (User)execution.getVariable("headEditorUser");
 
-        String text = "Writer "  + systemUser.getFirstname() + " " + systemUser.getLastname() +" wants to submit new book. Please review theirs synopsis.";
+        String text = "Dear " + headEditor.getFirstName() + ",\n\n\t" +
+                "Writer " + systemUser.getFirstname() + " " + systemUser.getLastname() +
+                " wants to submit new book. Please review theirs synopsis.";
 
-        ArrayList<User> headEditor = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("headEditor").list();
-        mailingService.sendMail("New book review",text, headEditor.get(0).getEmail());
-        execution.setVariable("headEditor", headEditor.get(0).getId());
+        String subject = "New book review";
+        mailingService.sendMail(subject, text, headEditor.getEmail());
     }
 }

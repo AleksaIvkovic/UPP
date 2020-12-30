@@ -7,23 +7,19 @@ import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-
 @Service
-public class HeadEditorPlagiarismReportNotificationService implements JavaDelegate {
+public class NotifyEditorOfUpdatedManuscript implements JavaDelegate {
     @Autowired
     IMailing mailingService;
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-        User headEditor = (User)execution.getVariable("headEditorUser");
+    public void execute(DelegateExecution delegateExecution) throws Exception {
+        User headEditor = (User)delegateExecution.getVariable("headEditorUser");
 
         String text = "Dear " + headEditor.getFirstName() + ",\n\n\t" +
-                "There has been report of a possible plagiarized book and you need to " +
-                "select editors to check if it is plagiarized.";
+                "Writer updated theirs manuscript that you need to review.";
 
-        String subject = "Plagiarism report";
+        String subject = "Updated manuscript";
         mailingService.sendMail(subject, text, headEditor.getEmail());
     }
 }

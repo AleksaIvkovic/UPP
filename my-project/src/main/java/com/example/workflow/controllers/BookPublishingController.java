@@ -114,6 +114,23 @@ public class BookPublishingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(path="/submit-updated-manuscript/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> submitUpdatedManuscript(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        runtimeService.setVariable(processInstanceId,"worksToStore", map);
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(path="/submit-plagiarism-review/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postPlagiarismReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
@@ -179,6 +196,31 @@ public class BookPublishingController {
         }
 
         runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-more-changes-needed/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postMoreChangesNeededForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+        boolean needMoreWork;
+
+        if (map.get("decision").toString().contains("Yes")) {
+            needMoreWork = true;
+        } else {
+            needMoreWork = false;
+        }
+
+        runtimeService.setVariable(processInstanceId, "needMoreWork", needMoreWork);
 
         try {
             formService.submitTaskForm(taskId, map);

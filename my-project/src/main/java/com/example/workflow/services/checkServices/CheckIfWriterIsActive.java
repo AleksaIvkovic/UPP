@@ -14,6 +14,6 @@ public class CheckIfWriterIsActive implements JavaDelegate {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();
         //SysUser loggedInWriter = (SysUser) execution.getVariable("loggedInWriter");
-        execution.setVariable("isActive",sysUser.isActive());
+        execution.setVariable("isActive", sysUser.isActive());
     }
 }

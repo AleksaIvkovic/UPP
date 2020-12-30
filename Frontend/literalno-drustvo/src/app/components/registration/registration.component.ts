@@ -48,6 +48,8 @@ export class RegistrationComponent implements OnInit {
   commiteReview = false;
   chooseSubstitute = false;
   commentManuscript = false;
+  updateManuscript = false;
+  moreChangesNeeded = false;
 
   constructor( 
     private userService: UserService,
@@ -147,6 +149,10 @@ export class RegistrationComponent implements OnInit {
             this.chooseSubstitute = true;
           } else if(params['taskName'] == 'Comment manuscript'){
             this.commentManuscript = true;
+          } else if(params['taskName'] == 'Change work'){
+            this.updateManuscript = true;
+          } else if(params['taskName'] == 'Decide if more changes are needed'){
+            this.moreChangesNeeded = true;
           }
 
           
@@ -305,7 +311,8 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
-    } else if(this.manuscriptUpload) {
+    } 
+    else if(this.manuscriptUpload) {
       for(let filesList of this.files.values()){
         let tempFiles = [];
 
@@ -345,7 +352,8 @@ export class RegistrationComponent implements OnInit {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
-    } else if (this.commentManuscript) {
+    } 
+    else if (this.commentManuscript) {
       this.userService.submitCommentManuscript(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Comment manuscript submitted succesfully.');
@@ -393,7 +401,8 @@ export class RegistrationComponent implements OnInit {
       }, (error : any)  => {
         console.log(error);
       });
-    } else if(this.sendToBeta){
+    } 
+    else if(this.sendToBeta){
       this.userService.submitSendToBeta(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
@@ -504,6 +513,51 @@ export class RegistrationComponent implements OnInit {
           alert(err);
         }
       )
+    }
+    else if (this.updateManuscript){
+      for(let filesList of this.files.values()){
+        let tempFiles = [];
+
+        for(let file of filesList){
+          const fd = new FormData();
+          fd.append('file',file);
+          tempFiles.push(fd);
+        }
+  
+        let requests = [];
+        
+        for(let fd of tempFiles){
+          requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
+        }
+  
+        forkJoin(requests).subscribe(
+          (res:any) => {
+            console.log("Successful upload.")
+            this.userService.submitUpdatedManuscript(o, this.formFieldsDto.taskId).subscribe(
+              (res: any) =>{
+                alert("Successful work submission.")
+              },
+            (err) => console.log(err)
+            );
+          },
+          (err) => {
+            console.log(err);
+          }
+        )
+      }
+    }
+    else if(this.moreChangesNeeded){
+      this.userService.submitMoreChangesNeeded(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          if(res == null){
+            alert('More changes needed decision successfully submited.');
+          }
+          else{
+           
+          }
+      }, (error : any)  => {
+        console.log(error);
+      });
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
