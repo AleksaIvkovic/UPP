@@ -16,8 +16,8 @@ public class NotifyWriterAboutTimeExpirationForManuscriptUpload  implements Java
     @Override
     public void execute(DelegateExecution execution) throws Exception {
          String text = "Dear " + execution.getVariable("firstname") +
-                ",\n\n\t" + "We are sad to inform you that your time for submitting " +
-                 "manuscript has expired. "+ "\"";
+                ",\n\n\t" + "We are sad to inform you that the time for submitting your " +
+                 "work has expired.";
 
         String subject = "Manuscript time expiration";
         SysUser systemUser = (SysUser)execution.getVariable("loggedInWriter");

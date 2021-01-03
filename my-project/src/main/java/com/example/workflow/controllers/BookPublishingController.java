@@ -282,6 +282,40 @@ public class BookPublishingController {
     @PostMapping(path="/submit-lectorNotes-form/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postLectorNotesForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        if (map.get("lectorDecision").toString().contains("Yes")) {
+            runtimeService.setVariable(processInstanceId,"lectorChangesNeeded", true);
+        } else {
+            runtimeService.setVariable(processInstanceId,"lectorChangesNeeded", false);
+        }
+
+        runtimeService.setVariable(processInstanceId, "lectorNote", map.get("lectorNote").toString());
+
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path="/submit-editor-approval-form/{taskId}", consumes = "application/json")
+    public ResponseEntity<?> postEditorApprovalForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
+        HashMap<String, Object> map = this.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        if (map.get("editorDecision").toString().contains("Yes")) {
+            runtimeService.setVariable(processInstanceId,"editorChangesNeeded", true);
+        } else {
+            runtimeService.setVariable(processInstanceId,"editorChangesNeeded", false);
+        }
+
+        String ec = map.get("editorComment").toString();
+        runtimeService.setVariable(processInstanceId, "editorComment", ec);
 
         try {
             formService.submitTaskForm(taskId, map);

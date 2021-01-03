@@ -7,16 +7,16 @@ import javax.persistence.*;
 public class SubmittedFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  long id;
+    private long id;
 
     @Column(nullable = false)
-    private  String  name;
+    private String name;
 
     @Column(nullable = false)
     private String procesId;
 
     @Column(nullable = false)
-    private  String writerUsername;
+    private String writerUsername;
 
     public SubmittedFile() { }
 

@@ -50,6 +50,8 @@ export class RegistrationComponent implements OnInit {
   commentManuscript = false;
   updateManuscript = false;
   moreChangesNeeded = false;
+  lectorChanges = false;
+  editorApproval = false;
 
   constructor( 
     private userService: UserService,
@@ -149,10 +151,14 @@ export class RegistrationComponent implements OnInit {
             this.chooseSubstitute = true;
           } else if(params['taskName'] == 'Comment manuscript'){
             this.commentManuscript = true;
-          } else if(params['taskName'] == 'Change work'){
+          } else if(params['taskName'] == 'Change work' || params['taskName'] == 'Apply changes' || params['taskName'] == 'Make changes'){
             this.updateManuscript = true;
           } else if(params['taskName'] == 'Decide if more changes are needed'){
             this.moreChangesNeeded = true;
+          } else if(params['taskName'] == 'Download and lector'){
+            this.lectorChanges = true;
+          } else if(params['taskName'] == 'Editor approval'){
+            this.editorApproval = true;
           }
 
           
@@ -495,6 +501,26 @@ export class RegistrationComponent implements OnInit {
     }
     else if(this.commiteReview){
       this.plagiarismService.submitCommitteeReviewForm(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if (this.lectorChanges) {
+      this.userService.submitLectorNotes(o, this.formFieldsDto.taskId).subscribe(
+        res => {
+          alert('Success');
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else if (this.editorApproval) {
+      this.userService.submitEditorApproval(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
         },

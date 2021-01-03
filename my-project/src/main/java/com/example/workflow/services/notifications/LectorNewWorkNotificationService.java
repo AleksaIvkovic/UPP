@@ -18,7 +18,7 @@ public class LectorNewWorkNotificationService implements JavaDelegate {
         User lector = (User)delegateExecution.getVariable("lectorUser");
 
         String text = "Dear " + lector.getFirstName() + ",\n\n\t" +
-                "You have new work to lector";
+                "You have new work to lector.";
 
         String subject = "New work to lector";
         mailingService.sendMail(subject, text, lector.getEmail());
