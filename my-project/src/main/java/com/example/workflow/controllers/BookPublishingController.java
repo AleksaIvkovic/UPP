@@ -78,7 +78,7 @@ public class BookPublishingController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        boolean denied;
+        /*boolean denied;
 
         if (map.get("decision").toString().contains("Yes")) {
             denied = false;
@@ -86,7 +86,7 @@ public class BookPublishingController {
             denied = true;
         }
 
-        runtimeService.setVariable(processInstanceId, "deniedSynopsis", denied);
+        runtimeService.setVariable(processInstanceId, "deniedSynopsis", denied);*/
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -105,6 +105,7 @@ public class BookPublishingController {
         String processInstanceId = task.getProcessInstanceId();
 
         runtimeService.setVariable(processInstanceId,"worksToStore", map);
+
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
@@ -135,17 +136,17 @@ public class BookPublishingController {
     public ResponseEntity<?> postPlagiarismReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        /*Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        boolean isPlagiarism;
+        //boolean isPlagiarism;
 
-        if (map.get("plagiarismDecision").toString().contains("Yes")) {
+        /*if (map.get("plagiarismDecision").toString().contains("Yes")) {
             isPlagiarism = true;
         } else {
             isPlagiarism = false;
         }
 
-        runtimeService.setVariable(processInstanceId, "isPlagiarism", isPlagiarism);
+        runtimeService.setVariable(processInstanceId, "isPlagiarism", isPlagiarism);*/
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -160,9 +161,9 @@ public class BookPublishingController {
     public ResponseEntity<?> postManuscriptReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        /*Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        boolean manuscriptApproved;
+        /*boolean manuscriptApproved;
 
         if (map.get("manuscriptDecision").toString().contains("Yes")) {
             manuscriptApproved = true;
@@ -170,7 +171,7 @@ public class BookPublishingController {
             manuscriptApproved = false;
         }
 
-        runtimeService.setVariable(processInstanceId, "manuscriptApproved", manuscriptApproved);
+        runtimeService.setVariable(processInstanceId, "manuscriptApproved", manuscriptApproved);*/
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -187,8 +188,8 @@ public class BookPublishingController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        boolean sendToBeta;
-        boolean needMoreWork = false;
+        //boolean needMoreWork = false;
+        /*boolean sendToBeta;
 
         if (map.get("sendToBetaDecision").toString().contains("Yes")) {
             sendToBeta = true;
@@ -196,8 +197,8 @@ public class BookPublishingController {
             sendToBeta = false;
         }
 
-        runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);
-        runtimeService.setVariable(processInstanceId, "needMoreWork", needMoreWork);
+        runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);*/
+        runtimeService.setVariable(processInstanceId, "needMoreWork", false);
 
         try {
             formService.submitTaskForm(taskId, map);
@@ -285,11 +286,11 @@ public class BookPublishingController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        if (map.get("lectorDecision").toString().contains("Yes")) {
+        /*if (map.get("lectorDecision").toString().contains("Yes")) {
             runtimeService.setVariable(processInstanceId,"lectorChangesNeeded", true);
         } else {
             runtimeService.setVariable(processInstanceId,"lectorChangesNeeded", false);
-        }
+        }*/
 
         runtimeService.setVariable(processInstanceId, "lectorNote", map.get("lectorNote").toString());
 
