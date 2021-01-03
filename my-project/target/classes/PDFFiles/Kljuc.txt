@@ -1,3 +1,0 @@
-K9XNV-2RC6K-RWRY8-XY4M8-33YQF			Visual studio 2019 enterprise
-
-Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True; 

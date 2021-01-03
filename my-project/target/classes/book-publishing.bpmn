@@ -162,7 +162,7 @@
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_1sxub61" name="Download manuscript" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
-        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
         <camunda:formData>
           <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
           <camunda:formField id="manuscriptDecision" label="Do you approve manuscript?" type="enum">
@@ -244,7 +244,7 @@
           </camunda:formField>
           <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_06j9pg5</bpmn:incoming>
       <bpmn:outgoing>Flow_06j1f81</bpmn:outgoing>
@@ -307,13 +307,13 @@
     <bpmn:userTask id="Activity_1ye0svw" name="Decide if more changes are needed" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="updatedManuscript" label="Manuscript:" type="notEditableEnum_works" />
+          <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
           <camunda:formField id="decision" label="Are more changes needed?" type="enum">
             <camunda:value id="Yes_Id" name="Yes" />
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_091690f</bpmn:incoming>
       <bpmn:outgoing>Flow_04rpw18</bpmn:outgoing>
@@ -353,7 +353,7 @@
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0b2b38d</bpmn:incoming>
       <bpmn:outgoing>Flow_1jf0owm</bpmn:outgoing>
@@ -400,7 +400,7 @@
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetDownloadableFilesHandler" event="create" />
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_01qvy8d</bpmn:incoming>
       <bpmn:outgoing>Flow_10e6jf7</bpmn:outgoing>
@@ -609,6 +609,20 @@
   <bpmn:message id="Message_13x3ysa" name="NotifyBetaReadersAboutManuscript" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="bookPublishing">
+      <bpmndi:BPMNEdge id="Flow_09zrk9y_di" bpmnElement="Flow_09zrk9y">
+        <di:waypoint x="2070" y="257" />
+        <di:waypoint x="2140" y="257" />
+        <di:waypoint x="2140" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1it17jo_di" bpmnElement="Flow_1it17jo">
+        <di:waypoint x="520" y="1170" />
+        <di:waypoint x="572" y="1170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1radom1_di" bpmnElement="Flow_1radom1">
+        <di:waypoint x="520" y="1300" />
+        <di:waypoint x="770" y="1300" />
+        <di:waypoint x="770" y="1365" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1vlfwft_di" bpmnElement="Flow_1vlfwft">
         <di:waypoint x="1168" y="1510" />
         <di:waypoint x="1282" y="1510" />
@@ -929,20 +943,6 @@
       <bpmndi:BPMNEdge id="Flow_1nkrqya_di" bpmnElement="Flow_1nkrqya">
         <di:waypoint x="215" y="257" />
         <di:waypoint x="290" y="257" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1radom1_di" bpmnElement="Flow_1radom1">
-        <di:waypoint x="520" y="1300" />
-        <di:waypoint x="770" y="1300" />
-        <di:waypoint x="770" y="1365" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1it17jo_di" bpmnElement="Flow_1it17jo">
-        <di:waypoint x="520" y="1170" />
-        <di:waypoint x="572" y="1170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_09zrk9y_di" bpmnElement="Flow_09zrk9y">
-        <di:waypoint x="2070" y="257" />
-        <di:waypoint x="2140" y="257" />
-        <di:waypoint x="2140" y="420" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_05mrakh_di" bpmnElement="Activity_1niwl2m">
         <dc:Bounds x="290" y="217" width="100" height="80" />

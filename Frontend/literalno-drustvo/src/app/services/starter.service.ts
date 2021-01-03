@@ -19,7 +19,7 @@ export class StarterService {
   }
 
   startBookPublishing() : Observable<any>{
-    return this.http.get("http://localhost:8081/api/starter/start/bookPublishing") as Observable<any>;
+    return this.http.get("http://localhost:8081/api/starter/start-writer-process/bookPublishing") as Observable<any>;
   }
 
   startWriterProcess(processName: string) {
