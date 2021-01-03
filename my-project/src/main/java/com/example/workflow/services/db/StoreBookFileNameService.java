@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class StoreFileNameService implements JavaDelegate {
+public class StoreBookFileNameService implements JavaDelegate {
     @Autowired
     private IBook bookService;
 

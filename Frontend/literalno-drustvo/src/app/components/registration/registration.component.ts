@@ -117,7 +117,7 @@ export class RegistrationComponent implements OnInit {
     else if (this.router.url.includes('tasks')) {
       this.route.params.subscribe(
         (params: Params) => {
-          if(params['taskName'] == 'Submit works'){
+          if(params['taskName'] == 'Submit works' || params['taskName'] == 'Make changes'){
             this.submitWork = true;
           }
           else if(params['taskName'] == 'Review writer for membership'){
@@ -151,7 +151,7 @@ export class RegistrationComponent implements OnInit {
             this.chooseSubstitute = true;
           } else if(params['taskName'] == 'Comment manuscript'){
             this.commentManuscript = true;
-          } else if(params['taskName'] == 'Change work' || params['taskName'] == 'Apply changes' || params['taskName'] == 'Make changes'){
+          } else if(params['taskName'] == 'Make changes'){
             this.updateManuscript = true;
           } else if(params['taskName'] == 'Decide if more changes are needed'){
             this.moreChangesNeeded = true;

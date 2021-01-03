@@ -22,14 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/register")
 public class RegistrationController {
-    //@Autowired
-    //IdentityService identityService;
-
     @Autowired
     private RuntimeService runtimeService;
-
-    //@Autowired
-    //private RepositoryService repositoryService;
 
     @Autowired
     TaskService taskService;
@@ -93,13 +87,7 @@ public class RegistrationController {
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "betaGenresForm", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     //@PreAuthorize("hasAnyAuthority('CLINICADMIN','PATIENT')") ako jedan onda hasAuthority
@@ -132,13 +120,7 @@ public class RegistrationController {
         }
          */
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
@@ -160,13 +142,7 @@ public class RegistrationController {
 
         runtimeService.setVariable(processInstanceId,"creditCard", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-vote-new-writer/{taskId}", consumes = "application/json")
@@ -202,5 +178,15 @@ public class RegistrationController {
         }
 
         return map;
+    }
+
+    private ResponseEntity<?> trySubmitForm(@PathVariable String taskId, HashMap<String, Object> map) {
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

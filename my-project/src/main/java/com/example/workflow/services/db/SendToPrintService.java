@@ -19,8 +19,6 @@ public class SendToPrintService implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         PublishedBook publishedBook = bookService.GetBookByTitle(delegateExecution.getVariable("bookTitle").toString());
 
-        //Treba popuniti file_name
-        publishedBook.setFileName("");
         publishedBook.setISBN(generateISBN());
         publishedBook.setPublished(true);
         publishedBook.setKeyWords("word1, word2, word3");

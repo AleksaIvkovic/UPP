@@ -45,13 +45,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "newPublishedBookForm", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-explanation/{taskId}", consumes = "application/json")
@@ -63,20 +57,14 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "explanation", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-synopsis-review/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postSynopsisReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
 
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        /*Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
         /*boolean denied;
 
@@ -88,13 +76,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "deniedSynopsis", denied);*/
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-manuscript/{taskId}", consumes = "application/json")
@@ -106,13 +88,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId,"worksToStore", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-updated-manuscript/{taskId}", consumes = "application/json")
@@ -123,13 +99,7 @@ public class BookPublishingController {
         String processInstanceId = task.getProcessInstanceId();
 
         runtimeService.setVariable(processInstanceId,"worksToStore", map);
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-plagiarism-review/{taskId}", consumes = "application/json")
@@ -148,13 +118,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "isPlagiarism", isPlagiarism);*/
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-manuscript-review/{taskId}", consumes = "application/json")
@@ -173,13 +137,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "manuscriptApproved", manuscriptApproved);*/
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-sendToBeta-review/{taskId}", consumes = "application/json")
@@ -188,7 +146,7 @@ public class BookPublishingController {
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        //boolean needMoreWork = false;
+        /*boolean needMoreWork = false;
         /*boolean sendToBeta;
 
         if (map.get("sendToBetaDecision").toString().contains("Yes")) {
@@ -200,13 +158,7 @@ public class BookPublishingController {
         runtimeService.setVariable(processInstanceId, "sendToBeta", sendToBeta);*/
         runtimeService.setVariable(processInstanceId, "needMoreWork", false);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-more-changes-needed/{taskId}", consumes = "application/json")
@@ -225,13 +177,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "needMoreWork", needMoreWork);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-betaSelection-form/{taskId}", consumes = "application/json")
@@ -242,13 +188,7 @@ public class BookPublishingController {
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "selectedBetaReadersForm", map.get("betaReaders"));
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-commentManuscript-form/{taskId}", consumes = "application/json")
@@ -271,13 +211,7 @@ public class BookPublishingController {
         runtimeService.setVariable(processInstanceId,"comments",comments);
         runtimeService.setVariable(processInstanceId,"haveCommented",haveCommented);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-lectorNotes-form/{taskId}", consumes = "application/json")
@@ -294,13 +228,7 @@ public class BookPublishingController {
 
         runtimeService.setVariable(processInstanceId, "lectorNote", map.get("lectorNote").toString());
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-editor-approval-form/{taskId}", consumes = "application/json")
@@ -309,26 +237,18 @@ public class BookPublishingController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        if (map.get("editorDecision").toString().contains("Yes")) {
+        /*if (map.get("editorDecision").toString().contains("Yes")) {
             runtimeService.setVariable(processInstanceId,"editorChangesNeeded", true);
         } else {
             runtimeService.setVariable(processInstanceId,"editorChangesNeeded", false);
-        }
+        }*/
 
-        String ec = map.get("editorComment").toString();
-        runtimeService.setVariable(processInstanceId, "editorComment", ec);
+        runtimeService.setVariable(processInstanceId, "editorComment", map.get("editorComment").toString());
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return trySubmitForm(taskId, map);
     }
 
-    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
-    {
+    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         for(FormSubmissionDTO temp : list){
             map.put(temp.getFieldId(), temp.getFieldValue());
@@ -337,4 +257,13 @@ public class BookPublishingController {
         return map;
     }
 
+    private ResponseEntity<?> trySubmitForm(@PathVariable String taskId, HashMap<String, Object> map) {
+        try {
+            formService.submitTaskForm(taskId, map);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
