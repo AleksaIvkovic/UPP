@@ -61,14 +61,6 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails details = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-        /*if(details.getAuthorities().contains("PATIENT")) {
-            String email = authenticationRequest.getEmail();
-            if (patientService.findPatient(email).isActive() == false) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        }*/
-
-        //username = email in this case
         String jwt = tokenUtils.generateToken(details.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
@@ -76,7 +68,6 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loggedInUser")
-    //@PreAuthorize("hasAnyAuthority('READER', 'WRITER', 'BETA-READER')")
     public ResponseEntity<?> GetLoggedInSysUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();

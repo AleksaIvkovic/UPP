@@ -7,7 +7,7 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1nkrqya" sourceRef="StartEvent_1" targetRef="Activity_1niwl2m" />
     <bpmn:sequenceFlow id="Flow_0i8ddml" sourceRef="Activity_1niwl2m" targetRef="Gateway_17imxa9" />
-    <bpmn:userTask id="Activity_1yhp7ut" name="Book synopsis">
+    <bpmn:userTask id="Activity_1yhp7ut" name="Book synopsis" camunda:assignee="${loggedInUsername}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="title" label="Title: " type="string">
@@ -106,7 +106,7 @@
       <bpmn:incoming>Flow_0hdurj1</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0motsjd" sourceRef="Event_10if649" targetRef="Gateway_1acgpkh" />
-    <bpmn:startEvent id="StartEvent_1">
+    <bpmn:startEvent id="StartEvent_1" camunda:initiator="loggedInUsername">
       <bpmn:outgoing>Flow_1nkrqya</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_1tlls1k" name="Manuscript upload" camunda:assignee="${username}">
@@ -318,7 +318,6 @@
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_11uczsu">
       <bpmn:incoming>Flow_04rpw18</bpmn:incoming>
-      <bpmn:incoming>Flow_09b6ruz</bpmn:incoming>
       <bpmn:outgoing>Flow_1i6tm24</bpmn:outgoing>
       <bpmn:outgoing>Flow_0yream1</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -328,8 +327,8 @@
       <bpmn:outgoing>Flow_0b2b38d</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1isbd8j" camunda:class="com.example.workflow.services.notifications.LectorNewWorkNotificationService" />
     </bpmn:intermediateThrowEvent>
-    <bpmn:sequenceFlow id="Flow_1i6tm24" sourceRef="Gateway_11uczsu" targetRef="Activity_16b8skj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!needMoreWork}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_1i6tm24" sourceRef="Gateway_11uczsu" targetRef="Gateway_00o56gb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == "No_Id"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0b2b38d" sourceRef="Event_12vos1r" targetRef="Activity_15t473l" />
     <bpmn:exclusiveGateway id="Gateway_1fuz0hm">
@@ -339,7 +338,7 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_01w16fa" sourceRef="Gateway_1fuz0hm" targetRef="Event_1i3lhjx" />
     <bpmn:sequenceFlow id="Flow_0yream1" name="Needs more work" sourceRef="Gateway_11uczsu" targetRef="Event_1fe5rds">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${needMoreWork}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == "Yes_Id"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_15t473l" name="Download and lector" camunda:assignee="${lector}">
       <bpmn:extensionElements>
@@ -517,7 +516,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!loseBetaStatus}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0o4rfea" sourceRef="Gateway_1grot84" targetRef="Gateway_1fuz0hm" />
-    <bpmn:sequenceFlow id="Flow_09b6ruz" name="No" sourceRef="Gateway_1rhh3bl" targetRef="Gateway_11uczsu">
+    <bpmn:sequenceFlow id="Flow_09b6ruz" name="No" sourceRef="Gateway_1rhh3bl" targetRef="Gateway_00o56gb">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sendToBetaDecision == "No_Id"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0q9q9x4" sourceRef="Activity_0hocz2k" targetRef="Gateway_1grot84" />
@@ -550,7 +549,7 @@
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1bq53at" sourceRef="Activity_16b8skj" targetRef="Gateway_05hapfj" />
     <bpmn:serviceTask id="Activity_16b8skj" name="Get lector" camunda:class="com.example.workflow.services.db.GetLectorService">
-      <bpmn:incoming>Flow_1i6tm24</bpmn:incoming>
+      <bpmn:incoming>Flow_1azv743</bpmn:incoming>
       <bpmn:outgoing>Flow_1bq53at</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_05hapfj">
@@ -600,6 +599,12 @@
       <bpmn:outgoing>Flow_09zrk9y</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_09zrk9y" sourceRef="Activity_0m1oh7w" targetRef="Activity_0qogdf1" />
+    <bpmn:exclusiveGateway id="Gateway_00o56gb">
+      <bpmn:incoming>Flow_1i6tm24</bpmn:incoming>
+      <bpmn:incoming>Flow_09b6ruz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1azv743</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1azv743" sourceRef="Gateway_00o56gb" targetRef="Activity_16b8skj" />
   </bpmn:process>
   <bpmn:message id="Message_0gy1adh" name="NofityWriterOfDenial" />
   <bpmn:message id="Message_06ro9fx" name="NotifyWriterAboutTimeExpiration" />
@@ -673,10 +678,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_09b6ruz_di" bpmnElement="Flow_09b6ruz">
         <di:waypoint x="1150" y="825" />
-        <di:waypoint x="1150" y="1170" />
-        <di:waypoint x="905" y="1170" />
+        <di:waypoint x="1150" y="1260" />
+        <di:waypoint x="905" y="1260" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1158" y="995" width="15" height="14" />
+          <dc:Bounds x="1158" y="1041" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0o4rfea_di" bpmnElement="Flow_0o4rfea">
@@ -807,7 +812,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i6tm24_di" bpmnElement="Flow_1i6tm24">
         <di:waypoint x="880" y="1195" />
-        <di:waypoint x="880" y="1350" />
+        <di:waypoint x="880" y="1235" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04rpw18_di" bpmnElement="Flow_04rpw18">
         <di:waypoint x="740" y="1170" />
@@ -941,6 +946,10 @@
       <bpmndi:BPMNEdge id="Flow_1nkrqya_di" bpmnElement="Flow_1nkrqya">
         <di:waypoint x="215" y="257" />
         <di:waypoint x="290" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1azv743_di" bpmnElement="Flow_1azv743">
+        <di:waypoint x="880" y="1285" />
+        <di:waypoint x="880" y="1350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_05mrakh_di" bpmnElement="Activity_1niwl2m">
         <dc:Bounds x="290" y="217" width="100" height="80" />
@@ -1193,6 +1202,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0m1oh7w_di" bpmnElement="Activity_0m1oh7w">
         <dc:Bounds x="1970" y="217" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_00o56gb_di" bpmnElement="Gateway_00o56gb" isMarkerVisible="true">
+        <dc:Bounds x="855" y="1235" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0a8cham_di" bpmnElement="Event_165gitk">
         <dc:Bounds x="912" y="1662" width="36" height="36" />

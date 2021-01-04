@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 import java.io.File;
 import java.io.IOException;
@@ -28,15 +29,14 @@ import java.util.Properties;
 
 @Service
 public class FileService implements IFile {
-
     @Autowired
     TaskService taskService;
 
     @Autowired
     private FileRepository fileRepository;
 
+    @Override
     public void savePDF(FileDTO fileDto, String taskId){
-        //log.info("Save PDF");
         MultipartFile multipartFile = fileDto.getFile();
         Path filepath = Paths.get(".\\src\\main\\resources\\PDFFiles", multipartFile.getOriginalFilename());
 
@@ -47,6 +47,7 @@ public class FileService implements IFile {
         }
     }
 
+    @Override
     public ResponseEntity<?> download(String name) throws MalformedURLException {
 
         Path filepath = Paths.get("src\\main\\resources\\PDFFiles", name);
@@ -60,6 +61,7 @@ public class FileService implements IFile {
         return new ResponseEntity<>(urlResource, httpHeaders, HttpStatus.OK);
     }
 
+    @Override
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = Paths.get("src\\main\\resources\\PDFFiles", fileName);
@@ -77,5 +79,20 @@ public class FileService implements IFile {
     @Override
     public void storeSubmittedFile(SubmittedFile newSubmittedFile) {
         fileRepository.save(newSubmittedFile);
+    }
+
+    @Override
+    public String getContentType(HttpServletRequest request, Resource resource) {
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        return contentType;
     }
 }

@@ -23,9 +23,6 @@ import java.net.MalformedURLException;
 @RequestMapping("/api/file")
 public class FileController {
     @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     TaskService taskService;
 
     @Autowired
@@ -36,33 +33,19 @@ public class FileController {
 
     @PostMapping(value = "/upload/{taskId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadPDF(@ModelAttribute FileDTO fileDto, @PathVariable String taskId) {
-        this.fileService.savePDF(fileDto, taskId);
-        System.out.println(fileDto);
+        fileService.savePDF(fileDto, taskId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/download/{name}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<?> downloadPDF(@PathVariable String name) throws MalformedURLException {
-        return this.fileService.download(name);
+        return fileService.download(name);
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        // Load file as Resource
         Resource resource = fileService.loadFileAsResource(fileName);
-
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            //logger.info("Could not determine file type.");
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
+        String contentType = fileService.getContentType(request, resource);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

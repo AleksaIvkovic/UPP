@@ -46,14 +46,11 @@ public class PlagiarismController {
     @PostMapping(path="/submit-appeal/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postAppealForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = this.mapListToDTO(dto);
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        String processInstanceId = task.getProcessInstanceId();
 
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -74,7 +71,7 @@ public class PlagiarismController {
                 User temp = identityService.createUserQuery().userId(mapElement.getKey().toString()).singleResult();
                 chosenEditors.add(temp);
                 for(User remaining: remainingEditors){
-                    if(remaining.getId().toString().equals(temp.getId().toString())){
+                    if(remaining.getId().equals(temp.getId())){
                         remainingEditors.remove(remaining);
                         break;
                     }
@@ -102,7 +99,6 @@ public class PlagiarismController {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -130,7 +126,6 @@ public class PlagiarismController {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -153,7 +148,6 @@ public class PlagiarismController {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         ArrayList<User> haveVoted = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"haveVoted");
@@ -177,14 +171,12 @@ public class PlagiarismController {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
-    {
+    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         for(FormSubmissionDTO temp : list){
             map.put(temp.getFieldId(), temp.getFieldValue());

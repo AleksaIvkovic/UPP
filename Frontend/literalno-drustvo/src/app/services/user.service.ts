@@ -27,39 +27,51 @@ export class UserService {
   }
 
   submitManuscript(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-manuscript/".concat(taskId), data);
+    let variableName='worksToStore';
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitUpdatedManuscript(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-updated-manuscript/".concat(taskId), data);
+    let variableName='worksToStore';
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitBookSynopsis(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-synopsis-form/".concat(taskId), data);
+    let variableName = "newPublishedBookForm";
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitBookSynopsisReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-synopsis-review/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitPlagiarismReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-plagiarism-review/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitManuscriptReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-manuscript-review/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitSendToBeta(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-sendToBeta-review/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitMoreChangesNeeded(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-more-changes-needed/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitExplanation(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-explanation/".concat(taskId), data);
+    let variableName = 'explanation';
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
+  }
+
+  submitLectorNotes(data, taskId) {
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+  }
+
+  submitEditorApproval(data, taskId) {
+    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
   }
 
   submitVoteForNewWriter(data, taskId) {
@@ -75,14 +87,6 @@ export class UserService {
 
   submitCommentManuscript(data, taskId) {
     return this.http.post("http://localhost:8081/api/book-publishing/submit-commentManuscript-form/".concat(taskId), data);
-  }
-
-  submitLectorNotes(data, taskId) {
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-lectorNotes-form/".concat(taskId), data);
-  }
-
-  submitEditorApproval(data, taskId) {
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-editor-approval-form/".concat(taskId), data);
   }
 
   confirmEmail(token, processId) {

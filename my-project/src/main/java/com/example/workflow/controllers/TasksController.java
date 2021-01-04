@@ -25,12 +25,6 @@ import java.util.List;
 @RequestMapping(value = "/api/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TasksController {
     @Autowired
-    private IdentityService identityService;
-
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     private TaskService taskService;
 
     @Autowired
@@ -56,9 +50,6 @@ public class TasksController {
     @RequestMapping(method = RequestMethod.GET, value = "/getSingleTask/{taskId}")
     @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE','WRITER','HEAD-EDITOR','EDITOR','BETA-READER','LECTOR')")
     public @ResponseBody FormFieldsDTO GetTaskForm(@PathVariable String taskId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        SysUser sysUser = (SysUser) auth.getPrincipal();
-
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
