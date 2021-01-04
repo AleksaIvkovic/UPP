@@ -10,7 +10,7 @@ export class PlagiarismService {
   ) { }
 
   submitAppealForm(form, taskId){
-    return this.http.post("http://localhost:8081/api/plagiarism/submit-appeal/".concat(taskId), form);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), form);
   }
 
   submitChosenEditorsForm(form, taskId){

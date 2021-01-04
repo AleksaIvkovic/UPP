@@ -15,7 +15,6 @@ import java.util.Map;
 
 @Service
 public class NotifyBetaReadersAboutManuscriptService implements JavaDelegate {
-
     @Autowired
     private MailingService mailingService;
 
@@ -24,10 +23,9 @@ public class NotifyBetaReadersAboutManuscriptService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String processId = execution.getProcessInstanceId();
         List<String> selectedBetaReadersUsernames = new ArrayList<>();
-
-        HashMap<String, Boolean> selectedBetaReadersHM = (HashMap<String, Boolean>)execution.getVariable("selectedBetaReadersForm");
+        HashMap<String, Object> map = (HashMap<String, Object>)execution.getVariable("selectedBetaReadersForm");
+        HashMap<String, Boolean> selectedBetaReadersHM = (HashMap<String, Boolean>)map.get("betaReaders");
 
         for (Map.Entry mapElement: selectedBetaReadersHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {

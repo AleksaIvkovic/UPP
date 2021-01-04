@@ -19,59 +19,66 @@ export class UserService {
   }
 
   submitBetaForm(genres, taskId){
-    return this.http.post("http://localhost:8081/api/register/submit-beta-form/".concat(taskId), genres);
+    let variableName='betaGenresForm';
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), genres);
   }
 
   submitWork(data, taskId){
-    return this.http.post("http://localhost:8081/api/register/submit-work/".concat(taskId), data);
+    let variableName='worksToStore';
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitManuscript(data, taskId){
     let variableName='worksToStore';
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitUpdatedManuscript(data, taskId){
     let variableName='worksToStore';
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitBookSynopsis(data, taskId){
     let variableName = "newPublishedBookForm";
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitBookSynopsisReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitPlagiarismReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitManuscriptReview(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitSendToBeta(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitMoreChangesNeeded(data, taskId){
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitExplanation(data, taskId){
     let variableName = 'explanation';
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(variableName).concat('/').concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitLectorNotes(data, taskId) {
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
   }
 
   submitEditorApproval(data, taskId) {
-    return this.http.post("http://localhost:8081/api/book-publishing/submit/".concat(taskId), data);
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
+  }
+
+  submitBetaSelection(data, taskId) {
+    let variableName='selectedBetaReadersForm';
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitVoteForNewWriter(data, taskId) {
@@ -79,10 +86,8 @@ export class UserService {
   }
 
   submitPaymentDetails(data, taskId) {
-    return this.http.post("http://localhost:8081/api/register/submit-payment-details/".concat(taskId), data);
-  }
-  submitBetaSelection(data, taskId) {
-    return this.http.post("http://localhost:8081/api/book-publishing/submit-betaSelection-form/".concat(taskId), data);
+    let variableName='creditCard';
+    return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
   }
 
   submitCommentManuscript(data, taskId) {

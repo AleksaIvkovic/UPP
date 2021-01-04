@@ -1,16 +1,14 @@
 package com.example.workflow.controllers;
 
+import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.FormSubmissionDTO;
 import com.example.workflow.models.SysUser;
-import com.example.workflow.services.systemServices.SystemUserService;
-import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,36 +27,17 @@ import java.util.Map;
 @RequestMapping("/api/plagiarism")
 public class PlagiarismController {
     @Autowired
-    RuntimeService runtimeService;
-
+    private RuntimeService runtimeService;
     @Autowired
-    TaskService taskService;
-
+    private TaskService taskService;
     @Autowired
-    FormService formService;
-
+    private IdentityService identityService;
     @Autowired
-    SystemUserService systemUserService;
-
-    @Autowired
-    IdentityService identityService;
-
-    @PostMapping(path="/submit-appeal/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> postAppealForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
-
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    private ICamunda camundaService;
 
     @PostMapping(path="/submit-chosen-editors/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postHeadEditorChoiceForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
@@ -95,18 +74,12 @@ public class PlagiarismController {
         runtimeService.setVariable(processInstanceId,"editorsUsernames", editorUsernames);
         runtimeService.setVariable(processInstanceId,"remainingEditorsUsernames", remainingEditorUsernames);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return camundaService.trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-chosen-substitutes/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postSubstituteChoiceForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
@@ -122,13 +95,7 @@ public class PlagiarismController {
         }
         runtimeService.setVariable(processInstanceId,"chosenSubstitutes", chosenSubstitutes);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return camundaService.trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-editor-review/{taskId}", consumes = "application/json")
@@ -136,7 +103,7 @@ public class PlagiarismController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();
 
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
@@ -144,22 +111,16 @@ public class PlagiarismController {
         notes.add(map.get("note").toString());
         runtimeService.setVariable(processInstanceId,"editorsNotes", notes);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         ArrayList<User> haveVoted = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"haveVoted");
         haveVoted.add(identityService.createUserQuery().userId(sysUser.getUsername()).singleResult());
         runtimeService.setVariable(processInstanceId,"haveVoted", haveVoted);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return camundaService.trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-committee-review/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postCommitteeReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
@@ -167,21 +128,6 @@ public class PlagiarismController {
         votes.add(map.get("vote").toString());
         runtimeService.setVariable(processInstanceId,"committeeVotes",votes);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        for(FormSubmissionDTO temp : list){
-            map.put(temp.getFieldId(), temp.getFieldValue());
-        }
-
-        return map;
+        return camundaService.trySubmitForm(taskId, map);
     }
 }

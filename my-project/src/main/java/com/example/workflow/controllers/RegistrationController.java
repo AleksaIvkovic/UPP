@@ -1,7 +1,7 @@
 package com.example.workflow.controllers;
 
+import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.*;
-import com.example.workflow.services.systemServices.FileService;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -18,21 +18,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/api/register")
 public class RegistrationController {
     @Autowired
     private RuntimeService runtimeService;
-
     @Autowired
-    TaskService taskService;
-
+    private TaskService taskService;
     @Autowired
-    FormService formService;
-
+    private FormService formService;
     @Autowired
-    FileService fileService;
+    private ICamunda camundaService;
 
     @GetMapping(path = "/form/{processId}", produces = "application/json")
     public @ResponseBody FormFieldsDTO getForm(@PathVariable String processId) {
@@ -49,7 +45,7 @@ public class RegistrationController {
 
     @PostMapping(path="/submit-registration-form/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postReaderForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
@@ -79,50 +75,6 @@ public class RegistrationController {
 
     }
 
-    @PostMapping(path="/submit-beta-form/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> postBetaForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
-
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        String processInstanceId = task.getProcessInstanceId();
-        runtimeService.setVariable(processInstanceId, "betaGenresForm", map);
-
-        return trySubmitForm(taskId, map);
-    }
-
-    //@PreAuthorize("hasAnyAuthority('CLINICADMIN','PATIENT')") ako jedan onda hasAuthority
-    @PostMapping(path="/submit-work/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> submitWork(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
-
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        String processInstanceId = task.getProcessInstanceId();
-
-        runtimeService.setVariable(processInstanceId,"worksToStore", map);
-
-        /*
-        Task task = this.taskService.createTaskQuery()
-                .active()
-                .taskId(taskId)
-                .singleResult();
-
-        String processInstanceId = task.getProcessInstanceId();
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)runtimeService.getVariable(processInstanceId,"newSysUser");
-
-        String username = systemUserForm.get("username").toString();
-
-        for (Map.Entry mapElement: map.entrySet()) {
-            ArrayList<String> fileNames = (ArrayList<String>)mapElement.getValue();
-            for (String name : fileNames){
-                SubmittedFile newFile = new SubmittedFile(name,processInstanceId,username);
-                fileService.storeSubmittedFile(newFile);
-            }
-        }
-         */
-
-        return trySubmitForm(taskId, map);
-    }
-
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")
     public ResponseEntity<?> EmailVerification(@RequestBody TokenConfirmation object, @PathVariable String processId) {
         runtimeService.setVariable(processId, "TokenValidationToken", object.getToken());
@@ -133,21 +85,9 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(path="/submit-payment-details/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> SubmitPaymentDetails(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
-
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        String processInstanceId = task.getProcessInstanceId();
-
-        runtimeService.setVariable(processInstanceId,"creditCard", map);
-
-        return trySubmitForm(taskId, map);
-    }
-
     @PostMapping(path="/submit-vote-new-writer/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postVoteNewWriterForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        HashMap<String, Object> map = this.mapListToDTO(dto);
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
@@ -160,33 +100,6 @@ public class RegistrationController {
         runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
         runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list)
-    {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        for(FormSubmissionDTO temp : list){
-            map.put(temp.getFieldId(), temp.getFieldValue());
-        }
-
-        return map;
-    }
-
-    private ResponseEntity<?> trySubmitForm(@PathVariable String taskId, HashMap<String, Object> map) {
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return camundaService.trySubmitForm(taskId, map);
     }
 }
