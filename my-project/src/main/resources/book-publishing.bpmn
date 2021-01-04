@@ -7,7 +7,7 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1nkrqya" sourceRef="StartEvent_1" targetRef="Activity_1niwl2m" />
     <bpmn:sequenceFlow id="Flow_0i8ddml" sourceRef="Activity_1niwl2m" targetRef="Gateway_17imxa9" />
-    <bpmn:userTask id="Activity_1yhp7ut" name="Book synopsis" camunda:assignee="${username}">
+    <bpmn:userTask id="Activity_1yhp7ut" name="Book synopsis">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="title" label="Title: " type="string">
@@ -59,10 +59,9 @@
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
           <camunda:formField id="titleReadOnly" label="Title:" type="string_label" defaultValue="${title}" />
-          <camunda:formField id="genreReadOnly" label="Genre: " type="string_label" defaultValue="${genre}" />
+          <camunda:formField id="genreReadOnly" label="Genre: " type="string_label" defaultValue="${genreName}" />
           <camunda:formField id="synopsisReadOnly" label="Synopsis:" type="string_label" defaultValue="${synopsis}" />
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetBookSynopsisHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0mg9w6o</bpmn:incoming>
       <bpmn:outgoing>Flow_03cs2ay</bpmn:outgoing>
@@ -144,9 +143,8 @@
             <camunda:value id="Yes_Id" name="Yes" />
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
-          <camunda:formField id="possiblePlagiarisms" label="Possible plagiarisms: " type="string_label" />
+          <camunda:formField id="possiblePlagiarismsReadOnly" label="Possible plagiarisms: " type="string_labels" defaultValue="${possiblePlagiarisms}" />
         </camunda:formData>
-        <camunda:taskListener class="com.example.workflow.handlers.GetPossiblePlagiarismsHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1datctj</bpmn:incoming>
       <bpmn:outgoing>Flow_14ot6qs</bpmn:outgoing>

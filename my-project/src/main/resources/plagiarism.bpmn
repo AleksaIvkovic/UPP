@@ -5,7 +5,7 @@
       <bpmn:outgoing>Flow_1bj0d0l</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1bj0d0l" sourceRef="StartEvent_1" targetRef="Activity_11wn326" />
-    <bpmn:userTask id="Activity_11wn326" name="File an appeal" camunda:assignee="${username}">
+    <bpmn:userTask id="Activity_11wn326" name="File an appeal">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="myTitle" label="Book title" type="string">

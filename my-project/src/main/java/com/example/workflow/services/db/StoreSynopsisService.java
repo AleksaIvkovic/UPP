@@ -33,5 +33,6 @@ public class StoreSynopsisService implements JavaDelegate {
 
         bookService.StoreBook(newPublishedBook);
         execution.setVariable("bookTitle", newPublishedBook.getTitle());
+        execution.setVariable("genreName",newPublishedBook.getGenre().getName());
     }
 }
