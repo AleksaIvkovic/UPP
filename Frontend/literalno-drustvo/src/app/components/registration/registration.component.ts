@@ -27,31 +27,29 @@ export class RegistrationComponent implements OnInit {
   formControls: FormControl[] = [];
   uploadResponse = { status: '', message: '' };
 
+  tasksCamundaForm = 
+  ['Synopsis review', 'Plagiarism review', 'Download manuscript', 'Send to beta?', 'Decide if more changes are needed', 'Download and lector', 'Editor approval'];
+  tasksCamundaFormWithVariable = 
+  ['Give an explanation', 'Pay membership', 'Select beta readers'];
+
+  isCamundaForm = false;
+  isCamundaFormWithVariable = false;
+  variableName = '';
+
   isReader = false;
   isBetaReader = false;
   isWriter = false;
   submitWork = false;
-  submitNewBook = false;
   isTask = false;
   isCommitee = false;
-  synopsisReview = false;
-  explanation = false;
-  payMembership = false;
   manuscriptUpload = false;
-  plagiarismReview = false;
-  downloadManuscript = false;
   fileAnAppeal = false;
   chooseEditors = false;
   editorPlagiarismBookReview = false;
-  sendToBeta = false;
-  selectBetas = false;
   commiteReview = false;
   chooseSubstitute = false;
   commentManuscript = false;
   updateManuscript = false;
-  moreChangesNeeded = false;
-  lectorChanges = false;
-  editorApproval = false;
 
   constructor( 
     private userService: UserService,
@@ -103,7 +101,8 @@ export class RegistrationComponent implements OnInit {
       );
     }
     else if(this.router.url.includes('submit-new-book')){
-      this.submitNewBook = true;
+      this.isCamundaFormWithVariable = true;
+      this.variableName = 'newPublishedBookForm';
      this.userService.getRegisterForm().subscribe(
         res => {
           this.initForm(res);
@@ -117,34 +116,34 @@ export class RegistrationComponent implements OnInit {
     else if (this.router.url.includes('tasks')) {
       this.route.params.subscribe(
         (params: Params) => {
-          if(params['taskName'] == 'Submit works' || params['taskName'] == 'Make changes'){
+          if (this.tasksCamundaForm.includes(params['taskName'])) {
+            this.isCamundaForm = true;
+          } else if (this.tasksCamundaFormWithVariable.includes(params['taskName'])) {
+            this.isCamundaFormWithVariable = true;
+            switch (params['taskName']) {
+              case 'Give an explanation':
+                this.variableName = 'explanation';
+                break;
+              case 'Pay membership':
+                this.variableName = 'creditCard';
+                break;
+              case 'Select beta readers':
+                this.variableName = 'selectedBetaReadersForm';
+                break;
+            }
+          } else if(params['taskName'] == 'Submit works' || params['taskName'] == 'Make changes'){
             this.submitWork = true;
-          }
-          else if(params['taskName'] == 'Review writer for membership'){
+          } else if(params['taskName'] == 'Review writer for membership'){
             this.isCommitee = true;
             this.isTask = true;
           } else if(params['taskName'] == 'Deliver more work'){
             this.submitWork = true;
-          } else if(params['taskName'] == 'Synopsis review') {
-            this.synopsisReview = true;
-          } else if(params['taskName'] == 'Give an explanation') {
-            this.explanation = true;
-          } else if (params['taskName'] == 'Pay membership') {
-            this.payMembership = true;
           } else if (params['taskName'] == 'Manuscript upload') {
             this.manuscriptUpload = true;
-          }else if (params['taskName'] == 'Plagiarism review') {
-            this.plagiarismReview = true;
-          }else if (params['taskName'] == 'Download manuscript') {
-            this.downloadManuscript = true;
           } else if(params['taskName'] == 'Choose editors'){
             this.chooseEditors = true;
           } else if(params['taskName'] == 'Review books'){
             this.editorPlagiarismBookReview = true;
-          } else if(params['taskName'] == 'Send to beta?'){
-            this.sendToBeta = true;
-          } else if(params['taskName'] == 'Select beta readers'){
-            this.selectBetas = true;
           } else if(params['taskName'] == 'Committee review'){
             this.commiteReview = true;
           } else if(params['taskName'] == 'Choose substitute'){
@@ -153,12 +152,6 @@ export class RegistrationComponent implements OnInit {
             this.commentManuscript = true;
           } else if(params['taskName'] == 'Make changes'){
             this.updateManuscript = true;
-          } else if(params['taskName'] == 'Decide if more changes are needed'){
-            this.moreChangesNeeded = true;
-          } else if(params['taskName'] == 'Download and lector'){
-            this.lectorChanges = true;
-          } else if(params['taskName'] == 'Editor approval'){
-            this.editorApproval = true;
           }
 
           
@@ -318,6 +311,24 @@ export class RegistrationComponent implements OnInit {
         )
       }
     } 
+    else if (this.isCamundaForm) {
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+          alert('Action successful.');
+      }, error => {
+        console.log(error);
+        //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
+    else if (this.isCamundaFormWithVariable) {
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, this.variableName).subscribe(
+        (res) => {
+          alert('Action successful.');
+      }, error => {
+        console.log(error);
+        //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
     else if(this.manuscriptUpload) {
       for(let filesList of this.files.values()){
         let tempFiles = [];
@@ -350,15 +361,6 @@ export class RegistrationComponent implements OnInit {
         )
       }
     }
-     else if (this.payMembership) {
-      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'creditCard').subscribe(
-        (res) => {
-          alert('Payment details submitted succesfully.');
-      }, error => {
-        console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
-      });
-    } 
     else if (this.commentManuscript) {
       this.userService.submitCommentManuscript(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
@@ -366,98 +368,6 @@ export class RegistrationComponent implements OnInit {
       }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
-      });
-    }
-    else if(this.submitNewBook){
-      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'newPublishedBookForm').subscribe(
-        (res) => {
-          if(res == null){
-            alert('Book synopsis successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
-      });
-    }
-    else if (this.synopsisReview) {
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          if(res == null){
-            alert('Book synopsis review successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
-    }
-    else if(this.plagiarismReview){
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          if(res == null){
-            alert('Plagiarism review successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
-    } 
-    else if(this.sendToBeta){
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          if(res == null){
-            alert('Send to beta decision successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
-    }
-    else if (this.explanation) {
-      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'explanation').subscribe(
-        (res) => {
-          if(res == null){
-            alert('Explanation successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
-    }
-    else if (this.selectBetas) {
-      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'selectedBetaReadersForm').subscribe(
-        (res) => {
-          if(res == null){
-            alert('Beta selection successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
-    }
-    else if(this.downloadManuscript){
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          if(res == null){
-            alert('Manuscript review successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
       });
     }
     else if(this.isTask && this.isCommitee) {
@@ -509,26 +419,6 @@ export class RegistrationComponent implements OnInit {
         }
       )
     }
-    else if (this.lectorChanges) {
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        res => {
-          alert('Success');
-        },
-        err => {
-          console.log(err);
-        }
-      )
-    }
-    else if (this.editorApproval) {
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        res => {
-          alert('Success');
-        },
-        err => {
-          console.log(err);
-        }
-      )
-    }
     else if(this.chooseSubstitute){
       this.plagiarismService.submitSubstituteChoiceForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
@@ -571,19 +461,6 @@ export class RegistrationComponent implements OnInit {
           }
         )
       }
-    }
-    else if(this.moreChangesNeeded){
-      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
-        (res) => {
-          if(res == null){
-            alert('More changes needed decision successfully submited.');
-          }
-          else{
-           
-          }
-      }, (error : any)  => {
-        console.log(error);
-      });
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
