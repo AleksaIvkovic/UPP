@@ -305,7 +305,7 @@ export class RegistrationComponent implements OnInit {
         forkJoin(requests).subscribe(
           (res:any) => {
             console.log("Successful upload.")
-            this.userService.submitWork(o, this.formFieldsDto.taskId).subscribe(
+            this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
               (res: any) =>{
                 alert("Successful work submission.")
               },
@@ -337,7 +337,7 @@ export class RegistrationComponent implements OnInit {
         forkJoin(requests).subscribe(
           (res:any) => {
             console.log("Successful upload.")
-            this.userService.submitManuscript(o, this.formFieldsDto.taskId).subscribe(
+            this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
               (res: any) =>{
                 alert("Successful work submission.")
               },
@@ -351,7 +351,7 @@ export class RegistrationComponent implements OnInit {
       }
     }
      else if (this.payMembership) {
-      this.userService.submitPaymentDetails(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'creditCard').subscribe(
         (res) => {
           alert('Payment details submitted succesfully.');
       }, error => {
@@ -369,7 +369,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if(this.submitNewBook){
-      this.userService.submitBookSynopsis(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'newPublishedBookForm').subscribe(
         (res) => {
           if(res == null){
             alert('Book synopsis successfully submited.');
@@ -383,7 +383,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if (this.synopsisReview) {
-      this.userService.submitBookSynopsisReview(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Book synopsis review successfully submited.');
@@ -396,7 +396,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if(this.plagiarismReview){
-      this.userService.submitPlagiarismReview(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Plagiarism review successfully submited.');
@@ -409,7 +409,7 @@ export class RegistrationComponent implements OnInit {
       });
     } 
     else if(this.sendToBeta){
-      this.userService.submitSendToBeta(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Send to beta decision successfully submited.');
@@ -422,7 +422,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if (this.explanation) {
-      this.userService.submitExplanation(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'explanation').subscribe(
         (res) => {
           if(res == null){
             alert('Explanation successfully submited.');
@@ -435,7 +435,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if (this.selectBetas) {
-      this.userService.submitBetaSelection(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'selectedBetaReadersForm').subscribe(
         (res) => {
           if(res == null){
             alert('Beta selection successfully submited.');
@@ -448,7 +448,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else if(this.downloadManuscript){
-      this.userService.submitManuscriptReview(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('Manuscript review successfully submited.');
@@ -510,7 +510,7 @@ export class RegistrationComponent implements OnInit {
       )
     }
     else if (this.lectorChanges) {
-      this.userService.submitLectorNotes(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
         },
@@ -520,7 +520,7 @@ export class RegistrationComponent implements OnInit {
       )
     }
     else if (this.editorApproval) {
-      this.userService.submitEditorApproval(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
         },
@@ -559,7 +559,7 @@ export class RegistrationComponent implements OnInit {
         forkJoin(requests).subscribe(
           (res:any) => {
             console.log("Successful upload.")
-            this.userService.submitUpdatedManuscript(o, this.formFieldsDto.taskId).subscribe(
+            this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId,'worksToStore').subscribe(
               (res: any) =>{
                 alert("Successful work submission.")
               },
@@ -573,7 +573,7 @@ export class RegistrationComponent implements OnInit {
       }
     }
     else if(this.moreChangesNeeded){
-      this.userService.submitMoreChangesNeeded(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
             alert('More changes needed decision successfully submited.');
@@ -601,7 +601,7 @@ export class RegistrationComponent implements OnInit {
       });
     }
     else {
-      this.userService.submitBetaForm(o, this.formFieldsDto.taskId).subscribe(
+      this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'betaGenresForm').subscribe(
         (res) => {
           alert('Registration successful. Verification email has been sent to your address.');
       }, error => {
