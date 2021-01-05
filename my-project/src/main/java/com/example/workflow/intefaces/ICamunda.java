@@ -8,4 +8,5 @@ import java.util.List;
 public interface ICamunda {
     HashMap<String, Object> mapListToDTO(List<FormSubmissionDTO> list);
     ResponseEntity<?> trySubmitForm(String taskId, HashMap<String, Object> map);
+    ResponseEntity<?> getNextTask(String taskName, String processInstanceId);
 }

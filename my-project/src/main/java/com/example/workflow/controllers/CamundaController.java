@@ -1,11 +1,15 @@
 package com.example.workflow.controllers;
 
 import com.example.workflow.intefaces.ICamunda;
+import com.example.workflow.models.FormFieldsDTO;
 import com.example.workflow.models.FormSubmissionDTO;
+import com.example.workflow.models.TaskDTO;
 import com.example.workflow.models.ValidationError;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.form.FormField;
+import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +51,16 @@ public class CamundaController {
         return camundaService.trySubmitForm(taskId, map);
     }
 
-    //Metoda/e za vracanje forme
+    @PostMapping(path="/submit-return-task/{taskId}/{taskName}", consumes = "application/json")
+    public ResponseEntity<?> postCamundaFormWithReturnTask(@RequestBody List<FormSubmissionDTO> dto,
+                                                           @PathVariable String taskId,
+                                                           @PathVariable String taskName) {
+        HashMap<String, Object> map = camundaService.mapListToDTO(dto);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
+        camundaService.trySubmitForm(taskId, map);
+
+        return camundaService.getNextTask(taskName, processInstanceId);
+    }
 }

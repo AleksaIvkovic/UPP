@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
 import { PlagiarismService} from '../../services/plagiarism.service'
+import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-registration',
@@ -27,14 +28,16 @@ export class RegistrationComponent implements OnInit {
   formControls: FormControl[] = [];
   uploadResponse = { status: '', message: '' };
 
-  tasksCamundaForm = 
-  ['Synopsis review', 'Plagiarism review', 'Download manuscript', 'Send to beta?', 'Decide if more changes are needed', 'Download and lector', 'Editor approval'];
-  tasksCamundaFormWithVariable = 
-  ['Give an explanation', 'Pay membership', 'Select beta readers'];
+  tasksCamundaForm = ['Decide if more changes are needed', 'Download and lector', 'Editor approval'];
+  tasksCamundaFormWithVariable = ['Give an explanation', 'Pay membership', 'Select beta readers', 'Book synopsis'];
+  tasksCamundaFormWithReturnTask = ['Synopsis review', 'Plagiarism review', 'Download manuscript', 'Send to beta?'];
+  submitWorksTasks = ['Submit works', 'Make changes', 'Deliver more work', 'Manuscript upload']
 
   isCamundaForm = false;
   isCamundaFormWithVariable = false;
+  isCamundaFormWithReturnTask = false;
   variableName = '';
+  nextTaskName = '';
 
   isReader = false;
   isBetaReader = false;
@@ -42,14 +45,12 @@ export class RegistrationComponent implements OnInit {
   submitWork = false;
   isTask = false;
   isCommitee = false;
-  manuscriptUpload = false;
   fileAnAppeal = false;
   chooseEditors = false;
   editorPlagiarismBookReview = false;
   commiteReview = false;
   chooseSubstitute = false;
   commentManuscript = false;
-  updateManuscript = false;
 
   constructor( 
     private userService: UserService,
@@ -86,24 +87,24 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
-    else if(this.router.url.includes('submit-work')){
-      this.isWriter = true;
-      this.submitWork = true;
-      sessionStorage.setItem("processId", this.router.url.split("/")[3] );
-      this.userService.getRegisterForm().subscribe(
-        res => {
-          this.initForm(res);
-        },
-        err => {
-          console.log(err);
-          console.log("Error occured");
-        }
-      );
-    }
+    // else if(this.router.url.includes('submit-work')){
+    //   this.isWriter = true;
+    //   this.submitWork = true;
+    //   sessionStorage.setItem("processId", this.router.url.split("/")[3] );
+    //   this.userService.getRegisterForm().subscribe(
+    //     res => {
+    //       this.initForm(res);
+    //     },
+    //     err => {
+    //       console.log(err);
+    //       console.log("Error occured");
+    //     }
+    //   );
+    // }
     else if(this.router.url.includes('submit-new-book')){
       this.isCamundaFormWithVariable = true;
       this.variableName = 'newPublishedBookForm';
-     this.userService.getRegisterForm().subscribe(
+      this.userService.getRegisterForm().subscribe(
         res => {
           this.initForm(res);
         },
@@ -118,6 +119,23 @@ export class RegistrationComponent implements OnInit {
         (params: Params) => {
           if (this.tasksCamundaForm.includes(params['taskName'])) {
             this.isCamundaForm = true;
+          } else if (this.tasksCamundaFormWithReturnTask.includes(params['taskName'])) {
+            this.isCamundaFormWithReturnTask = true;
+
+            switch (params['taskName']) {
+              case 'Synopsis review':
+                this.nextTaskName = 'Give an explanation';
+                break;
+              case 'Plagiarism review':
+                this.nextTaskName = 'Download manuscript';
+                break;
+              case 'Download manuscript':
+                this.nextTaskName = 'Send to beta?';
+                break;
+              case 'Send to beta?':
+                this.nextTaskName = 'Select beta readers';
+                break;
+            }
           } else if (this.tasksCamundaFormWithVariable.includes(params['taskName'])) {
             this.isCamundaFormWithVariable = true;
             switch (params['taskName']) {
@@ -130,16 +148,15 @@ export class RegistrationComponent implements OnInit {
               case 'Select beta readers':
                 this.variableName = 'selectedBetaReadersForm';
                 break;
+              case 'Book synopsis':
+                this.variableName = 'newPublishedBookForm';
+                break;
             }
-          } else if(params['taskName'] == 'Submit works' || params['taskName'] == 'Make changes'){
+          } else if(this.submitWorksTasks.includes(params['taskName'])){
             this.submitWork = true;
           } else if(params['taskName'] == 'Review writer for membership'){
             this.isCommitee = true;
             this.isTask = true;
-          } else if(params['taskName'] == 'Deliver more work'){
-            this.submitWork = true;
-          } else if (params['taskName'] == 'Manuscript upload') {
-            this.manuscriptUpload = true;
           } else if(params['taskName'] == 'Choose editors'){
             this.chooseEditors = true;
           } else if(params['taskName'] == 'Review books'){
@@ -150,11 +167,10 @@ export class RegistrationComponent implements OnInit {
             this.chooseSubstitute = true;
           } else if(params['taskName'] == 'Comment manuscript'){
             this.commentManuscript = true;
-          } else if(params['taskName'] == 'Make changes'){
-            this.updateManuscript = true;
+          } else if(params['taskName'] == 'File an appeal'){
+            this.fileAnAppeal = true;
           }
 
-          
           this.userService.getTask(params['taskId']).subscribe(
             res => {
               this.initForm(res);
@@ -300,7 +316,9 @@ export class RegistrationComponent implements OnInit {
             console.log("Successful upload.")
             this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
               (res: any) =>{
-                alert("Successful work submission.")
+                alert("Successful work submission.");
+                this.userService.onTaskChange('');
+                this.router.navigate(['../../'], {relativeTo: this.route});
               },
             (err) => console.log(err)
             );
@@ -315,6 +333,22 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Action successful.');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
+      }, error => {
+        console.log(error);
+        //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+      });
+    }
+    else if (this.isCamundaFormWithReturnTask) {
+      this.userService.submitCamundaFormWithReturnTask(o, this.formFieldsDto.taskId, this.nextTaskName).subscribe(
+        (res: any) => {
+          alert('Action successful.');
+          console.log(res);
+          if(res != null){
+            this.userService.onTaskChange('');
+            this.router.navigate(['../../', res.id, res.name], {relativeTo: this.route});
+          }
       }, error => {
         console.log(error);
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
@@ -324,47 +358,19 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, this.variableName).subscribe(
         (res) => {
           alert('Action successful.');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
       });
     }
-    else if(this.manuscriptUpload) {
-      for(let filesList of this.files.values()){
-        let tempFiles = [];
-
-        for(let file of filesList){
-          const fd = new FormData();
-          fd.append('file',file);
-          tempFiles.push(fd);
-        }
-  
-        let requests = [];
-        
-        for(let fd of tempFiles){
-          requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
-        }
-  
-        forkJoin(requests).subscribe(
-          (res:any) => {
-            console.log("Successful upload.")
-            this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
-              (res: any) =>{
-                alert("Successful work submission.")
-              },
-            (err) => console.log(err)
-            );
-          },
-          (err) => {
-            console.log(err);
-          }
-        )
-      }
-    }
     else if (this.commentManuscript) {
       this.userService.submitCommentManuscript(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Comment manuscript submitted succesfully.');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
@@ -374,6 +380,8 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           alert('Vote successful.');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
@@ -383,6 +391,8 @@ export class RegistrationComponent implements OnInit {
       this.plagiarismService.submitAppealForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
@@ -393,6 +403,8 @@ export class RegistrationComponent implements OnInit {
       this.plagiarismService.submitChosenEditorsForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
@@ -403,6 +415,8 @@ export class RegistrationComponent implements OnInit {
       this.plagiarismService.submitEditorReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
@@ -413,6 +427,8 @@ export class RegistrationComponent implements OnInit {
       this.plagiarismService.submitCommitteeReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
@@ -423,44 +439,14 @@ export class RegistrationComponent implements OnInit {
       this.plagiarismService.submitSubstituteChoiceForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
           alert('Success');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
           alert(err);
         }
       )
-    }
-    else if (this.updateManuscript){
-      for(let filesList of this.files.values()){
-        let tempFiles = [];
-
-        for(let file of filesList){
-          const fd = new FormData();
-          fd.append('file',file);
-          tempFiles.push(fd);
-        }
-  
-        let requests = [];
-        
-        for(let fd of tempFiles){
-          requests.push(this.uploadService.upload(fd, this.formFieldsDto.taskId));
-        }
-  
-        forkJoin(requests).subscribe(
-          (res:any) => {
-            console.log("Successful upload.")
-            this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId,'worksToStore').subscribe(
-              (res: any) =>{
-                alert("Successful work submission.")
-              },
-            (err) => console.log(err)
-            );
-          },
-          (err) => {
-            console.log(err);
-          }
-        )
-      }
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
@@ -481,6 +467,8 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'betaGenresForm').subscribe(
         (res) => {
           alert('Registration successful. Verification email has been sent to your address.');
+          this.userService.onTaskChange('');
+          this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
@@ -488,7 +476,7 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  checkArray(group: FormGroup): {[s:string]:boolean}{
+  checkArray(group: FormGroup): {[s:string]:boolean} {
     let found = false;
     Object.keys(group.controls).forEach(key => {
       if(group.controls[key].value)
@@ -504,7 +492,7 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-   checkFiles(min: number, max : number): ValidatorFn {
+  checkFiles(min: number, max : number): ValidatorFn {
     return (control: FormControl): {[key: string]: any} | null => {
       if((<File[]>control.value).length < min || (<File[]>control.value).length > max)
         return {'More files are needed' : true};
@@ -527,7 +515,7 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  download(name){
+  download(name) {
     this.uploadService.download(name).subscribe(
       (blob: any) => {
         const a = document.createElement('a')
@@ -542,7 +530,7 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
-  RemoveFile(name, fieldId){
+  RemoveFile(name, fieldId) {
 
     this.filesString = (<String[]>this.registerForm.controls[fieldId].value);
     for(let s of this.filesString){

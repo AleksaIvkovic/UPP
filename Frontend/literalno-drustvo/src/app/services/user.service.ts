@@ -1,14 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  tasksChange = new Subject<string>();
+
   constructor(
     private http: HttpClient
   ) { }
+
+  onTaskChange(newTask){
+    this.tasksChange.next(newTask);
+  }
 
   submitCamundaForm(data, taskId) {
     return this.http.post("http://localhost:8081/api/camunda/submit/".concat(taskId), data);
@@ -16,6 +24,10 @@ export class UserService {
 
   submitCamundaFormWithVariable(data, taskId, variableName) {
     return this.http.post("http://localhost:8081/api/camunda/submit/".concat(variableName).concat('/').concat(taskId), data);
+  }
+  
+  submitCamundaFormWithReturnTask(data, taskId, nextTaskName) {
+    return this.http.post("http://localhost:8081/api/camunda/submit-return-task/".concat(taskId).concat('/').concat(nextTaskName), data);
   }
 
   getRegisterForm() : Observable<any>{

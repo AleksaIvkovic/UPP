@@ -383,8 +383,8 @@
       <bpmn:outgoing>Flow_1n9o4lo</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_0ea7fgh">
-      <bpmn:incoming>Flow_1cedfh4</bpmn:incoming>
       <bpmn:incoming>Flow_05do1ly</bpmn:incoming>
+      <bpmn:incoming>Flow_05jiiyg</bpmn:incoming>
       <bpmn:outgoing>Flow_01qvy8d</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="Activity_0354kwq" name="Editor approval" camunda:assignee="${headEditor}">
@@ -441,7 +441,7 @@
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_1cedfh4" sourceRef="Activity_0sqnm0t" targetRef="Gateway_0ea7fgh" />
+    <bpmn:sequenceFlow id="Flow_1cedfh4" sourceRef="Activity_0sqnm0t" targetRef="Activity_1w0g2n5" />
     <bpmn:intermediateThrowEvent id="Event_1oa9zjk" name="Notify writer about time expiration">
       <bpmn:incoming>Flow_0ecczjn</bpmn:incoming>
       <bpmn:outgoing>Flow_05jpzai</bpmn:outgoing>
@@ -605,6 +605,11 @@
       <bpmn:outgoing>Flow_1azv743</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1azv743" sourceRef="Gateway_00o56gb" targetRef="Activity_16b8skj" />
+    <bpmn:serviceTask id="Activity_1w0g2n5" name="Save file name" camunda:class="com.example.workflow.services.db.StoreBookFileNameService">
+      <bpmn:incoming>Flow_1cedfh4</bpmn:incoming>
+      <bpmn:outgoing>Flow_05jiiyg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_05jiiyg" sourceRef="Activity_1w0g2n5" targetRef="Gateway_0ea7fgh" />
   </bpmn:process>
   <bpmn:message id="Message_0gy1adh" name="NofityWriterOfDenial" />
   <bpmn:message id="Message_06ro9fx" name="NotifyWriterAboutTimeExpiration" />
@@ -755,8 +760,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1cedfh4_di" bpmnElement="Flow_1cedfh4">
         <di:waypoint x="830" y="1680" />
-        <di:waypoint x="470" y="1680" />
-        <di:waypoint x="470" y="1535" />
+        <di:waypoint x="740" y="1680" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18ezlrv_di" bpmnElement="Flow_18ezlrv">
         <di:waypoint x="880" y="1598" />
@@ -950,6 +954,11 @@
       <bpmndi:BPMNEdge id="Flow_1azv743_di" bpmnElement="Flow_1azv743">
         <di:waypoint x="880" y="1285" />
         <di:waypoint x="880" y="1350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05jiiyg_di" bpmnElement="Flow_05jiiyg">
+        <di:waypoint x="640" y="1680" />
+        <di:waypoint x="470" y="1680" />
+        <di:waypoint x="470" y="1535" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_05mrakh_di" bpmnElement="Activity_1niwl2m">
         <dc:Bounds x="290" y="217" width="100" height="80" />
@@ -1205,6 +1214,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_00o56gb_di" bpmnElement="Gateway_00o56gb" isMarkerVisible="true">
         <dc:Bounds x="855" y="1235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1w0g2n5_di" bpmnElement="Activity_1w0g2n5">
+        <dc:Bounds x="640" y="1640" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0a8cham_di" bpmnElement="Event_165gitk">
         <dc:Bounds x="912" y="1662" width="36" height="36" />

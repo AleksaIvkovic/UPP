@@ -24,6 +24,18 @@ export class TasksComponent implements OnInit {
         console.log(err);
       }
     )
-  }
 
+    this.userService.tasksChange.subscribe(
+      res => 
+      this.userService.getTasks().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.tasks = res;
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    );
+  }
 }
