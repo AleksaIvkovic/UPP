@@ -55,6 +55,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskComponent } from './components/tasks/task/task.component';
 import { TaskDetailsComponent } from './components/tasks/task-details/task-details.component';
+import { BooksComponent } from './components/books/books.component';
+import { BookComponent } from './components/books/book/book.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { TaskDetailsComponent } from './components/tasks/task-details/task-detai
     MainComponent,
     TasksComponent,
     TaskComponent,
-    TaskDetailsComponent
+    TaskDetailsComponent,
+    BooksComponent,
+    BookComponent
   ],
   imports: [
     BrowserModule,

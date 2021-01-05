@@ -61,7 +61,15 @@ export class NavigationComponent {
 
     checkIfWriter(){
       let user = <SysUser>JSON.parse(sessionStorage.getItem('loggedInUser'));
+      if(user == null){
+        return false;
+      }
       return user.authority == 'WRITER';
+    }
+
+    checkIfLoggedin(){
+      let user = <SysUser>JSON.parse(sessionStorage.getItem('loggedInUser'));
+      return user != null;
     }
 
 }

@@ -164,7 +164,7 @@
         <di:waypoint x="920" y="305" />
         <di:waypoint x="920" y="380" />
         <di:waypoint x="250" y="380" />
-        <di:waypoint x="250" y="310" />
+        <di:waypoint x="250" y="305" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="549" y="362" width="77" height="14" />
         </bpmndi:BPMNLabel>

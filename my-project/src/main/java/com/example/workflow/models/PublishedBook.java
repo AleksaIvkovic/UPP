@@ -43,7 +43,7 @@ public class PublishedBook {
     private String synopsis;
 
     @Column(nullable = false)
-    private boolean isPublished;
+    private boolean published;
 
     @Column
     private boolean isPlagiarism;
@@ -143,9 +143,9 @@ public class PublishedBook {
         this.synopsis = synopsis;
     }
 
-    public boolean isPublished() { return isPublished; }
+    public boolean isPublished() { return published; }
 
-    public void setPublished(boolean published) { isPublished = published; }
+    public void setPublished(boolean published) { this.published = published; }
 
     public boolean isPlagiarism() { return isPlagiarism; }
 

@@ -2,12 +2,14 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+      [opened]="(isHandset$ | async) === false"
+      *ngIf="checkIfLoggedin()">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item (click)="router.navigate(['tasks'], {relativeTo : activeRoute})">Tasks</a>
-      <a mat-list-item (click)="submitNewBook()" *ngIf="checkIfWriter()">Submit new book</a>
-      <a mat-list-item (click)="fileAnAppeal()" *ngIf="checkIfWriter()">File an appeal</a>
+      <a mat-list-item style="cursor: pointer;" (click)="router.navigate(['books'], {relativeTo: activeRoute})">Books</a>
+      <a mat-list-item style="cursor: pointer;" (click)="router.navigate(['tasks'], {relativeTo : activeRoute})">Tasks</a>
+      <a mat-list-item style="cursor: pointer;" (click)="submitNewBook()" *ngIf="checkIfWriter()">Submit new book</a>
+      <a mat-list-item style="cursor: pointer;" (click)="fileAnAppeal()" *ngIf="checkIfWriter()">File an appeal</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -20,12 +22,12 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Foxy</span>
+      <span><a (click)="router.navigate([''])" style="cursor: pointer;">Foxy</a></span>
       <span class="example-spacer"></span>
       <app-starter></app-starter>
     </mat-toolbar>
     <!-- Add Content Here -->
-    <mat-sidenav-content style="margin-top: 2%;">
+    <mat-sidenav-content style="margin-top: 2%; margin-left: 5%;">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
     <!-- Add Content Here -->
