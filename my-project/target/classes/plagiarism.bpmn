@@ -49,7 +49,11 @@
     <bpmn:userTask id="Activity_0mnltni" name="Choose editors" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="editors" label="Editors" type="multipleEnum_editors" />
+          <camunda:formField id="editors_2" label="Editors" type="multipleEnum_editors_2">
+            <camunda:validation>
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
         <camunda:taskListener class="com.example.workflow.handlers.GetEditorsHandler" event="create" />
         <camunda:inputOutput>
@@ -87,7 +91,11 @@
     <bpmn:userTask id="Activity_0io9uf2" name="Choose substitute" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="editors" label="Choose substitutes" type="multipleEnum_editors" />
+          <camunda:formField id="editors_x" label="Choose substitutes" type="multipleEnum_editors_x" defaultValue="${numOfSubsNeeded}">
+            <camunda:validation>
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
         <camunda:taskListener class="com.example.workflow.handlers.GetEditorsHandler" event="create" />
         <camunda:inputOutput>

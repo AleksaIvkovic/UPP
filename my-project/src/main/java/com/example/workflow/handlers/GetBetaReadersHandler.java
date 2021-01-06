@@ -26,7 +26,7 @@ public class GetBetaReadersHandler implements TaskListener {
         ArrayList<User> betaReaders = (ArrayList<User>) delegateTask.getExecution().getVariable("chosenBetaReaders");
 
         for (FormField f : taskFormFields.getFormFields()) {
-            if (f.getId().equals("betaReaders")) {
+            if (f.getId().equals("betaReaders_1")) {
                 EnumFormType enumFormType = (EnumFormType) f.getType();
 
                 for (User betaReader : betaReaders) {

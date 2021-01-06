@@ -195,7 +195,15 @@ export class RegistrationComponent implements OnInit {
           if(field.type.name.includes("multipleEnum")){
             this.enumValues.set(field.id, Object.keys(field.type.values));
           
-            let tempForm = new FormGroup({}, this.checkArray);
+            let min = 0;
+            let exact = 0;
+            if(field.type.name.split('_')[2] == 'x'){
+              exact = <number>field.defaultValue;
+            }
+            else{
+              min = <number>field.type.name.split('_')[2];
+            }
+            let tempForm = new FormGroup({}, this.checkArray(min, exact));
 
             for (let [key, value] of this.enumValues) {
               if(key == field.id){
@@ -459,20 +467,50 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  checkArray(group: FormGroup): {[s:string]:boolean} {
-    let found = false;
-    Object.keys(group.controls).forEach(key => {
-      if(group.controls[key].value)
-      {
-        found = true;
+  // checkArray(group: FormGroup): {[s:string]:boolean} {
+  //   let found = false;
+  //   Object.keys(group.controls).forEach(key => {
+  //     if(group.controls[key].value)
+  //     {
+  //       found = true;
+  //     }
+  //   });
+  //   if(found){
+  //     return null
+  //   }
+  //   else{
+  //     return {'None are chosen': true}
+  //   }
+  // }
+
+  checkArray(min: number, exact: number): ValidatorFn {
+    return (group: FormGroup): {[key: string]: any} | null => {
+      let found = 0;
+      Object.keys(group.controls).forEach(key => {
+        if(group.controls[key].value)
+        {
+          found += 1;
+        }
+      });
+      if(min != 0){
+        if(found >= min){
+          return null
+        }
+        else{
+          let str = 'Must choose more than '.concat(min.toString());
+          return { str : true}
+        }
       }
-    });
-    if(found){
-      return null
-    }
-    else{
-      return {'None are chosen': true}
-    }
+      else{
+        if(found == exact){
+          return null
+        }
+        else{
+          let str = 'Must choose exactly '.concat(exact.toString());
+          return { str : true}
+        }
+      }
+    };
   }
 
   checkFiles(min: number, max : number): ValidatorFn {

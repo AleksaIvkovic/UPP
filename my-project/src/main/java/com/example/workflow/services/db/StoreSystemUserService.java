@@ -74,7 +74,7 @@ public class StoreSystemUserService implements JavaDelegate {
         }
 
         List<Genre> genres = new ArrayList<>();
-        HashMap<String, Boolean> genresHM = (HashMap<String, Boolean>)(systemUserForm.get("genres"));
+        HashMap<String, Boolean> genresHM = (HashMap<String, Boolean>)(systemUserForm.get("genres_1"));
         for (Map.Entry mapElement: genresHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {
                 genres.add(genreService.getGenre(Long.parseLong(mapElement.getKey().toString())));
@@ -90,7 +90,7 @@ public class StoreSystemUserService implements JavaDelegate {
 
             betaGenresForm = (HashMap<String, Object>)execution.getVariable("betaGenresForm");
 
-            HashMap<String, Boolean> betaGenresHM = (HashMap<String, Boolean>)(betaGenresForm.get("betaGenres"));
+            HashMap<String, Boolean> betaGenresHM = (HashMap<String, Boolean>)(betaGenresForm.get("betaGenres_1"));
             for (Map.Entry mapElement: betaGenresHM.entrySet()) {
                 if ((boolean)mapElement.getValue()) {
                     betaGenres.add(genreService.getGenre(Long.parseLong(mapElement.getKey().toString())));

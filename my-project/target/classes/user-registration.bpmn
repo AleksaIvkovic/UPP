@@ -53,9 +53,9 @@
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="isBeta" label="Is Beta" type="boolean" defaultValue="false" />
-          <camunda:formField id="genres" label="Choose genres" type="multipleEnum_genres">
+          <camunda:formField id="genres_1" label="Choose genres" type="multipleEnum_genres_1">
             <camunda:validation>
-              <camunda:constraint name="validator" config="com.example.workflow.validators.GenresValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>
@@ -89,9 +89,9 @@
     <bpmn:userTask id="Activity_172s4r7" name="Beta">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="betaGenres" label="Beta genres" type="multipleEnum_genres">
+          <camunda:formField id="betaGenres_1" label="Beta genres" type="multipleEnum_genres_1">
             <camunda:validation>
-              <camunda:constraint name="validator" config="com.example.workflow.validators.GenresValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>

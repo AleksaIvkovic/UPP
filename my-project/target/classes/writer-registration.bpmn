@@ -48,9 +48,9 @@
               <camunda:constraint name="minlength" config="4" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="genres" label="Choose genres" type="multipleEnum_genres">
+          <camunda:formField id="genres_1" label="Choose genres" type="multipleEnum_genres_1">
             <camunda:validation>
-              <camunda:constraint name="validator" config="com.example.workflow.validators.GenresValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>

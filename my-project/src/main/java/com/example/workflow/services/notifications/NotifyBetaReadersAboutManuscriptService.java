@@ -25,7 +25,7 @@ public class NotifyBetaReadersAboutManuscriptService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         List<String> selectedBetaReadersUsernames = new ArrayList<>();
         HashMap<String, Object> map = (HashMap<String, Object>)execution.getVariable("selectedBetaReadersForm");
-        HashMap<String, Boolean> selectedBetaReadersHM = (HashMap<String, Boolean>)map.get("betaReaders");
+        HashMap<String, Boolean> selectedBetaReadersHM = (HashMap<String, Boolean>)map.get("betaReaders_1");
 
         for (Map.Entry mapElement: selectedBetaReadersHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {

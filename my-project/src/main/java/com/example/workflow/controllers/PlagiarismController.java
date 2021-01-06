@@ -43,7 +43,7 @@ public class PlagiarismController {
 
         List<User> chosenEditors = new ArrayList<>();
         List<User> remainingEditors = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"remainingEditorsUsers");
-        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors"));
+        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors_2"));
 
         for (Map.Entry mapElement: editorsHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {
@@ -85,7 +85,7 @@ public class PlagiarismController {
 
         ArrayList<User> chosenSubstitutes = new ArrayList<>();
 
-        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors"));
+        HashMap<String, Boolean> editorsHM = (HashMap<String, Boolean>)(map.get("editors_x"));
 
         for (Map.Entry mapElement: editorsHM.entrySet()) {
             if ((boolean)mapElement.getValue()) {

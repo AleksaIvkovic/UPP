@@ -23,7 +23,7 @@ public class GetGenresHandler implements TaskListener {
         List<Genre> genres = genreService.getGenres();
 
         for (FormField f : taskFormFields.getFormFields()) {
-            if (f.getId().equals("genres")) {
+            if (f.getId().equals("genres_1")) {
                 MultipleEnumFormType multipleEnumFormType = (MultipleEnumFormType) f.getType();
 
                 for (Genre genre : genres) {
