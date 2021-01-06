@@ -87,20 +87,6 @@ export class RegistrationComponent implements OnInit {
         }
       );
     }
-    // else if(this.router.url.includes('submit-work')){
-    //   this.isWriter = true;
-    //   this.submitWork = true;
-    //   sessionStorage.setItem("processId", this.router.url.split("/")[3] );
-    //   this.userService.getRegisterForm().subscribe(
-    //     res => {
-    //       this.initForm(res);
-    //     },
-    //     err => {
-    //       console.log(err);
-    //       console.log("Error occured");
-    //     }
-    //   );
-    // }
     else if(this.router.url.includes('submit-new-book')){
       this.isCamundaFormWithVariable = true;
       this.variableName = 'newPublishedBookForm';
@@ -283,7 +269,6 @@ export class RegistrationComponent implements OnInit {
             );
           }
         });
-        console.log(this.registerForm);
   }
 
   onSubmit(value, form) {
@@ -291,8 +276,6 @@ export class RegistrationComponent implements OnInit {
     for (var property in value) {
       o.push({fieldId : property, fieldValue : value[property]});
     }
-
-    console.log(o);
 
     if(this.submitWork){
 
@@ -313,7 +296,6 @@ export class RegistrationComponent implements OnInit {
   
         forkJoin(requests).subscribe(
           (res:any) => {
-            console.log("Successful upload.")
             this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
               (res: any) =>{
                 alert("Successful work submission.");
@@ -344,10 +326,11 @@ export class RegistrationComponent implements OnInit {
       this.userService.submitCamundaFormWithReturnTask(o, this.formFieldsDto.taskId, this.nextTaskName).subscribe(
         (res: any) => {
           alert('Action successful.');
-          console.log(res);
+          this.userService.onTaskChange('');
           if(res != null){
-            this.userService.onTaskChange('');
             this.router.navigate(['../../', res.id, res.name], {relativeTo: this.route});
+          } else {
+            this.router.navigate(['../../'], {relativeTo: this.route});
           }
       }, error => {
         console.log(error);
@@ -533,9 +516,7 @@ export class RegistrationComponent implements OnInit {
   RemoveFile(name, fieldId) {
 
     this.filesString = (<String[]>this.registerForm.controls[fieldId].value);
-    for(let s of this.filesString){
-      console.log(s);
-    }
+
     let id = this.filesString.findIndex(element => {
       if(element == name){
         return true;
@@ -553,8 +534,5 @@ export class RegistrationComponent implements OnInit {
     });
     listOfFiles.splice(id,1);
     this.files.set(id,listOfFiles);
-
-    console.log(this.registerForm);
-    console.log(this.files);
   }
 }

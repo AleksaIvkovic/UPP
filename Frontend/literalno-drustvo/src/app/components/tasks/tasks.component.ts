@@ -17,7 +17,6 @@ export class TasksComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getTasks().subscribe(
       (res: any) => {
-        console.log(res);
         this.tasks = res;
       },
       err => {
@@ -29,7 +28,6 @@ export class TasksComponent implements OnInit {
       res => 
       this.userService.getTasks().subscribe(
         (res: any) => {
-          console.log(res);
           this.tasks = res;
         },
         err => {

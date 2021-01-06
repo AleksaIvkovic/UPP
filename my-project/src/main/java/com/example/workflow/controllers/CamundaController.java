@@ -55,6 +55,9 @@ public class CamundaController {
     public ResponseEntity<?> postCamundaFormWithReturnTask(@RequestBody List<FormSubmissionDTO> dto,
                                                            @PathVariable String taskId,
                                                            @PathVariable String taskName) {
+        if (taskName.equals("Send to beta")) {
+            taskName += "?";
+        }
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
