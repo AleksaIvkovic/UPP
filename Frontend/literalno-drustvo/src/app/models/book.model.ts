@@ -9,5 +9,6 @@ export class Book {
         public yearOfPublication: number,
         public publisher: string,
         public plagiarism: boolean,
+        public fileName: string
     ) {}
 }

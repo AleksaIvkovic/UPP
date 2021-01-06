@@ -8,5 +8,6 @@ export class SysUser {
         public email: string,
         public isBeta: boolean,
         public authority: string,
+        public isActive: boolean
     ) {}
 }

@@ -18,4 +18,5 @@ public class SysUserDTO {
     private String email;
     private Boolean isBeta;
     private String authority;
+    private Boolean isActive;
 }

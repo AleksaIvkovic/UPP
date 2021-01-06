@@ -13,7 +13,7 @@
             </div>
             <div class="col-md-3">
                 <div class="mat-h3">
-                    {{book.genre}}
+                    <img src="assets/img/{{genreImage}}.png" matTooltip="{{book.genre}}">
                 </div>
             </div>
         </div>
@@ -36,8 +36,15 @@
         </div>
     </div>
     <div class="col-md-1">
-        <div class="mat-h3">
-            {{book.plagiarism}}
+        <div class="row">
+            <div class="mat-h3">
+                <img src="assets/img/pdf-file.png" (click)="downloadBook(book.fileName)" style="cursor: pointer;" matTooltip="Download book">
+            </div>
+        </div>
+        <div class="row">
+            <div class="mat-h3" *ngIf="book.plagiarism">
+                <img src="assets/img/warning.png" matTooltip="Marked as plagiarism">
+            </div>
         </div>
     </div>
 </div>

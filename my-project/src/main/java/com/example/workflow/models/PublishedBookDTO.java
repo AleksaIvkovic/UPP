@@ -19,4 +19,5 @@ public class PublishedBookDTO {
     private int yearOfPublication;
     private String publisher;
     private boolean isPlagiarism;
+    private String fileName;
 }

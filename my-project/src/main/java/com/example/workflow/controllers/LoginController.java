@@ -73,6 +73,7 @@ public class LoginController {
         SysUser sysUser = (SysUser) auth.getPrincipal();
         SysUserDTO sysUserDTO = modelMapper.map(sysUser, SysUserDTO.class);
         sysUserDTO.setAuthority(((List<Authority>)sysUser.getAuthorities()).get(0).getName());
+        sysUserDTO.setIsActive(sysUser.isActive());
 
         return new ResponseEntity<>(sysUserDTO, HttpStatus.OK);
     }
