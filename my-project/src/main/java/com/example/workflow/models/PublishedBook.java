@@ -1,7 +1,7 @@
 package com.example.workflow.models;
 
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class PublishedBook {
@@ -48,9 +48,8 @@ public class PublishedBook {
     @Column
     private boolean isPlagiarism;
 
-    //podaci o urednicima i lektorisanju
-
-
+    @ManyToMany
+    private List<BookComment> bookComments;
 
     public PublishedBook() {
     }
@@ -150,4 +149,12 @@ public class PublishedBook {
     public boolean isPlagiarism() { return isPlagiarism; }
 
     public void setPlagiarism(boolean plagiarism) { isPlagiarism = plagiarism; }
+
+    public List<BookComment> getBookComments() {
+        return bookComments;
+    }
+
+    public void setBookComments(List<BookComment> bookComments) {
+        this.bookComments = bookComments;
+    }
 }
