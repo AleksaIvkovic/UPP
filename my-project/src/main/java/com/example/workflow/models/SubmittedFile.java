@@ -13,16 +13,16 @@ public class SubmittedFile {
     private String name;
 
     @Column(nullable = false)
-    private String procesId;
+    private String processId;
 
     @Column(nullable = false)
     private String writerUsername;
 
     public SubmittedFile() { }
 
-    public SubmittedFile(String name, String procesId, String writerUsername) {
+    public SubmittedFile(String name, String processId, String writerUsername) {
         this.name = name;
-        this.procesId = procesId;
+        this.processId = processId;
         this.writerUsername = writerUsername;
     }
 
@@ -42,12 +42,12 @@ public class SubmittedFile {
         this.name = name;
     }
 
-    public String getProcesId() {
-        return procesId;
+    public String getProcessId() {
+        return processId;
     }
 
-    public void setProcesId(String procesId) {
-        this.procesId = procesId;
+    public void setProcessId(String processId) {
+        this.processId = processId;
     }
 
     public String getWriterUsername() {

@@ -10,11 +10,11 @@ import { PlagiarismService} from '../../services/plagiarism.service'
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css']
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.css']
 })
-export class RegistrationComponent implements OnInit {
+export class FormComponent implements OnInit {
 
   formFields = [];
   enumValues = new Map();

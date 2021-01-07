@@ -8,7 +8,7 @@ import { TokenInterceptor } from './auth/tokenInterceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegistrationComponent } from './components/registration/registration.component';
+import { FormComponent } from './components/form/form.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { StarterComponent } from './components/starter/starter.component';
 import { EmailConfirmationComponent } from './components/email-confirmation/email-confirmation.component';
@@ -61,7 +61,7 @@ import { BookComponent } from './components/books/book/book.component';
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent,
+    FormComponent,
     LogInComponent,
     StarterComponent,
     EmailConfirmationComponent,

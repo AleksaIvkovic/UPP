@@ -25,7 +25,7 @@ public class GetDownloadableFilesHandler implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        List<SubmittedFile> files = fileRepository.getAllByProcesId(delegateTask.getProcessInstanceId());
+        List<SubmittedFile> files = fileRepository.getAllByProcessId(delegateTask.getProcessInstanceId());
         List<PublishedBook> books = new ArrayList<>();
 
         if(delegateTask.getVariable("myTitle") != null){

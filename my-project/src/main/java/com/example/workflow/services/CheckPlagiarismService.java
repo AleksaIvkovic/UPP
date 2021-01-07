@@ -22,8 +22,6 @@ public class CheckPlagiarismService implements JavaDelegate
     public void execute(DelegateExecution execution) throws Exception {
         String processInstanceId = execution.getProcessInstanceId();
         ArrayList<String> possiblePlagiarisms = plagiarismServiceMock.checkPlagiarism(bookService.GetBookByTitle(execution.getVariable("bookTitle").toString()));
-
         execution.setVariable("possiblePlagiarisms",possiblePlagiarisms);
-
     }
 }
