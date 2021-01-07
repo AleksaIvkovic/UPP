@@ -7,6 +7,7 @@ com\example\workflow\services\notifications\SendVerificationEmailService.class
 com\example\workflow\controllers\LoginController.class
 com\example\workflow\services\notifications\EditorPossibleFinishedBookNotificationService.class
 com\example\workflow\services\db\StoreEditorCommentService.class
+com\example\workflow\configs\webConfig.class
 com\example\workflow\repositories\BookCommentRepository.class
 com\example\workflow\models\customs\PasswordStringFormType.class
 com\example\workflow\services\db\SaveEmailConfirmationService.class
@@ -137,12 +138,10 @@ com\example\workflow\validators\LettersValidator.class
 com\example\workflow\controllers\RegistrationController.class
 com\example\workflow\models\DTOs\FileDTO$FileDTOBuilder.class
 com\example\workflow\services\notifications\NotifyHeadEditorAboutNewBookReviewEmailService.class
-com\example\workflow\config\webConfig.class
 com\example\workflow\security\auth\TokenBasedAuthentication.class
 com\example\workflow\intefaces\ISystemUser.class
 com\example\workflow\services\checkServices\CheckNumberOfRemainingEditorsService.class
 com\example\workflow\services\initialization\InitializeVotesVotersAndNotesService.class
-com\example\workflow\config\WebSecurityConfiguration.class
 com\example\workflow\services\notifications\NotifyWriterToUploadManuscriptService.class
 com\example\workflow\validators\FullnameValidator.class
 com\example\workflow\handlers\GetBetaReadersHandler.class
@@ -166,4 +165,5 @@ com\example\workflow\intefaces\IBook.class
 com\example\workflow\models\DBs\SubmittedFile.class
 com\example\workflow\services\notifications\NotifyCommitteeOfNewPlagiarismReportNotificationService.class
 com\example\workflow\validators\MultipleEnumGreaterThanValidator.class
+com\example\workflow\configs\WebSecurityConfiguration.class
 com\example\workflow\services\initialization\RestartCommitteeVotesService.class

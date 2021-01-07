@@ -19,7 +19,6 @@ public class GetPossiblePlagiarismsHandler implements TaskListener {
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("possiblePlagiarisms")) {
                 CustomStringFormType customStringFormType = (CustomStringFormType) f.getType();
-
                 customStringFormType.convertModelValueToFormValue(possiblePlagiarisms);
             }
         }

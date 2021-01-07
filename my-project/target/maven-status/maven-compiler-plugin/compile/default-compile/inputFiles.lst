@@ -43,7 +43,6 @@ C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\work
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\services\notifications\NotifyEditorOfUpdatedManuscript.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\services\notifications\NotifyCommitteeEmailService.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\validators\CardDateValidator.java
-C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\config\WebSecurityConfiguration.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\models\DTOs\FileDTO.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\helper\TempHelper.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\services\initialization\SetRoundToZeroService.java
@@ -153,7 +152,8 @@ C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\work
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\services\notifications\LectorNewWorkNotificationService.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\intefaces\IFile.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\intefaces\IMailing.java
+C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\configs\WebSecurityConfiguration.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\services\initialization\InitializeForbiddenAndRemainingEditorsService.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\validators\UniqueUsernameValidator.java
 C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\Application.java
-C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\config\webConfig.java
+C:\Users\97ivk\Desktop\Studies\UPP\UPP\my-project\src\main\java\com\example\workflow\configs\webConfig.java
