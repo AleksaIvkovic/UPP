@@ -1,6 +1,6 @@
 package com.example.workflow.handlers;
 
-import com.example.workflow.models.CustomStringFormType;
+import com.example.workflow.models.customs.CustomStringFormType;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.form.FormField;
@@ -8,7 +8,6 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GetPossiblePlagiarismsHandler implements TaskListener {

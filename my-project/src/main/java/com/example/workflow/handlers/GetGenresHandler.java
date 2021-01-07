@@ -1,7 +1,7 @@
 package com.example.workflow.handlers;
 
-import com.example.workflow.models.Genre;
-import com.example.workflow.models.MultipleEnumFormType;
+import com.example.workflow.models.DBs.Genre;
+import com.example.workflow.models.customs.MultipleEnumFormType;
 import com.example.workflow.services.systemServices.GenreService;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;

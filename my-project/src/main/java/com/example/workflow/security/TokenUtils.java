@@ -1,7 +1,7 @@
 package com.example.workflow.security;
 
 import com.example.workflow.helper.TimeProvider;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;

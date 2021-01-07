@@ -1,6 +1,6 @@
 package com.example.workflow.repositories;
 
-import com.example.workflow.models.VerificationToken;
+import com.example.workflow.models.DBs.VerificationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.example.workflow.intefaces;
 
-import com.example.workflow.models.PublishedBook;
-import com.example.workflow.models.PublishedBookDTO;
+import com.example.workflow.models.DBs.PublishedBook;
+import com.example.workflow.models.DTOs.PublishedBookDTO;
 
 import java.util.ArrayList;
 

@@ -2,9 +2,9 @@ package com.example.workflow.services.db;
 
 import com.example.workflow.intefaces.IGenre;
 import com.example.workflow.intefaces.ISystemUser;
-import com.example.workflow.models.Authority;
-import com.example.workflow.models.Genre;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.Authority;
+import com.example.workflow.models.DBs.Genre;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.AuthorityService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;

@@ -2,6 +2,8 @@ package com.example.workflow.controllers;
 
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.*;
+import com.example.workflow.models.DTOs.FormFieldsDTO;
+import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -31,7 +33,8 @@ public class RegistrationController {
     private ICamunda camundaService;
 
     @GetMapping(path = "/form/{processId}", produces = "application/json")
-    public @ResponseBody FormFieldsDTO getForm(@PathVariable String processId) {
+    public @ResponseBody
+    FormFieldsDTO getForm(@PathVariable String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
 
         TaskFormData tfd = formService.getTaskFormData(task.getId());

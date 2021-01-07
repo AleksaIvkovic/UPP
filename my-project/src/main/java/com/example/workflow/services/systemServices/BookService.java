@@ -1,8 +1,8 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.IBook;
-import com.example.workflow.models.PublishedBook;
-import com.example.workflow.models.PublishedBookDTO;
+import com.example.workflow.models.DBs.PublishedBook;
+import com.example.workflow.models.DTOs.PublishedBookDTO;
 import com.example.workflow.repositories.BookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

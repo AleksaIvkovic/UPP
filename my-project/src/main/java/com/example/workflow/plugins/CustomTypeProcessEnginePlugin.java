@@ -1,10 +1,9 @@
 package com.example.workflow.plugins;
 
-import com.example.workflow.models.*;
+import com.example.workflow.models.customs.*;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.form.type.AbstractFormFieldType;
-import org.camunda.bpm.engine.impl.form.type.StringFormType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +35,5 @@ public class CustomTypeProcessEnginePlugin extends AbstractProcessEnginePlugin {
         formTypes.add(new CustomStringFormType("labels"));
 
         formTypes.add(new NonEditableMultipleEnumFormType("works"));
-
-        formTypes.add(new ReadOnlyFieldType("string"));
     }
 }

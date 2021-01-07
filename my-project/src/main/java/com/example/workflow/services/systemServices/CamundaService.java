@@ -1,9 +1,8 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.ICamunda;
-import com.example.workflow.models.FormSubmissionDTO;
-import com.example.workflow.models.TaskDTO;
-import com.example.workflow.models.ValidationError;
+import com.example.workflow.models.DTOs.FormSubmissionDTO;
+import com.example.workflow.models.DTOs.TaskDTO;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;

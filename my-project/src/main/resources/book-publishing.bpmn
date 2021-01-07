@@ -184,7 +184,7 @@
     <bpmn:sequenceFlow id="Flow_0rurf89" name="Manuscript approved" sourceRef="Gateway_11iwhnv" targetRef="Activity_1w7ug4k">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${manuscriptDecision == "Yes_Id"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Activity_1w7ug4k" name="Send to beta?" camunda:assignee="${headEditor}">
+    <bpmn:userTask id="Activity_1w7ug4k" name="Send to beta decision" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="sendToBetaDecision" label="Send manuscript to beta-readers?" type="enum">

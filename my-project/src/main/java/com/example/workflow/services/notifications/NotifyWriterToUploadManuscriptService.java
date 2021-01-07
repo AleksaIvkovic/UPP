@@ -1,6 +1,6 @@
 package com.example.workflow.services.notifications;
 
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.MailingService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

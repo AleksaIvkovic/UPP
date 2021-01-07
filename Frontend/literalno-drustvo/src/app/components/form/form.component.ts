@@ -8,6 +8,7 @@ import { UploadService } from 'src/app/services/upload.service';
 import { UserService} from '../../services/user.service'
 import { PlagiarismService} from '../../services/plagiarism.service'
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form',
@@ -30,7 +31,7 @@ export class FormComponent implements OnInit {
 
   tasksCamundaForm = ['Decide if more changes are needed', 'Download and lector', 'Editor approval'];
   tasksCamundaFormWithVariable = ['Give an explanation', 'Pay membership', 'Select beta readers', 'Book synopsis'];
-  tasksCamundaFormWithReturnTask = ['Synopsis review', 'Plagiarism review', 'Download manuscript', 'Send to beta?'];
+  tasksCamundaFormWithReturnTask = ['Synopsis review', 'Plagiarism review', 'Download manuscript', 'Send to beta decision'];
   submitWorksTasks = ['Submit works', 'Make changes', 'Deliver more work', 'Manuscript upload']
 
   isCamundaForm = false;
@@ -57,10 +58,12 @@ export class FormComponent implements OnInit {
     private uploadService: UploadService,
     private route: ActivatedRoute,
     private router: Router,
-    private plagiarismService: PlagiarismService) {}
-  
-  ngOnInit(): void {
+    private plagiarismService: PlagiarismService,
+    private _snackBar: MatSnackBar,
+    ) {}
 
+  ngOnInit(): void {
+    this.setBooleansToFalse();
     if(this.router.url.includes('register-reader')){
       this.isReader = true;
       this.userService.getRegisterForm().subscribe(
@@ -116,9 +119,9 @@ export class FormComponent implements OnInit {
                 this.nextTaskName = 'Download manuscript';
                 break;
               case 'Download manuscript':
-                this.nextTaskName = 'Send to beta?';
+                this.nextTaskName = 'Send to beta decision';
                 break;
-              case 'Send to beta?':
+              case 'Send to beta decision':
                 this.nextTaskName = 'Select beta readers';
                 break;
             }
@@ -306,7 +309,7 @@ export class FormComponent implements OnInit {
           (res:any) => {
             this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'worksToStore').subscribe(
               (res: any) =>{
-                alert("Successful work submission.");
+                this._snackBar.open('Successful work submission.', 'OK', {duration: 5000,});
                 this.userService.onTaskChange('');
                 this.router.navigate(['../../'], {relativeTo: this.route});
               },
@@ -322,18 +325,19 @@ export class FormComponent implements OnInit {
     else if (this.isCamundaForm) {
       this.userService.submitCamundaForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
-          alert('Action successful.');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else if (this.isCamundaFormWithReturnTask) {
       this.userService.submitCamundaFormWithReturnTask(o, this.formFieldsDto.taskId, this.nextTaskName).subscribe(
         (res: any) => {
-          alert('Action successful.');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           if(res != null){
             this.router.navigate(['../../', res.id, res.name], {relativeTo: this.route});
@@ -343,45 +347,47 @@ export class FormComponent implements OnInit {
       }, error => {
         console.log(error);
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else if (this.isCamundaFormWithVariable) {
       this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, this.variableName).subscribe(
         (res) => {
-          alert('Action successful.');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else if (this.commentManuscript) {
       this.userService.submitCommentManuscript(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
-          alert('Comment manuscript submitted succesfully.');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else if(this.isTask && this.isCommitee) {
       this.userService.submitVoteForNewWriter(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
-          alert('Vote successful.');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else if(this.fileAnAppeal){
       this.plagiarismService.submitAppealForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
-          alert('Success');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
@@ -393,7 +399,7 @@ export class FormComponent implements OnInit {
     else if(this.chooseEditors){
       this.plagiarismService.submitChosenEditorsForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
-          alert('Success');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
@@ -405,7 +411,7 @@ export class FormComponent implements OnInit {
     else if(this.editorPlagiarismBookReview){
       this.plagiarismService.submitEditorReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
-          alert('Success');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
@@ -417,7 +423,7 @@ export class FormComponent implements OnInit {
     else if(this.commiteReview){
       this.plagiarismService.submitCommitteeReviewForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
-          alert('Success');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
@@ -429,13 +435,12 @@ export class FormComponent implements OnInit {
     else if(this.chooseSubstitute){
       this.plagiarismService.submitSubstituteChoiceForm(o, this.formFieldsDto.taskId).subscribe(
         res => {
-          alert('Success');
+          this._snackBar.open('Action successful.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
         err => {
           console.log(err);
-          alert(err);
         }
       )
     }
@@ -443,7 +448,7 @@ export class FormComponent implements OnInit {
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
         (res) => {
           if(res == null){
-            alert('Registration successful. Verification email has been sent to your address.');
+            this._snackBar.open('Registration successful. Verification email has been sent to your address.', 'OK', {duration: 5000,});
           }
           else{
             sessionStorage.setItem('betaForm', JSON.stringify(res));
@@ -451,18 +456,18 @@ export class FormComponent implements OnInit {
           }
       }, (error : any)  => {
         console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
     else {
       this.userService.submitCamundaFormWithVariable(o, this.formFieldsDto.taskId, 'betaGenresForm').subscribe(
         (res) => {
-          alert('Registration successful. Verification email has been sent to your address.');
+          this._snackBar.open('Registration successful. Verification email has been sent to your address.', 'OK', {duration: 5000,});
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
         console.log(error);
-        alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
   }
@@ -572,5 +577,23 @@ export class FormComponent implements OnInit {
     });
     listOfFiles.splice(id,1);
     this.files.set(id,listOfFiles);
+  }
+
+  setBooleansToFalse() {
+    this.isReader = false;
+    this.isBetaReader = false;
+    this.isWriter = false;
+    this.submitWork = false;
+    this.isTask = false;
+    this.isCommitee = false;
+    this.fileAnAppeal = false;
+    this.chooseEditors = false;
+    this.editorPlagiarismBookReview = false;
+    this.commiteReview = false;
+    this.chooseSubstitute = false;
+    this.commentManuscript = false;
+    this.isCamundaForm = false;
+    this.isCamundaFormWithVariable = false;
+    this.isCamundaFormWithReturnTask = false;
   }
 }

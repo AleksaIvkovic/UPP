@@ -1,6 +1,6 @@
 package com.example.workflow.repositories;
 
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

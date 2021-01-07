@@ -2,9 +2,8 @@ package com.example.workflow.services.db;
 
 import com.example.workflow.intefaces.IBook;
 import com.example.workflow.intefaces.IGenre;
-import com.example.workflow.models.Genre;
-import com.example.workflow.models.PublishedBook;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.PublishedBook;
+import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;

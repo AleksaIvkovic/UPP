@@ -1,7 +1,7 @@
 package com.example.workflow.services.db;
 
-import com.example.workflow.models.PublishedBook;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.PublishedBook;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.BookService;
 import com.example.workflow.services.systemServices.SystemUserService;
 import org.camunda.bpm.engine.IdentityService;

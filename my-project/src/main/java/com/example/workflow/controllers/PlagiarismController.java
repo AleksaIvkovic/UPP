@@ -1,8 +1,8 @@
 package com.example.workflow.controllers;
 
 import com.example.workflow.intefaces.ICamunda;
-import com.example.workflow.models.FormSubmissionDTO;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DTOs.FormSubmissionDTO;
+import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;

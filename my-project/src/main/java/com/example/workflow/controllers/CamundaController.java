@@ -1,18 +1,11 @@
 package com.example.workflow.controllers;
 
 import com.example.workflow.intefaces.ICamunda;
-import com.example.workflow.models.FormFieldsDTO;
-import com.example.workflow.models.FormSubmissionDTO;
-import com.example.workflow.models.TaskDTO;
-import com.example.workflow.models.ValidationError;
-import org.camunda.bpm.engine.FormService;
+import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.form.FormField;
-import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,9 +48,6 @@ public class CamundaController {
     public ResponseEntity<?> postCamundaFormWithReturnTask(@RequestBody List<FormSubmissionDTO> dto,
                                                            @PathVariable String taskId,
                                                            @PathVariable String taskName) {
-        if (taskName.equals("Send to beta")) {
-            taskName += "?";
-        }
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();

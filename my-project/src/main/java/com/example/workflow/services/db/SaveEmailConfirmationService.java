@@ -1,6 +1,6 @@
 package com.example.workflow.services.db;
 
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.SystemUserService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

@@ -1,6 +1,5 @@
 package com.example.workflow.services.initialization;
 
-import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.identity.User;

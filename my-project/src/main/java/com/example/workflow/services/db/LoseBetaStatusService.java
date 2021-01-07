@@ -1,14 +1,12 @@
 package com.example.workflow.services.db;
 
-import com.example.workflow.intefaces.IAuthority;
-import com.example.workflow.models.Authority;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.Authority;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.AuthorityService;
 import com.example.workflow.services.systemServices.SystemUserService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

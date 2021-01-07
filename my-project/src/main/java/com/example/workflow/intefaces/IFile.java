@@ -1,7 +1,7 @@
 package com.example.workflow.intefaces;
 
-import com.example.workflow.models.FileDTO;
-import com.example.workflow.models.SubmittedFile;
+import com.example.workflow.models.DTOs.FileDTO;
+import com.example.workflow.models.DBs.SubmittedFile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 

@@ -1,13 +1,12 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.IGenre;
-import com.example.workflow.models.Genre;
+import com.example.workflow.models.DBs.Genre;
 import com.example.workflow.repositories.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
 package com.example.workflow.services.notifications;
 
 import com.example.workflow.intefaces.IMailing;
-import com.example.workflow.models.PublishedBook;
+import com.example.workflow.models.DBs.PublishedBook;
 import com.example.workflow.services.systemServices.BookService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

@@ -1,7 +1,6 @@
 package com.example.workflow.repositories;
 
-import com.example.workflow.models.SubmittedFile;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SubmittedFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

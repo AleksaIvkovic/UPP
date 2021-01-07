@@ -1,11 +1,10 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.IFile;
-import com.example.workflow.models.FileDTO;
-import com.example.workflow.models.SubmittedFile;
+import com.example.workflow.models.DTOs.FileDTO;
+import com.example.workflow.models.DBs.SubmittedFile;
 import com.example.workflow.repositories.FileRepository;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,8 +23,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Properties;
 
 @Service
 public class FileService implements IFile {

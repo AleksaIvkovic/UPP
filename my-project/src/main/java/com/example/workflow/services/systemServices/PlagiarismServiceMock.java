@@ -1,7 +1,7 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.IPlagiarism;
-import com.example.workflow.models.PublishedBook;
+import com.example.workflow.models.DBs.PublishedBook;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

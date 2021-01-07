@@ -1,6 +1,6 @@
 package com.example.workflow.services.db;
 
-import com.example.workflow.models.SubmittedFile;
+import com.example.workflow.models.DBs.SubmittedFile;
 import com.example.workflow.services.systemServices.FileService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

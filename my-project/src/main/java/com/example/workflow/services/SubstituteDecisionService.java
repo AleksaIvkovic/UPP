@@ -1,13 +1,11 @@
 package com.example.workflow.services;
 
-import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.identity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SubstituteDecisionService implements JavaDelegate {

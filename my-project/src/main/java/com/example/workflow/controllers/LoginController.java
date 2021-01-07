@@ -1,8 +1,8 @@
 package com.example.workflow.controllers;
 
-import com.example.workflow.models.Authority;
-import com.example.workflow.models.SysUser;
-import com.example.workflow.models.SysUserDTO;
+import com.example.workflow.models.DBs.Authority;
+import com.example.workflow.models.DBs.SysUser;
+import com.example.workflow.models.DTOs.SysUserDTO;
 import com.example.workflow.models.UserTokenState;
 import com.example.workflow.security.TokenUtils;
 import com.example.workflow.security.auth.JwtAuthenticationRequest;

@@ -1,6 +1,6 @@
 package com.example.workflow.intefaces;
 
-import com.example.workflow.models.FormSubmissionDTO;
+import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.List;

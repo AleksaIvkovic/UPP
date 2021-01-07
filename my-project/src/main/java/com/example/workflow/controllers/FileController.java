@@ -1,10 +1,9 @@
 package com.example.workflow.controllers;
 
 
-import com.example.workflow.models.FileDTO;
+import com.example.workflow.models.DTOs.FileDTO;
 import com.example.workflow.services.systemServices.FileService;
 import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 @Controller

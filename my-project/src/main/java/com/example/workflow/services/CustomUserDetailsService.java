@@ -1,11 +1,10 @@
 package com.example.workflow.services;
 
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.repositories.SysUserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

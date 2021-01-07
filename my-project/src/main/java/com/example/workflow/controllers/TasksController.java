@@ -1,9 +1,9 @@
 package com.example.workflow.controllers;
 
-import com.example.workflow.models.*;
+import com.example.workflow.models.DBs.SysUser;
+import com.example.workflow.models.DTOs.FormFieldsDTO;
+import com.example.workflow.models.DTOs.TaskDTO;
 import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.IdentityService;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
@@ -48,7 +48,8 @@ public class TasksController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/getSingleTask/{taskId}")
     @PreAuthorize("hasAnyAuthority('COMMITTEE', 'HEAD-COMMITTEE','WRITER','HEAD-EDITOR','EDITOR','BETA-READER','LECTOR')")
-    public @ResponseBody FormFieldsDTO GetTaskForm(@PathVariable String taskId) {
+    public @ResponseBody
+    FormFieldsDTO GetTaskForm(@PathVariable String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 

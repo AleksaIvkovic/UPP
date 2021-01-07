@@ -1,11 +1,10 @@
 package com.example.workflow.services.systemServices;
 
 import com.example.workflow.intefaces.ISystemUser;
-import com.example.workflow.models.Authority;
-import com.example.workflow.models.Genre;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.Authority;
+import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.repositories.SysUserRepository;
-import com.example.workflow.models.VerificationToken;
+import com.example.workflow.models.DBs.VerificationToken;
 import com.example.workflow.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

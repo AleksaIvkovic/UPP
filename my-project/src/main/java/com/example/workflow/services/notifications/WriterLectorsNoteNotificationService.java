@@ -1,7 +1,7 @@
 package com.example.workflow.services.notifications;
 
 import com.example.workflow.intefaces.IMailing;
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;

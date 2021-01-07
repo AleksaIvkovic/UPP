@@ -1,6 +1,6 @@
 package com.example.workflow.services.checkServices;
 
-import com.example.workflow.models.SysUser;
+import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.security.core.Authentication;

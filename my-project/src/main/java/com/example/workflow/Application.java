@@ -1,6 +1,5 @@
 package com.example.workflow;
 
-import com.example.workflow.models.SysUser;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
@@ -12,7 +11,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.List;
 
 @SpringBootApplication (exclude = { SecurityAutoConfiguration.class })

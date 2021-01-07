@@ -1,6 +1,8 @@
 package com.example.workflow.handlers;
 
-import com.example.workflow.models.*;
+import com.example.workflow.models.DBs.PublishedBook;
+import com.example.workflow.models.DBs.SubmittedFile;
+import com.example.workflow.models.customs.NonEditableMultipleEnumFormType;
 import com.example.workflow.repositories.FileRepository;
 import com.example.workflow.services.systemServices.BookService;
 import org.camunda.bpm.engine.delegate.DelegateTask;
