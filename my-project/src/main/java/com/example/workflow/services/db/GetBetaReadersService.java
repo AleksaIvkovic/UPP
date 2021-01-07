@@ -40,6 +40,7 @@ public class GetBetaReadersService implements JavaDelegate {
             }
         }
 
+        execution.setVariable("noBetaReaders", chosenBetaReaders.isEmpty());
         execution.setVariable("chosenBetaReaders", chosenBetaReaders);
     }
 }

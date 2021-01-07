@@ -343,6 +343,9 @@ export class FormComponent implements OnInit {
             this.router.navigate(['../../', res.id, res.name], {relativeTo: this.route});
           } else {
             this.router.navigate(['../../'], {relativeTo: this.route});
+            if (this.nextTaskName == 'Select beta readers') {
+              this._snackBar.open('There are no registered beta readers for given genre.', 'OK', {duration: 5000,});
+            }
           }
       }, error => {
         console.log(error);
