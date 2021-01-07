@@ -5,7 +5,7 @@ import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.models.DTOs.SysUserDTO;
 import com.example.workflow.models.UserTokenState;
 import com.example.workflow.security.TokenUtils;
-import com.example.workflow.security.auth.JwtAuthenticationRequest;
+import com.example.workflow.models.JwtAuthenticationRequest;
 import com.example.workflow.services.CustomUserDetailsService;
 import com.example.workflow.services.systemServices.SystemUserService;
 import org.modelmapper.ModelMapper;

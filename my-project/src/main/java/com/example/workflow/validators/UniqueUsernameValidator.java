@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.impl.form.validator.FormFieldValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UniqueUsernameValidator implements FormFieldValidator {
-
     @Autowired
     SystemUserService readerService;
 

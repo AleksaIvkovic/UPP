@@ -20,7 +20,6 @@ com\example\workflow\services\db\AddPenaltyPointService.class
 com\example\workflow\helper\TimeProvider.class
 com\example\workflow\services\notifications\NotifyHeadEditorOfSubstitutionChoiceNeededNotificationService.class
 com\example\workflow\services\systemServices\AuthorityService.class
-com\example\workflow\security\auth\JwtAuthenticationRequest$JwtAuthenticationRequestBuilder.class
 com\example\workflow\services\db\CancelWriterRegistrationService.class
 com\example\workflow\services\notifications\BookMarkedAsPlagiarismNotificationService.class
 com\example\workflow\models\DBs\Genre.class
@@ -54,7 +53,7 @@ com\example\workflow\models\DTOs\TaskDTO$TaskDTOBuilder.class
 com\example\workflow\models\customs\NonEditableMultipleEnumFormType.class
 com\example\workflow\services\notifications\NotifyBetaReadersAboutManuscriptService.class
 com\example\workflow\models\DTOs\FileDTO.class
-com\example\workflow\security\auth\JwtAuthenticationRequest.class
+com\example\workflow\models\JwtAuthenticationRequest$JwtAuthenticationRequestBuilder.class
 com\example\workflow\services\notifications\NotifyReaderAboutLosingBetaStatusService.class
 com\example\workflow\services\notifications\NotifyWriterAboutMoreWorkNeededRequestByEditor.class
 com\example\workflow\services\notifications\NoMemebershipPaymentReceivedNotificationService.class
@@ -67,7 +66,6 @@ com\example\workflow\Application.class
 com\example\workflow\intefaces\ICamunda.class
 com\example\workflow\validators\FileValidator.class
 com\example\workflow\plugins\CustomTypeProcessEnginePlugin.class
-com\example\workflow\validators\MultipleEnumValidator.class
 com\example\workflow\services\initialization\SetRoundToZeroService.class
 com\example\workflow\services\systemServices\FileService.class
 com\example\workflow\validators\BookExistsValidator.class
@@ -79,6 +77,7 @@ com\example\workflow\services\db\SendToPrintService.class
 com\example\workflow\services\UpdateChosenEditorsService.class
 com\example\workflow\controllers\PlagiarismController.class
 com\example\workflow\security\auth\TokenAuthenticationFilter.class
+com\example\workflow\helper\TempHelper.class
 com\example\workflow\models\DBs\Authority.class
 com\example\workflow\validators\UniqueTitleValidator.class
 com\example\workflow\services\CheckPlagiarismService.class
@@ -113,6 +112,7 @@ com\example\workflow\services\checkServices\CheckCommitteeVotesService.class
 com\example\workflow\services\checkServices\CheckIfWriterIsActive.class
 com\example\workflow\services\db\LoseBetaStatusService.class
 com\example\workflow\services\db\StoreWorkService.class
+com\example\workflow\models\JwtAuthenticationRequest.class
 com\example\workflow\controllers\BookPublishingController.class
 com\example\workflow\intefaces\IPlagiarism.class
 com\example\workflow\services\notifications\ValidPaymentNotificationService.class
@@ -147,6 +147,7 @@ com\example\workflow\services\notifications\NotifyWriterToUploadManuscriptServic
 com\example\workflow\validators\FullnameValidator.class
 com\example\workflow\handlers\GetBetaReadersHandler.class
 com\example\workflow\services\initialization\InitializationCommentsAndBetaListsService.class
+com\example\workflow\validators\MultipleEnumEqualToValidator.class
 com\example\workflow\controllers\CamundaController.class
 com\example\workflow\utils\ServiceUtils.class
 com\example\workflow\models\customs\CustomStringFormType.class
@@ -164,4 +165,5 @@ com\example\workflow\services\checkServices\CheckBookExistanceService.class
 com\example\workflow\intefaces\IBook.class
 com\example\workflow\models\DBs\SubmittedFile.class
 com\example\workflow\services\notifications\NotifyCommitteeOfNewPlagiarismReportNotificationService.class
+com\example\workflow\validators\MultipleEnumGreaterThanValidator.class
 com\example\workflow\services\initialization\RestartCommitteeVotesService.class

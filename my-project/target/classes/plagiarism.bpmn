@@ -51,7 +51,7 @@
         <camunda:formData>
           <camunda:formField id="editors_2" label="Editors" type="multipleEnum_editors_2">
             <camunda:validation>
-              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumGreaterThanValidator" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>
@@ -93,7 +93,7 @@
         <camunda:formData>
           <camunda:formField id="editors_x" label="Choose substitutes" type="multipleEnum_editors_x" defaultValue="${numOfSubsNeeded}">
             <camunda:validation>
-              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.MultipleEnumEqualToValidator" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>
@@ -417,12 +417,6 @@
         <di:waypoint x="148" y="237" />
         <di:waypoint x="200" y="237" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Gateway_1xzyope_di" bpmnElement="Gateway_1xzyope" isMarkerVisible="true">
-        <dc:Bounds x="1815" y="85" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_122azqi_di" bpmnElement="Activity_0et1adf">
-        <dc:Bounds x="1980" y="70" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="112" y="219" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -510,8 +504,14 @@
       <bpmndi:BPMNShape id="Gateway_0wx27a0_di" bpmnElement="Gateway_0wx27a0" isMarkerVisible="true">
         <dc:Bounds x="1535" y="315" width="50" height="50" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1xzyope_di" bpmnElement="Gateway_1xzyope" isMarkerVisible="true">
+        <dc:Bounds x="1815" y="85" width="50" height="50" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0xxj4qh_di" bpmnElement="Activity_09hyy98">
         <dc:Bounds x="510" y="197" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_122azqi_di" bpmnElement="Activity_0et1adf">
+        <dc:Bounds x="1980" y="70" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_01v07s7_di" bpmnElement="Activity_01v07s7">
         <dc:Bounds x="670" y="197" width="100" height="80" />

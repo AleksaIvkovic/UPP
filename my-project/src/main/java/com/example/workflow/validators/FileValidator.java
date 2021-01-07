@@ -10,6 +10,6 @@ public class FileValidator implements FormFieldValidator {
     public boolean validate(Object submittedValue, FormFieldValidatorContext validatorContext) {
         int min = Integer.parseInt(validatorContext.getFormFieldHandler().getId().split("_")[1]);
         int max = Integer.parseInt(validatorContext.getFormFieldHandler().getId().split("_")[2]);
-        return ((ArrayList<String>)submittedValue).toArray().length >= min && ((ArrayList<String>)submittedValue).toArray().length <= max;
+        return ((ArrayList<String>)submittedValue).size() >= min && ((ArrayList<String>)submittedValue).size() <= max;
     }
 }

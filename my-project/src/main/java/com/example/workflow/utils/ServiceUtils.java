@@ -9,14 +9,12 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class ServiceUtils {
-
-    private static ServiceUtils instance;
-
     @Autowired
     SystemUserService systemUserService;
-
     @Autowired
     BookService bookService;
+
+    private static ServiceUtils instance;
 
     @PostConstruct
     public void fillInstance() {instance = this;}
