@@ -1,10 +1,11 @@
 package com.example.workflow.models.DBs;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class PublishedBook {
+public class PublishedBook implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;

@@ -1,5 +1,6 @@
 package com.example.workflow.controllers;
 
+import com.example.workflow.helper.TempHelper;
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.*;
 import com.example.workflow.models.DTOs.FormFieldsDTO;
@@ -36,12 +37,8 @@ public class RegistrationController {
     public @ResponseBody
     FormFieldsDTO getForm(@PathVariable String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).list().get(0);
-
         TaskFormData tfd = formService.getTaskFormData(task.getId());
         List<FormField> properties = tfd.getFormFields();
-        for(FormField fp : properties) {
-            System.out.println(fp.getId() + fp.getType());
-        }
 
         return new FormFieldsDTO(task.getId(), properties, processId);
     }
@@ -54,11 +51,7 @@ public class RegistrationController {
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "newSysUser", map);
 
-        try {
-            formService.submitTaskForm(taskId, map);
-        } catch (Exception e) {
-            return  new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
-        }
+        camundaService.trySubmitForm(taskId, map);
 
         Task nextTask;
         TaskFormData tfd = null;
@@ -94,14 +87,8 @@ public class RegistrationController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> committeeVotes = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
-        ArrayList<String> committeeComments = (ArrayList<String>)runtimeService.getVariable(processInstanceId, "committeeVotes");
-
-        committeeVotes.add(map.get("vote").toString());
-        committeeComments.add(map.get("comment").toString());
-
-        runtimeService.setVariable(processInstanceId, "committeeVotes", committeeVotes);
-        runtimeService.setVariable(processInstanceId, "committeeComments", committeeComments);
+        TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "committeeVotes", "vote");
+        TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "committeeComments", "comment");
 
         return camundaService.trySubmitForm(taskId, map);
     }

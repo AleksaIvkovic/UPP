@@ -1,5 +1,6 @@
 package com.example.workflow.controllers;
 
+import com.example.workflow.helper.TempHelper;
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import com.example.workflow.models.DBs.SysUser;
@@ -9,6 +10,7 @@ import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -100,20 +102,15 @@ public class PlagiarismController {
 
     @PostMapping(path="/submit-editor-review/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postEditorReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        SysUser sysUser = (SysUser) auth.getPrincipal();
-
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return new ResponseEntity<>("Task is no longer valid", HttpStatus.BAD_REQUEST);
+        }
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> notes = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"editorsNotes");
-        notes.add(map.get("note").toString());
-        runtimeService.setVariable(processInstanceId,"editorsNotes", notes);
-
-        ArrayList<User> haveVoted = (ArrayList<User>)runtimeService.getVariable(processInstanceId,"haveVoted");
-        haveVoted.add(identityService.createUserQuery().userId(sysUser.getUsername()).singleResult());
-        runtimeService.setVariable(processInstanceId,"haveVoted", haveVoted);
+        TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "editorsNotes", "note");
+        TempHelper.editList(identityService, runtimeService, processInstanceId, "haveVoted");
 
         return camundaService.trySubmitForm(taskId, map);
     }
@@ -124,9 +121,7 @@ public class PlagiarismController {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
 
-        ArrayList<String> votes = (ArrayList<String>)runtimeService.getVariable(processInstanceId,"committeeVotes");
-        votes.add(map.get("vote").toString());
-        runtimeService.setVariable(processInstanceId,"committeeVotes",votes);
+        TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "committeeVotes", "vote");
 
         return camundaService.trySubmitForm(taskId, map);
     }

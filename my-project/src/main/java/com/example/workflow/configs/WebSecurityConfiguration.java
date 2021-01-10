@@ -24,16 +24,10 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
     @Autowired
     TokenUtils tokenUtils;
-
     @Autowired
     private SystemUserService jwtUserService;
-
-    // Neautorizovani pristup zastcenim resursima
-    //@Autowired
-    //private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Bean
     @Override
@@ -41,44 +35,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
-    // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Definisemo nacin autentifikacije
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-/*
-		String password = passwordEncoder().encode("user");
-        auth
-            .inMemoryAuthentication()
-            .withUser("user").password(password).authorities("ROLE_USER")
-            .and()
-            .withUser("user1").password(password).authorities("ROLE_USER", "ROLE_ADMIN");
-*/
-
         auth.userDetailsService(jwtUserService).passwordEncoder(passwordEncoder());
     }
 
-
-
-	/*
-	 * .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			// za neautorizovane zahteve posalji 401 gresku
-			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-			.authorizeRequests()
-			.antMatchers("/**").permitAll()
-			// svaki zahtev mora biti autorizovan
-			.anyRequest().authenticated().and()
-			// presretni svaki zahtev filterom
-			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class);
-			// komunikacija izmedju klijenta i servera je stateless
-	 * */
-
-    // Definisemo prava pristupa odredjenim URL-ovima
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -92,13 +58,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
-    // Generalna bezbednost aplikacije
     @Override
     public void configure(WebSecurity web) {
-        // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
         web.ignoring().antMatchers("/");
         web.ignoring().antMatchers(HttpMethod.POST,"/auth/login");
-        //i tako dalje na tu temu...
     }
-
 }

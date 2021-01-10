@@ -39,11 +39,13 @@ public class StarterController {
     public @ResponseBody
     HashMap<String, Object> startProcess(@PathVariable String processName) {
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(processName);
+
         if (processName.equals("registerReader")) {
             runtimeService.setVariable(pi.getId(), "systemUserRole", "READER");
         } else if (processName.equals("registerWriter")) {
             runtimeService.setVariable(pi.getId(), "systemUserRole", "WRITER");
         }
+
         HashMap<String,Object> hm = new HashMap<>();
         hm.put("processId", pi.getId());
         return hm;

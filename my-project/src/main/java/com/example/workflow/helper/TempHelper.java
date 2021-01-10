@@ -1,5 +1,13 @@
 package com.example.workflow.helper;
 
+import com.example.workflow.models.DBs.SysUser;
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.identity.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TempHelper {
@@ -11,5 +19,41 @@ public class TempHelper {
             found = value ? found + 1: found;
         }
         return found;
+    }
+
+    public static void editCommentsAndHaveCommentedLists(IdentityService identityService,
+                                                         RuntimeService runtimeService,
+                                                         HashMap<String, Object> map,
+                                                         String processInstanceId) {
+        //editCommentsList(runtimeService, processInstanceId, map);
+        editListWithValueInMap(runtimeService, processInstanceId, map, "comments", "comment");
+        //editHaveCommentedList(runtimeService, processInstanceId, user);
+        editList(identityService, runtimeService, processInstanceId, "haveCommented");
+    }
+
+    private static User getLoggedInUser(IdentityService identityService) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        SysUser sysUser = (SysUser) auth.getPrincipal();
+        User user = identityService.createUserQuery().userId(sysUser.getUsername()).singleResult();
+        return user;
+    }
+
+    public static void editList(IdentityService identityService,
+                                RuntimeService runtimeService,
+                                String processInstanceId,
+                                String variableName) {
+        ArrayList<User> list = (ArrayList<User>)runtimeService.getVariable(processInstanceId, variableName);
+        list.add(getLoggedInUser(identityService));
+        runtimeService.setVariable(processInstanceId, variableName, list);
+    }
+
+    public static void editListWithValueInMap(RuntimeService runtimeService,
+                                               String processInstanceId,
+                                               HashMap<String, Object> map,
+                                               String variableName,
+                                               String mapKey) {
+        ArrayList<String> list = (ArrayList<String>)runtimeService.getVariable(processInstanceId, variableName);
+        list.add(map.get(mapKey).toString());
+        runtimeService.setVariable(processInstanceId, variableName, list);
     }
 }

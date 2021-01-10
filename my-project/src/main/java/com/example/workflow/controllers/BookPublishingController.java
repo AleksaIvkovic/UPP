@@ -1,5 +1,6 @@
 package com.example.workflow.controllers;
 
+import com.example.workflow.helper.TempHelper;
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import com.example.workflow.models.DBs.SysUser;
@@ -9,6 +10,7 @@ import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,20 +37,12 @@ public class BookPublishingController {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
 
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return new ResponseEntity<>("Task is no longer valid",HttpStatus.BAD_REQUEST);
+        }
         String processInstanceId = task.getProcessInstanceId();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        SysUser sysUser = (SysUser) auth.getPrincipal();
-        User user = identityService.createUserQuery().userId(sysUser.getUsername()).singleResult();
-
-        ArrayList<String> comments = (ArrayList<String>) runtimeService.getVariable(processInstanceId,"comments");
-        ArrayList<User> haveCommented = (ArrayList<User>) runtimeService.getVariable(processInstanceId,"haveCommented");
-
-        comments.add(map.get("comment").toString());
-        haveCommented.add(user);
-
-        runtimeService.setVariable(processInstanceId,"comments",comments);
-        runtimeService.setVariable(processInstanceId,"haveCommented",haveCommented);
+        TempHelper.editCommentsAndHaveCommentedLists(identityService, runtimeService, map, processInstanceId);
 
         return camundaService.trySubmitForm(taskId, map);
     }

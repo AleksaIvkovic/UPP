@@ -7,6 +7,7 @@ import com.example.workflow.models.UserTokenState;
 import com.example.workflow.security.TokenUtils;
 import com.example.workflow.models.JwtAuthenticationRequest;
 import com.example.workflow.services.systemServices.SystemUserService;
+import org.camunda.bpm.engine.identity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,6 +72,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SysUser sysUser = (SysUser) auth.getPrincipal();
         SysUserDTO sysUserDTO = modelMapper.map(sysUser, SysUserDTO.class);
+        
         sysUserDTO.setAuthority(((List<Authority>)sysUser.getAuthorities()).get(0).getName());
         sysUserDTO.setIsActive(sysUser.isActive());
 

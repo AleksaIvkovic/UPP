@@ -2,9 +2,10 @@ package com.example.workflow.models.DBs;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class SubmittedFile {
+public class SubmittedFile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

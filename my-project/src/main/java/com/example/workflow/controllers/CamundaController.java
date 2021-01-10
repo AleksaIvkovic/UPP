@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +36,10 @@ public class CamundaController {
     @PostMapping(path="/submit/{variableName}/{taskId}", consumes = "application/json")
     public ResponseEntity<?> postCamundaFormWithVariable(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId, @PathVariable String variableName) {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
-
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return new ResponseEntity<>("Task is no longer valid", HttpStatus.BAD_REQUEST);
+        }
         String processInstanceId = task.getProcessInstanceId();
 
         runtimeService.setVariable(processInstanceId, variableName, map);
@@ -50,6 +53,9 @@ public class CamundaController {
                                                            @PathVariable String taskName) {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return new ResponseEntity<>("Task is no longer valid",HttpStatus.BAD_REQUEST);
+        }
         String processInstanceId = task.getProcessInstanceId();
 
         camundaService.trySubmitForm(taskId, map);
