@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,8 @@ public class GenreService implements IGenre {
     private GenreRepository genreRepository;
 
     @Override
-    public List<Genre> getGenres(){
-        return this.genreRepository.findAll();
+    public ArrayList<Genre> getGenres(){
+        return (ArrayList<Genre>) this.genreRepository.findAll();
     }
 
     @Override

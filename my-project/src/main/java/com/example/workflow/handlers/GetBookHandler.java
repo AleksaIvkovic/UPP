@@ -12,22 +12,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetBookHandler implements TaskListener {
-
-    @Autowired
-    private BookService bookService;
-
     @Override
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        PublishedBook book = bookService.GetBookByTitle(delegateTask.getVariable("bookTitle").toString());
 
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("work")) {
                 NonEditableMultipleEnumFormType nonEditableMultipleEnumFormType = (NonEditableMultipleEnumFormType) f.getType();
 
                 nonEditableMultipleEnumFormType.getValues().clear();
-
-                nonEditableMultipleEnumFormType.getValues().put(book.getTitle(), book.getFileName());
+                nonEditableMultipleEnumFormType.getValues().put(delegateTask.getVariable("bookTitle").toString(), delegateTask.getVariable("bookFileName").toString());
             }
         }
     }

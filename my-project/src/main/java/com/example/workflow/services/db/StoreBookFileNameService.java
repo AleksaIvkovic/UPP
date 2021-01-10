@@ -29,5 +29,7 @@ public class StoreBookFileNameService implements JavaDelegate {
         }
 
         bookService.StoreBook(publishedBook);
+
+        delegateExecution.setVariable("bookFileName", publishedBook.getFileName());
     }
 }

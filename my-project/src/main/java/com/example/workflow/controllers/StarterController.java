@@ -44,14 +44,6 @@ public class StarterController {
         } else if (processName.equals("registerWriter")) {
             runtimeService.setVariable(pi.getId(), "systemUserRole", "WRITER");
         }
-        else if(processName.equals("bookPublishing")){
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            SysUser sysUser = (SysUser) auth.getPrincipal();
-            runtimeService.setVariable(pi.getId(), "loggedInWriter", sysUser);
-            runtimeService.setVariable(pi.getId(), "loggedInEmail", sysUser.getEmail());
-            runtimeService.setVariable(pi.getId(), "username", sysUser.getUsername());
-            runtimeService.setVariable(pi.getId(), "firstname", sysUser.getFirstname());
-        }
         HashMap<String,Object> hm = new HashMap<>();
         hm.put("processId", pi.getId());
         return hm;

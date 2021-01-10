@@ -10,17 +10,15 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GetGenresHandler implements TaskListener {
-
-    @Autowired
-    GenreService genreService;
-
+    @Override
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
-        List<Genre> genres = genreService.getGenres();
+        List<Genre> genres = (ArrayList<Genre>)delegateTask.getVariable("allGenres");
 
         for (FormField f : taskFormFields.getFormFields()) {
             if (f.getId().equals("genres_1")) {
