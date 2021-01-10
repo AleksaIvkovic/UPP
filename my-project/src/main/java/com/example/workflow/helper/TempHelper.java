@@ -25,9 +25,7 @@ public class TempHelper {
                                                          RuntimeService runtimeService,
                                                          HashMap<String, Object> map,
                                                          String processInstanceId) {
-        //editCommentsList(runtimeService, processInstanceId, map);
         editListWithValueInMap(runtimeService, processInstanceId, map, "comments", "comment");
-        //editHaveCommentedList(runtimeService, processInstanceId, user);
         editList(identityService, runtimeService, processInstanceId, "haveCommented");
     }
 
@@ -48,10 +46,10 @@ public class TempHelper {
     }
 
     public static void editListWithValueInMap(RuntimeService runtimeService,
-                                               String processInstanceId,
-                                               HashMap<String, Object> map,
-                                               String variableName,
-                                               String mapKey) {
+                                              String processInstanceId,
+                                              HashMap<String, Object> map,
+                                              String variableName,
+                                              String mapKey) {
         ArrayList<String> list = (ArrayList<String>)runtimeService.getVariable(processInstanceId, variableName);
         list.add(map.get(mapKey).toString());
         runtimeService.setVariable(processInstanceId, variableName, list);
