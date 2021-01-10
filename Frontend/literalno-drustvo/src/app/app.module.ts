@@ -54,9 +54,9 @@ import { MainComponent } from './components/main/main.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskComponent } from './components/tasks/task/task.component';
-import { TaskDetailsComponent } from './components/tasks/task-details/task-details.component';
 import { BooksComponent } from './components/books/books.component';
 import { BookComponent } from './components/books/book/book.component';
+import { ImageComponent } from './components/image/image.component';
 
 @NgModule({
   declarations: [
@@ -69,9 +69,9 @@ import { BookComponent } from './components/books/book/book.component';
     MainComponent,
     TasksComponent,
     TaskComponent,
-    TaskDetailsComponent,
     BooksComponent,
-    BookComponent
+    BookComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,

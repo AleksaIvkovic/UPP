@@ -1,7 +1,9 @@
-<mat-list>
+<mat-list style="width: 98%;">
     <div *ngFor="let book of books">
-      <app-book [book]="book"></app-book>
-      <mat-divider></mat-divider>
+      <mat-card>
+        <app-book [book]="book"></app-book>
+      </mat-card>
+      <br/>
       <br/>
     </div>
   </mat-list>
