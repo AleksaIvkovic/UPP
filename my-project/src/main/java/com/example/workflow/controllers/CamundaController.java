@@ -34,17 +34,19 @@ public class CamundaController {
     }
 
     @PostMapping(path="/submit/{variableName}/{taskId}", consumes = "application/json")
-    public ResponseEntity<?> postCamundaFormWithVariable(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId, @PathVariable String variableName) {
+    public ResponseEntity<?> postCamundaFormWithVariable(@RequestBody List<FormSubmissionDTO> dto,
+                                                         @PathVariable String taskId,
+                                                         @PathVariable String variableName) {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
         if(task == null){
             return new ResponseEntity<>("Task is no longer valid", HttpStatus.BAD_REQUEST);
+        } else {
+            String processInstanceId = task.getProcessInstanceId();
+            runtimeService.setVariable(processInstanceId, variableName, map);
+            return camundaService.trySubmitForm(taskId, map);
         }
-        String processInstanceId = task.getProcessInstanceId();
-
-        runtimeService.setVariable(processInstanceId, variableName, map);
-
-        return camundaService.trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-return-task/{taskId}/{taskName}", consumes = "application/json")
@@ -53,13 +55,13 @@ public class CamundaController {
                                                            @PathVariable String taskName) {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
         if(task == null){
-            return new ResponseEntity<>("Task is no longer valid",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Task is no longer valid", HttpStatus.BAD_REQUEST);
+        } else {
+            String processInstanceId = task.getProcessInstanceId();
+            camundaService.trySubmitForm(taskId, map);
+            return camundaService.getNextTask(taskName, processInstanceId);
         }
-        String processInstanceId = task.getProcessInstanceId();
-
-        camundaService.trySubmitForm(taskId, map);
-
-        return camundaService.getNextTask(taskName, processInstanceId);
     }
 }

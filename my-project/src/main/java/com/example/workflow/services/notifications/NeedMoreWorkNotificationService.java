@@ -12,7 +12,7 @@ import java.util.HashMap;
 @Service
 public class NeedMoreWorkNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

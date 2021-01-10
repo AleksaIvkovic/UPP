@@ -13,10 +13,10 @@ import java.util.ArrayList;
 @Service
 public class EditorsNewPlagiarismReportNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Autowired
-    SystemUserService systemUserService;
+    private SystemUserService systemUserService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 @Service
 public class FileService implements IFile {
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @Autowired
     private FileRepository fileRepository;

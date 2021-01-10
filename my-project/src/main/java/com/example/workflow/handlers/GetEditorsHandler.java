@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GetEditorsHandler implements TaskListener {
 
     @Autowired
-    IdentityService identityService;
+    private IdentityService identityService;
 
     public void notify(DelegateTask delegateTask) {
         TaskFormData taskFormFields = delegateTask.getExecution().getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());

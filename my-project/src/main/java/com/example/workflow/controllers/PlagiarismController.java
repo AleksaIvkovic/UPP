@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 @Controller
 @RequestMapping("/api/plagiarism")
@@ -104,15 +105,15 @@ public class PlagiarismController {
     public ResponseEntity<?> postEditorReviewForm(@RequestBody List<FormSubmissionDTO> dto, @PathVariable String taskId) {
         HashMap<String, Object> map = camundaService.mapListToDTO(dto);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
         if(task == null){
             return new ResponseEntity<>("Task is no longer valid", HttpStatus.BAD_REQUEST);
+        } else {
+            String processInstanceId = task.getProcessInstanceId();
+            TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "editorsNotes", "note");
+            TempHelper.editList(identityService, runtimeService, processInstanceId, "haveVoted");
+            return camundaService.trySubmitForm(taskId, map);
         }
-        String processInstanceId = task.getProcessInstanceId();
-
-        TempHelper.editListWithValueInMap(runtimeService, processInstanceId, map, "editorsNotes", "note");
-        TempHelper.editList(identityService, runtimeService, processInstanceId, "haveVoted");
-
-        return camundaService.trySubmitForm(taskId, map);
     }
 
     @PostMapping(path="/submit-committee-review/{taskId}", consumes = "application/json")

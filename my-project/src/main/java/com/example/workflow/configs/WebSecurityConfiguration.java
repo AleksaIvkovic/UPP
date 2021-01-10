@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
-    TokenUtils tokenUtils;
+    private TokenUtils tokenUtils;
     @Autowired
     private SystemUserService jwtUserService;
 

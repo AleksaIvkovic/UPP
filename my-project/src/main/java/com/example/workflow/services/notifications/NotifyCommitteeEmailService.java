@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class NotifyCommitteeEmailService implements JavaDelegate {
 
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Autowired
     private IdentityService identityService;

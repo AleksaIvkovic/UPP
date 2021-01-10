@@ -45,6 +45,9 @@
     <bpmn:userTask id="Activity_04k4gu8" name="Synopsis review" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
+          <camunda:formField id="titleReadOnly" label="Title:" type="string_label" defaultValue="${title}" />
+          <camunda:formField id="genreReadOnly" label="Genre: " type="string_label" defaultValue="${genreName}" />
+          <camunda:formField id="synopsisReadOnly" label="Synopsis:" type="string_label" defaultValue="${synopsis}" />
           <camunda:formField id="decision" label="Do you want to read manuscript? " type="enum">
             <camunda:validation>
               <camunda:constraint name="required" />
@@ -52,9 +55,6 @@
             <camunda:value id="Yes_Id" name="Yes" />
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
-          <camunda:formField id="titleReadOnly" label="Title:" type="string_label" defaultValue="${title}" />
-          <camunda:formField id="genreReadOnly" label="Genre: " type="string_label" defaultValue="${genreName}" />
-          <camunda:formField id="synopsisReadOnly" label="Synopsis:" type="string_label" defaultValue="${synopsis}" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0mg9w6o</bpmn:incoming>
@@ -130,6 +130,8 @@
     <bpmn:userTask id="Activity_02eoyxg" name="Plagiarism review" camunda:assignee="${headEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
+          <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
+          <camunda:formField id="possiblePlagiarismsReadOnly" label="Possible plagiarisms: " type="string_labels" defaultValue="${possiblePlagiarisms}" />
           <camunda:formField id="plagiarismDecision" label="Is this manuscript plagiarsm?" type="enum">
             <camunda:validation>
               <camunda:constraint name="required" />
@@ -137,8 +139,8 @@
             <camunda:value id="Yes_Id" name="Yes" />
             <camunda:value id="No_Id" name="No" />
           </camunda:formField>
-          <camunda:formField id="possiblePlagiarismsReadOnly" label="Possible plagiarisms: " type="string_labels" defaultValue="${possiblePlagiarisms}" />
         </camunda:formData>
+        <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1datctj</bpmn:incoming>
       <bpmn:outgoing>Flow_14ot6qs</bpmn:outgoing>
@@ -229,12 +231,12 @@
     <bpmn:userTask id="Activity_0d6oxzt" name="Comment manuscript" camunda:assignee="${selectedBetaReader}">
       <bpmn:extensionElements>
         <camunda:formData>
+          <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
           <camunda:formField id="comment" label="Comment: " type="string_textArea">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="work" label="Manuscript:" type="notEditableEnum_works" />
         </camunda:formData>
         <camunda:taskListener class="com.example.workflow.handlers.GetBookHandler" event="create" />
       </bpmn:extensionElements>
@@ -1170,7 +1172,7 @@
       <bpmndi:BPMNShape id="Event_15k0fe5_di" bpmnElement="Event_1splnd5">
         <dc:Bounds x="2042" y="482" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2089" y="496" width="82" height="27" />
+          <dc:Bounds x="2079" y="486" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1acgpkh_di" bpmnElement="Gateway_1acgpkh" isMarkerVisible="true">
