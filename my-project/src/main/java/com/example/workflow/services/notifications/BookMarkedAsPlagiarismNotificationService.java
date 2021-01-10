@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookMarkedAsPlagiarismNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

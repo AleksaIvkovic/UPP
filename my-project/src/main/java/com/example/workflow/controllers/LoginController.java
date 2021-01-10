@@ -30,7 +30,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    TokenUtils tokenUtils;
+    private TokenUtils tokenUtils;
 
     @Autowired
     private AuthenticationManager authenticationManager;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotifyEditorOfUpdatedManuscript implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {

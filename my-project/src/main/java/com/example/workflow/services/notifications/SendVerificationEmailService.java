@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class SendVerificationEmailService implements JavaDelegate {
 
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
 
     @Override

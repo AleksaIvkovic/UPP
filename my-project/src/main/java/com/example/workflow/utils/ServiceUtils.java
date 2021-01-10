@@ -10,9 +10,9 @@ import javax.annotation.PostConstruct;
 @Component
 public class ServiceUtils {
     @Autowired
-    SystemUserService systemUserService;
+    private SystemUserService systemUserService;
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     private static ServiceUtils instance;
 

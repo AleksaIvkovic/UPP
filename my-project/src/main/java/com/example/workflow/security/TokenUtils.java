@@ -34,7 +34,7 @@ public class TokenUtils {
     static final String AUDIENCE_TABLET = "tablet";
 
     @Autowired
-    TimeProvider timeProvider;
+    private TimeProvider timeProvider;
 
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 

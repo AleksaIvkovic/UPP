@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorityService implements IAuthority {
     @Autowired
-    AuthorityRepository authorityRepository;
+    private AuthorityRepository authorityRepository;
 
     @Override
     public Authority findById(Long id) {

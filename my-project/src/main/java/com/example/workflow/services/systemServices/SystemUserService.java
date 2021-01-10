@@ -19,10 +19,10 @@ import java.util.List;
 @Service
 public class SystemUserService implements ISystemUser, UserDetailsService {
     @Autowired
-    SysUserRepository sysUserRepository;
+    private SysUserRepository sysUserRepository;
 
     @Autowired
-    VerificationTokenRepository verificationTokenRepository;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public SysUser getSystemUserById(Long id) {

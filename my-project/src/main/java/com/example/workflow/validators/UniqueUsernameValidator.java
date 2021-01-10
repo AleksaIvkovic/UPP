@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class UniqueUsernameValidator implements FormFieldValidator {
     @Autowired
-    SystemUserService readerService;
+    private SystemUserService readerService;
 
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {

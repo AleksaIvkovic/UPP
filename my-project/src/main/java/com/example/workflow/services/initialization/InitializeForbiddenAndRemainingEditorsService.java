@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Service
 public class InitializeForbiddenAndRemainingEditorsService implements JavaDelegate {
     @Autowired
-    IdentityService identityService;
+    private IdentityService identityService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
