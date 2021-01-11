@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class TasksComponent implements OnInit {
   tasks: any[] = [];
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -35,5 +37,9 @@ export class TasksComponent implements OnInit {
         }
       )
     );
+  }
+
+  CheckIfTaskIsOpen(){
+    return this.router.url.includes('/tasks/')
   }
 }
