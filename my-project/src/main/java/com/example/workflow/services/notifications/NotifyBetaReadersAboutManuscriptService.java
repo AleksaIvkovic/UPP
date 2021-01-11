@@ -17,30 +17,17 @@ import java.util.Map;
 public class NotifyBetaReadersAboutManuscriptService implements JavaDelegate {
     @Autowired
     private MailingService mailingService;
-
     @Autowired
     private SystemUserService systemUserService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        List<String> selectedBetaReadersUsernames = new ArrayList<>();
-        HashMap<String, Object> map = (HashMap<String, Object>)execution.getVariable("selectedBetaReadersForm");
-        HashMap<String, Boolean> selectedBetaReadersHM = (HashMap<String, Boolean>)map.get("betaReaders_1");
-
-        for (Map.Entry mapElement: selectedBetaReadersHM.entrySet()) {
-            if ((boolean)mapElement.getValue()) {
-                selectedBetaReadersUsernames.add(mapElement.getKey().toString());
-            }
-        }
-
+        ArrayList<String> selectedBetaReadersUsernames = (ArrayList<String>)execution.getVariable("selectedBetaReadersUsernames");
         String text = "You have new manuscript to read and review.";
 
         for (String username: selectedBetaReadersUsernames) {
             SysUser sysUser = systemUserService.getSystemUserByUsername(username);
-            mailingService.sendMail("New manuscript to review",text, sysUser.getEmail());
+            mailingService.sendMail("New manuscript to review", text, sysUser.getEmail());
         }
-
-        execution.setVariable("selectedBetaReadersUsernames", selectedBetaReadersUsernames);
-
     }
 }

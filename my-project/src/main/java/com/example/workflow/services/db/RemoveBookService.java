@@ -13,7 +13,6 @@ public class RemoveBookService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        //PublishedBook publishedBook = bookService.GetBookByTitle(execution.getVariable("bookTitle").toString());
-        bookService.RemoveBook(bookService.GetBookByTitle(execution.getVariable("bookTitle").toString()));
+        bookService.removeBook(execution.getVariable("bookTitle").toString());
     }
 }

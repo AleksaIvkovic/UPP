@@ -18,7 +18,7 @@ public class AuthorityService implements IAuthority {
     }
 
     @Override
-    public Authority findByname(String name) {
+    public Authority findByName(String name) {
         Authority auth = this.authorityRepository.findByName(name);
         return auth;
     }

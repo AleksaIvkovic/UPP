@@ -1,6 +1,11 @@
-package com.example.workflow.helper;
+package com.example.workflow.helpers;
 
+import com.example.workflow.models.DBs.BookComment;
+import com.example.workflow.models.DBs.PublishedBook;
 import com.example.workflow.models.DBs.SysUser;
+import com.example.workflow.services.systemServices.BookCommentService;
+import com.example.workflow.services.systemServices.BookService;
+import com.example.workflow.services.systemServices.SystemUserService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.identity.User;
@@ -53,5 +58,18 @@ public class TempHelper {
         ArrayList<String> list = (ArrayList<String>)runtimeService.getVariable(processInstanceId, variableName);
         list.add(map.get(mapKey).toString());
         runtimeService.setVariable(processInstanceId, variableName, list);
+    }
+
+    public static void storeComment(String comment,
+                                    User user,
+                                    BookService bookService,
+                                    String title,
+                                    SystemUserService systemUserService,
+                                    BookCommentService bookCommentService) {
+        PublishedBook book = bookService.getBookByTitle(title);
+        SysUser sysUser = systemUserService.getSystemUserByUsername(user.getId());
+        BookComment bookComment = new BookComment(comment, book, sysUser);
+        bookCommentService.StoreComment(bookComment);
+        bookService.storeComment(book, bookComment);
     }
 }

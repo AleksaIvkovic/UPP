@@ -8,9 +8,8 @@ import java.util.ArrayList;
 
 @Service
 public class SetRoundToZeroService implements JavaDelegate {
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        delegateExecution.setVariable("Round",0);
+        delegateExecution.setVariable("Round", 0);
     }
 }

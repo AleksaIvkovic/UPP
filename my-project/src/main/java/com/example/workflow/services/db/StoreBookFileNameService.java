@@ -18,7 +18,7 @@ public class StoreBookFileNameService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        PublishedBook publishedBook = bookService.GetBookByTitle(delegateExecution.getVariable("bookTitle").toString());
+        PublishedBook publishedBook = bookService.getBookByTitle(delegateExecution.getVariable("bookTitle").toString());
         HashMap<String, Object> map = (HashMap<String, Object>)delegateExecution.getVariable("worksToStore");
 
         for (Map.Entry mapElement: map.entrySet()) {
@@ -28,7 +28,7 @@ public class StoreBookFileNameService implements JavaDelegate {
             }
         }
 
-        bookService.StoreBook(publishedBook);
+        bookService.storeBook(publishedBook);
 
         delegateExecution.setVariable("bookFileName", publishedBook.getFileName());
     }

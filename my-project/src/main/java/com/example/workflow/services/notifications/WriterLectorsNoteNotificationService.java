@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WriterLectorsNoteNotificationService implements JavaDelegate {
-
     @Autowired
     private IMailing mailingService;
 

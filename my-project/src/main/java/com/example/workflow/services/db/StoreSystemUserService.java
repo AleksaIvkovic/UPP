@@ -20,29 +20,26 @@ import java.util.*;
 public class StoreSystemUserService implements JavaDelegate {
     @Autowired
     private IdentityService identityService;
-
     @Autowired
     private IGenre genreService;
-
     @Autowired
     private ISystemUser systemUserService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthorityService authorityService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-        boolean isBeta = false;
+        boolean isBeta;
+
         if(systemUserForm.get("isBeta") == null)
             isBeta = false;
         else
             isBeta = systemUserForm.get("isBeta")=="" ? false:(boolean)systemUserForm.get("isBeta");
-        String group = "";
-        //boolean isBeta = (boolean)systemUserForm.get("isBeta");
+
+        String group;
         String role = execution.getVariable("systemUserRole").toString();
         role = (isBeta && role.equals("READER")) ? "BETA-READER" : role;
 
@@ -53,13 +50,12 @@ public class StoreSystemUserService implements JavaDelegate {
                 systemUserForm.get("country").toString(),
                 systemUserForm.get("username").toString(),
                 passwordEncoder.encode(systemUserForm.get("password").toString()),
-                //systemUserForm.get("password").toString(),
                 systemUserForm.get("email").toString()
         );
 
-        Authority authoritie = authorityService.findByname(role);
+        Authority authority = authorityService.findByName(role);
         List<Authority> authorities = new ArrayList<>();
-        authorities.add(authoritie);
+        authorities.add(authority);
         newSysUser.setAuthorities(authorities);
 
         if (role.equals("READER")) {
@@ -85,7 +81,7 @@ public class StoreSystemUserService implements JavaDelegate {
 
         if (isBeta) {
             newSysUser.setBeta(true);
-            HashMap<String, Object> betaGenresForm = null;
+            HashMap<String, Object> betaGenresForm;
             List<Genre> betaGenres = new ArrayList<>();
 
             betaGenresForm = (HashMap<String, Object>)execution.getVariable("betaGenresForm");
@@ -108,7 +104,6 @@ public class StoreSystemUserService implements JavaDelegate {
         } catch (Exception e) {
             execution.setVariable("invalidSave", true);
             throw new Exception("Something went wrong");
-            //Poslati na front da je nesto poslo naopako
         }
 
         User user = identityService.newUser(systemUserForm.get("username").toString());

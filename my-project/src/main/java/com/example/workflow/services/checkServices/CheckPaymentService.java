@@ -16,7 +16,6 @@ public class CheckPaymentService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        String processInstanceId = delegateExecution.getProcessInstanceId();
         HashMap<String, Object> map = (HashMap<String, Object>)delegateExecution.getVariable("creditCard");
 
         CreditCardDetails creditCardDetails = new CreditCardDetails();

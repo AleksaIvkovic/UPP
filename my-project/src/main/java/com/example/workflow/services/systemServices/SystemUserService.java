@@ -20,7 +20,6 @@ import java.util.List;
 public class SystemUserService implements ISystemUser, UserDetailsService {
     @Autowired
     private SysUserRepository sysUserRepository;
-
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
@@ -79,8 +78,8 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
     }
 
     @Override
-    public boolean checkIfWriterExists(String fullname) {
-        ArrayList<SysUser> users = sysUserRepository.getSysUsersByFirstnameAndLastname(fullname.split(" ")[0], fullname.split(" ")[1]);
+    public boolean checkIfWriterExists(String fullName) {
+        ArrayList<SysUser> users = sysUserRepository.getSysUsersByFirstnameAndLastname(fullName.split(" ")[0], fullName.split(" ")[1]);
 
         if (users == null) {
             return false;
@@ -97,11 +96,38 @@ public class SystemUserService implements ISystemUser, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        SysUser user = sysUserRepository.getSystemUserByUsername(s);
+        SysUser user = getSystemUserByUsername(s);
 
         if(user == null)
             throw new UsernameNotFoundException("User with " + s + " doesn't exists!");
 
         return user;
+    }
+
+    @Override
+    public void addPenaltyPoint(String username) {
+        SysUser user = getSystemUserByUsername(username);
+        user.setPoints(user.getPoints() + 1);
+        storeSystemUser(user);
+    }
+
+    @Override
+    public void loseBetaStatus(SysUser user, List<Authority> authorities) {
+        user.getBetaGenres().clear();
+        user.getAuthorities().clear();
+        user.setBeta(false);
+        //storeSystemUser(user);
+        user.setAuthorities(authorities);
+        storeSystemUser(user);
+    }
+
+    @Override
+    public void confirmEmail(String token) {
+        SysUser sysUser = findSystemUserByToken(token);
+
+        if (sysUser != null){
+            sysUser.setConfirmed(true);
+            storeSystemUser(sysUser);
+        }
     }
 }

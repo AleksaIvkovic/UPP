@@ -19,12 +19,13 @@ public class SubstituteDecisionService implements JavaDelegate {
         int didNotVote = chosenEditors.size() - haveVoted.size();
         for (User votedEditor: haveVoted) {
             for (User editor: chosenEditors) {
-                if (editor.getId().toString().equals(votedEditor.getId().toString())) {
+                if (editor.getId().equals(votedEditor.getId())) {
                     chosenEditors.remove(editor);
                     break;
                 }
             }
         }
+
         forbiddenEditors.addAll(chosenEditors);
         delegateExecution.setVariable("forbiddenEditors", forbiddenEditors);
 
@@ -40,9 +41,7 @@ public class SubstituteDecisionService implements JavaDelegate {
                 delegateExecution.setVariable("remainingEditorsUsernames", new ArrayList<String>());
                 delegateExecution.setVariable("editorsUsers", chosenEditors);
                 ArrayList<String> editorUsernames = new ArrayList<>();
-                chosenEditors.forEach(editor -> {
-                    editorUsernames.add(editor.getId().toString());
-                });
+                chosenEditors.forEach(editor -> editorUsernames.add(editor.getId()));
                 delegateExecution.setVariable("editorsUsernames", editorUsernames);
             } else {
                 delegateExecution.setVariable("nextStep", "Substitutions");

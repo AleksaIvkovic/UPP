@@ -13,15 +13,19 @@ public class CheckCommitteeVotesService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        int[] counts =  {0,0,0};
-
-        System.out.println((ArrayList<String>)delegateExecution.getVariable("committeeVotes"));
+        int[] counts =  {0, 0, 0};
 
         for(String vote : (ArrayList<String>)delegateExecution.getVariable("committeeVotes")){
             switch (vote){
-                case "For_Id": counts[0]++; break;
-                case "Against_Id": counts[1]++; break;
-                case "NeedMoreWork_Id" : counts[2]++; break;
+                case "For_Id":
+                    counts[0]++;
+                    break;
+                case "Against_Id":
+                    counts[1]++;
+                    break;
+                case "NeedMoreWork_Id" :
+                    counts[2]++;
+                    break;
             }
         }
 

@@ -16,8 +16,6 @@ public class PayMembershipNotificationService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-
         String text = "Dear " + execution.getVariable("firstname") +
         ",\n\n\t" + "We would kindly ask you to pay your membership fee so the " +
         "process of your registration could be completed successfully.";

@@ -1,9 +1,8 @@
 package com.example.workflow.controllers;
 
-import com.example.workflow.helper.TempHelper;
+import com.example.workflow.helpers.TempHelper;
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.DTOs.FormSubmissionDTO;
-import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -12,8 +11,6 @@ import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 @Controller
 @RequestMapping("/api/plagiarism")

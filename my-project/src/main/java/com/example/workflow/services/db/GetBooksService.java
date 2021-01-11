@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 public class GetBooksService implements JavaDelegate {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         List<PublishedBook> books = new ArrayList<>();
-        books.add(bookService.GetBookByTitle(delegateExecution.getVariable("myTitle").toString()));
-        books.add(bookService.GetBookByTitle(delegateExecution.getVariable("title").toString()));
+        books.add(bookService.getBookByTitle(delegateExecution.getVariable("myTitle").toString()));
+        books.add(bookService.getBookByTitle(delegateExecution.getVariable("title").toString()));
 
         delegateExecution.setVariable("booksToReview", books);
     }

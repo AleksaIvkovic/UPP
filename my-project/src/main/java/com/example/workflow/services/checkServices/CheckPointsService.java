@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 @Service
 public class CheckPointsService implements JavaDelegate {
-
     @Autowired
     private SystemUserService sysUserService;
 
@@ -31,7 +30,7 @@ public class CheckPointsService implements JavaDelegate {
             execution.setVariable("loseBetaStatus", false);
         else {
             execution.setVariable("loseBetaStatus", true);
-            execution.setVariable("loseBetaStatusReaders",loseBetaStatusReaders);
+            execution.setVariable("loseBetaStatusReaders", loseBetaStatusReaders);
         }
     }
 }

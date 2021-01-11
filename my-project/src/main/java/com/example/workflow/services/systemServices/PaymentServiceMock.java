@@ -8,7 +8,6 @@ import java.util.Random;
 
 @Service
 public class PaymentServiceMock implements IPayment {
-
     @Override
     public boolean Pay(CreditCardDetails creditCardDetails) {
         Random r = new Random();

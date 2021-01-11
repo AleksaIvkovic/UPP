@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Service
 public class SelectTheCommitteeService implements JavaDelegate {
-
     @Autowired
     private IdentityService identityService;
 
@@ -31,9 +30,7 @@ public class SelectTheCommitteeService implements JavaDelegate {
         }
 
         delegateExecution.setVariable("committeeSize", committee.size());
-
         delegateExecution.setVariable("committee", committee);
-
         delegateExecution.setVariable("committeeMembers", committeeUsernames);
     }
 }

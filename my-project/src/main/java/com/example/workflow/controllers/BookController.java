@@ -15,6 +15,6 @@ public class BookController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getBooks() {
-        return new ResponseEntity<>(bookService.GetPublishedBooks(), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getPublishedBooks(), HttpStatus.OK);
     }
 }

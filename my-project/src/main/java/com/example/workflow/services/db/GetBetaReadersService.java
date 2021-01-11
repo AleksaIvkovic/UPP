@@ -15,27 +15,24 @@ import java.util.ArrayList;
 
 @Service
 public class GetBetaReadersService implements JavaDelegate {
-
     @Autowired
-    IdentityService identityService;
-
+    private IdentityService identityService;
     @Autowired
     private BookService bookService;
-
     @Autowired
     private SystemUserService systemUserService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         ArrayList<User> allBetaReaders = (ArrayList<User>) identityService.createUserQuery().memberOfGroup("betaReaders").list();
-        PublishedBook publishedBook = bookService.GetBookByTitle(execution.getVariable("bookTitle").toString());
+        PublishedBook publishedBook = bookService.getBookByTitle(execution.getVariable("bookTitle").toString());
         ArrayList<User> chosenBetaReaders = new ArrayList<User>();
         ArrayList<String> betaReadersUsernames = new ArrayList<String>();
 
-        for (User u : allBetaReaders){
-            SysUser sysUser = systemUserService.getSystemUserByUsername(u.getId());
+        for (User betaReader : allBetaReaders){
+            SysUser sysUser = systemUserService.getSystemUserByUsername(betaReader.getId());
             if(sysUser.getBetaGenres().contains(publishedBook.getGenre())){
-                chosenBetaReaders.add(u);
+                chosenBetaReaders.add(betaReader);
                 betaReadersUsernames.add(sysUser.getUsername());
             }
         }

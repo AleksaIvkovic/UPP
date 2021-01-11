@@ -11,26 +11,23 @@ import java.util.ArrayList;
 public class UpdateChosenEditorsService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        ArrayList<User> chosenEditors = (ArrayList<User>)delegateExecution.getVariable("editorsUsers");
+        //ArrayList<User> chosenEditors = (ArrayList<User>)delegateExecution.getVariable("editorsUsers");
         ArrayList<User> remainingEditors = (ArrayList<User>)delegateExecution.getVariable("remainingEditorsUsers");
         ArrayList<User> chosenSubstitutes = (ArrayList<User>)delegateExecution.getVariable("chosenSubstitutes");
         ArrayList<User> haveVoted = (ArrayList<User>)delegateExecution.getVariable("haveVoted");
 
-        chosenEditors = new ArrayList<>();
+        ArrayList<User> chosenEditors = new ArrayList<>();
         chosenEditors.addAll(haveVoted);
         chosenEditors.addAll(chosenSubstitutes);
 
         for (User substitute: chosenSubstitutes) {
             for (User editor: remainingEditors) {
-                if (editor.getId().toString().equals(substitute.getId().toString())) {
+                if (editor.getId().equals(substitute.getId())) {
                     remainingEditors.remove(editor);
                     break;
                 }
             }
         }
-
-        delegateExecution.setVariable("remainingEditorsUsers", remainingEditors);
-        delegateExecution.setVariable("editorsUsers", chosenEditors);
 
         ArrayList<String> chosenEditorsUsernames = new ArrayList<String>();
 
@@ -38,6 +35,8 @@ public class UpdateChosenEditorsService implements JavaDelegate {
             chosenEditorsUsernames.add(temp.getId());
         }
 
+        delegateExecution.setVariable("remainingEditorsUsers", remainingEditors);
+        delegateExecution.setVariable("editorsUsers", chosenEditors);
         delegateExecution.setVariable("editorsUsernames", chosenEditorsUsernames);
     }
 }

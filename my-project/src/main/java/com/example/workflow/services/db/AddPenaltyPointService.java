@@ -12,14 +12,13 @@ import java.util.ArrayList;
 
 @Service
 public class AddPenaltyPointService implements JavaDelegate {
-
     @Autowired
     private SystemUserService sysUserService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        ArrayList<String> selectedBetaUsernames = ( ArrayList<String>)execution.getVariable("selectedBetaReadersUsernames");
-        ArrayList<User> haveCommented = ( ArrayList<User>)execution.getVariable("haveCommented");
+        ArrayList<String> selectedBetaUsernames = (ArrayList<String>)execution.getVariable("selectedBetaReadersUsernames");
+        ArrayList<User> haveCommented = (ArrayList<User>)execution.getVariable("haveCommented");
         ArrayList<String> haveCommentedUsernames = new ArrayList<>();
         ArrayList<String> haveNotCommented = new ArrayList<>();
 
@@ -30,13 +29,10 @@ public class AddPenaltyPointService implements JavaDelegate {
         for (String username: selectedBetaUsernames) {
             if(haveCommentedUsernames.contains(username))
                 continue;
-            SysUser sysUser = sysUserService.getSystemUserByUsername(username);
-            sysUser.setPoints(sysUser.getPoints()+1);
-            sysUserService.storeSystemUser(sysUser);
+            sysUserService.addPenaltyPoint(username);
             haveNotCommented.add(username);
         }
 
-        execution.setVariable("haveNotCommented",haveNotCommented);
-
+        execution.setVariable("haveNotCommented", haveNotCommented);
     }
 }

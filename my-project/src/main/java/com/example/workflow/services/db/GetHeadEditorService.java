@@ -12,11 +12,11 @@ import java.util.ArrayList;
 @Service
 public class GetHeadEditorService implements JavaDelegate {
     @Autowired
-    IdentityService identityService;
+    private IdentityService identityService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        User headEditor = (User) identityService.createUserQuery().memberOfGroup("headEditor").list().get(0);
+        User headEditor = identityService.createUserQuery().memberOfGroup("headEditor").list().get(0);
 
         delegateExecution.setVariable("headEditorUser", headEditor);
         delegateExecution.setVariable("headEditor", headEditor.getId());

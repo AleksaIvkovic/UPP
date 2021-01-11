@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Service
 public class GenreService implements IGenre {
-
     @Autowired
     private GenreRepository genreRepository;
 
@@ -28,6 +27,6 @@ public class GenreService implements IGenre {
         if(genre.get() == null){
             throw new NotFoundException();
         }
-        return  genre.get();
+        return genre.get();
     }
 }

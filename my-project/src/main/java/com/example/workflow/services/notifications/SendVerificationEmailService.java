@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendVerificationEmailService implements JavaDelegate {
-
     @Autowired
     private IMailing mailingService;
-
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailingService implements IMailing {
-
     private static final String HOST = "smtp.gmail.com";
     private static final String USER = "literary.assoc@gmail.com";
     private static final String PWD = "UPPpass1";
@@ -24,13 +23,11 @@ public class MailingService implements IMailing {
         email.setSSLOnConnect(true);
 
         try {
-
             email.setFrom("literary.assoc@gmail.com");
             email.setSubject(subject);
             email.setMsg(text);
             email.addTo(receiverEmail);
             email.send();
-
         } catch (Exception e) {
             System.out.println(e);
         }

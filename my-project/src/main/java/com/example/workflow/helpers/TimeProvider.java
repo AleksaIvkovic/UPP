@@ -1,4 +1,4 @@
-package com.example.workflow.helper;
+package com.example.workflow.helpers;
 
 import org.springframework.stereotype.Component;
 

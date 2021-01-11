@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 public class BookMarkedAsPlagiarismNotificationService implements JavaDelegate {
     @Autowired
     private IMailing mailingService;
-
     @Autowired
     private BookService bookService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        PublishedBook book = (PublishedBook)bookService.GetBookByTitle(execution.getVariable("title").toString());
+        PublishedBook book = bookService.getBookByTitle(execution.getVariable("title").toString());
 
         String text = "Dear " + book.getWriter().getFirstname() +
                 ",\n\n\t" + "We would like to inform you that your book \"" +

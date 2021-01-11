@@ -11,13 +11,11 @@ import java.util.ArrayList;
 
 @Service
 public class NotifyWriterAboutBetaCommentService implements JavaDelegate {
-
     @Autowired
     private MailingService mailingService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-
         ArrayList<String> comments = (ArrayList<String>) execution.getVariable("comments");
         SysUser writer = (SysUser)execution.getVariable("loggedInWriter");
 

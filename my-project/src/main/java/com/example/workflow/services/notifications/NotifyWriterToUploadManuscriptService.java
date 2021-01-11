@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NotifyWriterToUploadManuscriptService implements JavaDelegate {
-
     @Autowired
     private MailingService mailingService;
 

@@ -13,17 +13,13 @@ import java.util.Map;
 
 @Service
 public class StoreWorkService implements JavaDelegate {
-
     @Autowired
     FileService fileService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
         String processInstanceId = delegateExecution.getProcessInstanceId();
-
         HashMap<String, Object> map = (HashMap<String, Object>)delegateExecution.getVariable("worksToStore");
-
         String username = delegateExecution.getVariable("username").toString();
 
         for (Map.Entry mapElement: map.entrySet()) {

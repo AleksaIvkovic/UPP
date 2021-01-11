@@ -23,55 +23,12 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 @Service
 public class FileService implements IFile {
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private FileRepository fileRepository;
-
-    @Override
-    public void savePDF(FileDTO fileDto, String taskId){
-        MultipartFile multipartFile = fileDto.getFile();
-        Path filepath = Paths.get(".\\src\\main\\resources\\PDFFiles", multipartFile.getOriginalFilename());
-
-        try (OutputStream os = Files.newOutputStream(filepath)) {
-            os.write(multipartFile.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> download(String name) throws MalformedURLException {
-
-        Path filepath = Paths.get("src\\main\\resources\\PDFFiles", name);
-
-        File file = new File(filepath.toAbsolutePath().toString());
-
-        UrlResource urlResource = new UrlResource("file:///" + filepath.toAbsolutePath().toString());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-
-        return new ResponseEntity<>(urlResource, httpHeaders, HttpStatus.OK);
-    }
-
-    @Override
-    public Resource loadFileAsResource(String fileName) {
-        try {
-            Path filePath = Paths.get("src\\main\\resources\\PDFFiles", fileName);
-            Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
-                return resource;
-            } else {
-                throw new NotFoundException();
-            }
-        } catch (MalformedURLException ex) {
-            throw new NotFoundException();
-        }
-    }
 
     @Override
     public void storeSubmittedFile(SubmittedFile newSubmittedFile) {
@@ -92,4 +49,51 @@ public class FileService implements IFile {
         }
         return contentType;
     }
+
+    @Override
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = Paths.get("src\\main\\resources\\PDFFiles", fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new NotFoundException();
+            }
+        } catch (MalformedURLException ex) {
+            throw new NotFoundException();
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> download(String name) throws MalformedURLException {
+        Path filepath = Paths.get("src\\main\\resources\\PDFFiles", name);
+
+        File file = new File(filepath.toAbsolutePath().toString());
+
+        UrlResource urlResource = new UrlResource("file:///" + filepath.toAbsolutePath().toString());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+
+        return new ResponseEntity<>(urlResource, httpHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    public void savePDF(FileDTO fileDto, String taskId){
+        MultipartFile multipartFile = fileDto.getFile();
+        Path filepath = Paths.get(".\\src\\main\\resources\\PDFFiles", multipartFile.getOriginalFilename());
+
+        try (OutputStream os = Files.newOutputStream(filepath)) {
+            os.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public ArrayList<SubmittedFile> getAllByProcessId(String processId) {
+        return (ArrayList<SubmittedFile>)fileRepository.getAllByProcessId(processId);
+    }
+
+
 }

@@ -11,12 +11,10 @@ import java.util.HashMap;
 @Service
 public class InvalidPaymentNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-
         String text = "Dear " + execution.getVariable("firstname") +
                 ",\n\n\t" + "We are sorry to inform you that something went wrong " +
                 "during the payment process and that you need to fill out the form again." +

@@ -9,10 +9,9 @@ import java.util.ArrayList;
 
 @Service
 public class InitializationCommentsAndBetaListsService implements JavaDelegate {
-
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        execution.setVariable("comments",new ArrayList<String>());
-        execution.setVariable("haveCommented",new ArrayList<User>());
+        execution.setVariable("comments", new ArrayList<String>());
+        execution.setVariable("haveCommented", new ArrayList<User>());
     }
 }

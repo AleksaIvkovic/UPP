@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Service
 public class NotifyReaderAboutLosingBetaStatusService implements JavaDelegate {
-
     @Autowired
     private MailingService mailingService;
 

@@ -2,6 +2,7 @@ package com.example.workflow.services.db;
 
 import com.example.workflow.intefaces.IBook;
 import com.example.workflow.intefaces.IGenre;
+import com.example.workflow.models.DBs.Genre;
 import com.example.workflow.models.DBs.PublishedBook;
 import com.example.workflow.models.DBs.SysUser;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -15,23 +16,18 @@ import java.util.HashMap;
 public class StoreSynopsisService implements JavaDelegate {
     @Autowired
     private IBook bookService;
-
     @Autowired
     private IGenre genreService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         HashMap<String, Object> newPublishedBookForm = (HashMap<String, Object>)execution.getVariable("newPublishedBookForm");
+        SysUser writer = (SysUser)execution.getVariable("loggedInWriter");
+        Genre genre = genreService.getGenre(Integer.parseInt(newPublishedBookForm.get("genre").toString()));
 
-        PublishedBook newPublishedBook = new PublishedBook();
-        newPublishedBook.setTitle(newPublishedBookForm.get("title").toString());
-        newPublishedBook.setPublished(false);
-        newPublishedBook.setGenre(genreService.getGenre(Integer.parseInt(newPublishedBookForm.get("genre").toString())));
-        newPublishedBook.setSynopsis(newPublishedBookForm.get("synopsis").toString());
-        newPublishedBook.setWriter((SysUser)execution.getVariable("loggedInWriter"));
+        PublishedBook newPublishedBook = bookService.storeInitialBookDetails(newPublishedBookForm, writer, genre);
 
-        bookService.StoreBook(newPublishedBook);
         execution.setVariable("bookTitle", newPublishedBook.getTitle());
-        execution.setVariable("genreName",newPublishedBook.getGenre().getName());
+        execution.setVariable("genreName", newPublishedBook.getGenre().getName());
     }
 }

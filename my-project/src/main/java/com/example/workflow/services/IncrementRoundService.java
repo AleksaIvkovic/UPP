@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class IncrementRoundService implements JavaDelegate {
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         int round = Integer.parseInt(delegateExecution.getVariable("Round").toString());

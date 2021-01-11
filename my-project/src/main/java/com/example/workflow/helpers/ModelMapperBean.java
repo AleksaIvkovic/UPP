@@ -1,4 +1,4 @@
-package com.example.workflow.helper;
+package com.example.workflow.helpers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

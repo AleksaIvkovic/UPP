@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class EditorsNewPlagiarismReportNotificationService implements JavaDelegate {
     @Autowired
     private IMailing mailingService;
-
     @Autowired
     private SystemUserService systemUserService;
 

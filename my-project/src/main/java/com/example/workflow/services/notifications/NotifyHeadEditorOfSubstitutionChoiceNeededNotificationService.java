@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Service
 public class NotifyHeadEditorOfSubstitutionChoiceNeededNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {

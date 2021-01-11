@@ -11,10 +11,10 @@ import java.util.ArrayList;
 @Service
 public class SubmittedFileService implements ISubmittedFile {
     @Autowired
-    private FileRepository fileRepository;
+    private FileService fileService;
 
     @Override
     public ArrayList<SubmittedFile> getAllFilesByProcessId(String id) {
-        return (ArrayList<SubmittedFile>) fileRepository.getAllByProcessId(id);
+        return fileService.getAllByProcessId(id);
     }
 }

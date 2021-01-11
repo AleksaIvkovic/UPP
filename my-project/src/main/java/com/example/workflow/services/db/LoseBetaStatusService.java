@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 public class LoseBetaStatusService implements JavaDelegate {
-
     @Autowired
     private SystemUserService sysUserService;
     @Autowired
@@ -25,23 +24,15 @@ public class LoseBetaStatusService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        ArrayList<SysUser> loseBetaStatusReaders =   (ArrayList<SysUser>)execution.getVariable("loseBetaStatusReaders");
+        ArrayList<SysUser> loseBetaStatusReaders = (ArrayList<SysUser>)execution.getVariable("loseBetaStatusReaders");
+        List<Authority> authorities = new ArrayList<>();
+        Authority authority = authorityService.findByName("READER");
+        authorities.add(authority);
 
         for(SysUser user: loseBetaStatusReaders){
-            user.getBetaGenres().clear();
-            user.getAuthorities().clear();
-            user.setBeta(false);
-            sysUserService.storeSystemUser(user);
-
-            Authority authoritie = authorityService.findByname("READER");
-            List<Authority> authorities = new ArrayList<>();
-            authorities.add(authoritie);
-            user.setAuthorities(authorities);
-            sysUserService.storeSystemUser(user);
-
+            sysUserService.loseBetaStatus(user, authorities);
             identityService.deleteMembership(user.getUsername(),"betaReaders");
             identityService.createMembership(user.getUsername(), "readers");
-
         }
     }
 }

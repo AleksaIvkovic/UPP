@@ -13,16 +13,11 @@ import java.util.HashMap;
 
 @Service
 public class NotifyCommitteeEmailService implements JavaDelegate {
-
     @Autowired
     private IMailing mailingService;
 
-    @Autowired
-    private IdentityService identityService;
-
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String processId = execution.getProcessInstanceId();
         HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
 
         String text = "New writer " + systemUserForm.get("firstname").toString() + " " + systemUserForm.get("lastname").toString() + " submitted theirs works which you have to review.";

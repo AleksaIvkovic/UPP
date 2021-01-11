@@ -15,9 +15,8 @@ public class SendSuspensionNoticeEmailService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
-
-        String text = "Dear " + execution.getVariable("firstname") + ",\n\n\t" + "We are sad to inform you that the request for your membership has been denied.";
+        String text = "Dear " + execution.getVariable("firstname") +
+                ",\n\n\t" + "We are sad to inform you that the request for your membership has been denied.";
 
         String subject = "Suspension notice";
         mailingService.sendMail(subject,text,execution.getVariable("email").toString());

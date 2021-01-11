@@ -8,15 +8,18 @@ import java.util.ArrayList;
 
 @Service
 public class CheckCommitteePlagiarismVoteService implements JavaDelegate {
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        int[] counts =  {0,0};
+        int[] counts =  {0, 0};
 
         for(String vote : (ArrayList<String>)delegateExecution.getVariable("committeeVotes")){
             switch (vote){
-                case "IsPlagiarism_Id": counts[0]++; break;
-                case "IsNotPlagiarism_Id": counts[1]++; break;
+                case "IsPlagiarism_Id":
+                    counts[0]++;
+                    break;
+                case "IsNotPlagiarism_Id":
+                    counts[1]++;
+                    break;
             }
         }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditorPossibleFinishedBookNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

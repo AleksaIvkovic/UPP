@@ -13,6 +13,6 @@ public class BookExistsValidator implements FormFieldValidator {
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {
         bookService = ServiceUtils.getBookService();
-        return bookService.GetBookByTitle((String)o) != null;
+        return bookService.getBookByTitle((String)o) != null;
     }
 }

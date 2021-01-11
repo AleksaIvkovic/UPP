@@ -12,11 +12,10 @@ import java.util.HashMap;
 @Service
 public class HeadEditorPlagiarismReportNotificationService implements JavaDelegate {
     @Autowired
-    IMailing mailingService;
+    private IMailing mailingService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        HashMap<String, Object> systemUserForm = (HashMap<String, Object>)execution.getVariable("newSysUser");
         User headEditor = (User)execution.getVariable("headEditorUser");
 
         String text = "Dear " + headEditor.getFirstName() + ",\n\n\t" +
