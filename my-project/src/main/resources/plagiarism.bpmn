@@ -35,14 +35,14 @@
     <bpmn:intermediateThrowEvent id="Event_04ew2ch" name="Notify head editor of new plagiarism report">
       <bpmn:incoming>Flow_14gpnfn</bpmn:incoming>
       <bpmn:outgoing>Flow_05ae2hm</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1n8wgsx" camunda:class="com.example.workflow.services.notifications.HeadEditorPlagiarismReportNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1n8wgsx" camunda:class="com.example.workflow.services.notifications.headEditor.NotifyHeadEditorAboutPlagiarismReport" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1ioyg54" sourceRef="Activity_11wn326" targetRef="Activity_0dhrbpq" />
     <bpmn:sequenceFlow id="Flow_05ae2hm" sourceRef="Event_04ew2ch" targetRef="Activity_0mnltni" />
     <bpmn:intermediateThrowEvent id="Event_0hhxfnl" name="Notify editors of new plagiarism report">
       <bpmn:incoming>Flow_036pwdk</bpmn:incoming>
       <bpmn:outgoing>Flow_0zlvwbv</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_09c9s6x" camunda:class="com.example.workflow.services.notifications.EditorsNewPlagiarismReportNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_09c9s6x" camunda:class="com.example.workflow.services.notifications.editor.NotifyEditorsAboutNewPlagiarismReport" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_13zej4q" sourceRef="Activity_0mnltni" targetRef="Gateway_0olz8jc" />
     <bpmn:sequenceFlow id="Flow_0zlvwbv" sourceRef="Event_0hhxfnl" targetRef="Activity_1m3qd8a" />
@@ -189,19 +189,19 @@
     <bpmn:intermediateThrowEvent id="Event_1f0n1tz" name="Notify applicant of invalid plagiarism report">
       <bpmn:incoming>Flow_1av55qc</bpmn:incoming>
       <bpmn:outgoing>Flow_1bw5tsv</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1fsvxp6" camunda:class="com.example.workflow.services.notifications.DeniedPlagiarismReportNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1fsvxp6" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutDeniedPlagiarismReport" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1ar4nyn" sourceRef="Event_0qas5ms" targetRef="Event_13ouu4b" />
     <bpmn:intermediateThrowEvent id="Event_0qas5ms" name="Notify applicant of valid plagiarism report">
       <bpmn:incoming>Flow_1dikit3</bpmn:incoming>
       <bpmn:outgoing>Flow_1ar4nyn</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1py81sw" camunda:class="com.example.workflow.services.notifications.ApprovedPlagiarismReportNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1py81sw" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutApprovedPlagiarismReport" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1j6f5wc" sourceRef="Event_13ouu4b" targetRef="Event_0beo03p" />
     <bpmn:intermediateThrowEvent id="Event_13ouu4b" name="Notify author of valid plagiarism report">
       <bpmn:incoming>Flow_1ar4nyn</bpmn:incoming>
       <bpmn:outgoing>Flow_1j6f5wc</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_05s2cxw" camunda:class="com.example.workflow.services.notifications.BookMarkedAsPlagiarismNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_05s2cxw" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutBookMarkedAsPlagiarism" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0qve325" sourceRef="Activity_0a369cq" targetRef="Gateway_1w8vumf" />
     <bpmn:serviceTask id="Activity_0a369cq" name="Substitute Decision" camunda:class="com.example.workflow.services.SubstituteDecisionService">
@@ -259,13 +259,13 @@
     <bpmn:intermediateThrowEvent id="Event_03pyusz" name="Notify head editor of substitution choice needed">
       <bpmn:incoming>Flow_06kvsuc</bpmn:incoming>
       <bpmn:outgoing>Flow_1fp324s</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0pohiqa" camunda:class="com.example.workflow.services.notifications.NotifyHeadEditorOfSubstitutionChoiceNeededNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0pohiqa" camunda:class="com.example.workflow.services.notifications.headEditor.NotifyHeadEditorAboutSubstitutionChoiceNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_04nwpz3" sourceRef="Event_0l9f8um" targetRef="Activity_1b5xbik" />
     <bpmn:intermediateThrowEvent id="Event_0l9f8um" name="Notify committee of new plagiarism report">
       <bpmn:incoming>Flow_11jeszg</bpmn:incoming>
       <bpmn:outgoing>Flow_04nwpz3</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0wh6yzu" camunda:class="com.example.workflow.services.notifications.NotifyCommitteeOfNewPlagiarismReportNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0wh6yzu" camunda:class="com.example.workflow.services.notifications.committee.NotifyCommitteeAboutNewPlagiarismReport" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0mfcd15" sourceRef="Activity_0q9cnf2" targetRef="Activity_0wuvhgn" />
     <bpmn:serviceTask id="Activity_0q9cnf2" name="Get books" camunda:class="com.example.workflow.services.db.GetBooksService">

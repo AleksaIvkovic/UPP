@@ -30,7 +30,7 @@
     <bpmn:intermediateThrowEvent id="Event_1twywuo" name="Notify head editor about new book">
       <bpmn:incoming>Flow_0u899b6</bpmn:incoming>
       <bpmn:outgoing>Flow_0mg9w6o</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_06egb6h" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.NotifyHeadEditorAboutNewBookReviewEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_06egb6h" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.headEditor.NotifyHeadEditorAboutNewBookReviewEmailService" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0mg9w6o" sourceRef="Event_1twywuo" targetRef="Activity_04k4gu8" />
     <bpmn:exclusiveGateway id="Gateway_1wy1a8l">
@@ -73,12 +73,12 @@
     <bpmn:intermediateThrowEvent id="Event_15xfnkd" name="Notify writer of denial of book">
       <bpmn:incoming>Flow_1h5asps</bpmn:incoming>
       <bpmn:outgoing>Flow_0pqj448</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_145shpd" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.NotifyWriterOfBookDenialNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_145shpd" messageRef="Message_0gy1adh" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutDeniedBook" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateThrowEvent id="Event_0t3zm35" name="Notify writer to upload manuscript">
       <bpmn:incoming>Flow_0ivnpld</bpmn:incoming>
       <bpmn:outgoing>Flow_0bx3h51</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.NotifyWriterToUploadManuscriptService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0tut6qb" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutManuscriptUploadNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0ivnpld" name="Synopsis approved" sourceRef="Gateway_1wy1a8l" targetRef="Event_0t3zm35">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == "Yes_Id"}</bpmn:conditionExpression>
@@ -94,7 +94,7 @@
     <bpmn:intermediateThrowEvent id="Event_10if649" name="Notify writer about time expiration">
       <bpmn:incoming>Flow_10rvb7k</bpmn:incoming>
       <bpmn:outgoing>Flow_0motsjd</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_11mylw1" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_11mylw1" messageRef="Message_06ro9fx" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
     </bpmn:intermediateThrowEvent>
     <bpmn:endEvent id="Event_0iu2jtf">
       <bpmn:incoming>Flow_0hdurj1</bpmn:incoming>
@@ -269,7 +269,7 @@
     <bpmn:intermediateThrowEvent id="Event_0ter5s9" name="Notify reader about losing beta status">
       <bpmn:incoming>Flow_079qiff</bpmn:incoming>
       <bpmn:outgoing>Flow_0dfjf4o</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_18ej1uy" camunda:class="com.example.workflow.services.notifications.NotifyReaderAboutLosingBetaStatusService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_18ej1uy" camunda:class="com.example.workflow.services.notifications.reader.NotifyReaderAboutLostBetaStatus" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_079qiff" sourceRef="Gateway_1kqav0p" targetRef="Event_0ter5s9">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${loseBetaStatus}</bpmn:conditionExpression>
@@ -279,7 +279,7 @@
     <bpmn:intermediateThrowEvent id="Event_1i3lhjx" name="Notify writer about beta comments">
       <bpmn:incoming>Flow_01w16fa</bpmn:incoming>
       <bpmn:outgoing>Flow_0l1y2rg</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0uwuu3p" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutBetaCommentService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0uwuu3p" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutBetaComments" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_06j1f81" sourceRef="Activity_0d6oxzt" targetRef="Gateway_1fuz0hm" />
     <bpmn:sequenceFlow id="Flow_0l1y2rg" sourceRef="Event_1i3lhjx" targetRef="Gateway_066m1ip" />
@@ -321,7 +321,7 @@
     <bpmn:intermediateThrowEvent id="Event_12vos1r" name="Notify lector">
       <bpmn:incoming>Flow_1hh89uj</bpmn:incoming>
       <bpmn:outgoing>Flow_0b2b38d</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1isbd8j" camunda:class="com.example.workflow.services.notifications.LectorNewWorkNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1isbd8j" camunda:class="com.example.workflow.services.notifications.lector.NotifyLectorAboutNewWork" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1i6tm24" sourceRef="Gateway_11uczsu" targetRef="Gateway_00o56gb">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == "No_Id"}</bpmn:conditionExpression>
@@ -356,7 +356,7 @@
     <bpmn:intermediateThrowEvent id="Event_1w4yn8z" name="Notify writer about lector&#39;s note">
       <bpmn:incoming>Flow_0164b8i</bpmn:incoming>
       <bpmn:outgoing>Flow_16bso97</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1pchkyq" camunda:class="com.example.workflow.services.notifications.WriterLectorsNoteNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1pchkyq" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutLectorsNotes" />
     </bpmn:intermediateThrowEvent>
     <bpmn:userTask id="Activity_0n19lix" name="Make changes" camunda:assignee="${username}">
       <bpmn:extensionElements>
@@ -371,7 +371,7 @@
     <bpmn:intermediateThrowEvent id="Event_1hnqhft" name="Notify editor of updated manuscript">
       <bpmn:incoming>Flow_1it17jo</bpmn:incoming>
       <bpmn:outgoing>Flow_091690f</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0vw2jwn" camunda:class="com.example.workflow.services.notifications.NotifyEditorOfUpdatedManuscript" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0vw2jwn" camunda:class="com.example.workflow.services.notifications.headEditor.NotifyHeadEditorAboutUpdatedManuscript" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_091690f" sourceRef="Event_1hnqhft" targetRef="Activity_1ye0svw" />
     <bpmn:serviceTask id="Activity_07iqjya" name="Send to print (save to DB)" camunda:class="com.example.workflow.services.db.SendToPrintService">
@@ -418,7 +418,7 @@
     <bpmn:intermediateThrowEvent id="Event_02bn21p" name="Notify writer about editor comments">
       <bpmn:incoming>Flow_11mficd</bpmn:incoming>
       <bpmn:outgoing>Flow_18ezlrv</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1t7tiqq" camunda:class="com.example.workflow.services.notifications.WriterEditorCommentsNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1t7tiqq" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutHeadEditorsComments" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_18ezlrv" sourceRef="Event_02bn21p" targetRef="Activity_0sqnm0t" />
     <bpmn:userTask id="Activity_0sqnm0t" name="Make changes" camunda:assignee="${username}">
@@ -441,7 +441,7 @@
     <bpmn:intermediateThrowEvent id="Event_1oa9zjk" name="Notify writer about time expiration">
       <bpmn:incoming>Flow_0ecczjn</bpmn:incoming>
       <bpmn:outgoing>Flow_05jpzai</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0kwtjbw" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0kwtjbw" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutTimeExpirationForManuscriptUpload" />
     </bpmn:intermediateThrowEvent>
     <bpmn:endEvent id="Event_0ncp0pc">
       <bpmn:incoming>Flow_15h0rb9</bpmn:incoming>
@@ -467,7 +467,7 @@
     <bpmn:intermediateThrowEvent id="Event_1splnd5" name="Notify writer about plagiarism">
       <bpmn:incoming>Flow_1ahkg4j</bpmn:incoming>
       <bpmn:outgoing>Flow_15byn50</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0u41054" messageRef="Message_0ylje4t" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutPlagiarismService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0u41054" messageRef="Message_0ylje4t" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutBookDeniedBecauseOfPlagiarism" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1ahkg4j" name="Is plagiarized" sourceRef="Gateway_0x5keim" targetRef="Event_1splnd5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${plagiarismDecision == "Yes_Id"}</bpmn:conditionExpression>
@@ -506,7 +506,7 @@
     <bpmn:intermediateThrowEvent id="Event_1mo4uw8" name="Notify beta readers about manuscript">
       <bpmn:incoming>Flow_1mktkm0</bpmn:incoming>
       <bpmn:outgoing>Flow_187kp2x</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_00vdlwc" messageRef="Message_13x3ysa" camunda:class="com.example.workflow.services.notifications.NotifyBetaReadersAboutManuscriptService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_00vdlwc" messageRef="Message_13x3ysa" camunda:class="com.example.workflow.services.notifications.betaReader.NotifyBetaReadersAboutNewManuscript" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_06j9pg5" sourceRef="Activity_14ten68" targetRef="Activity_0d6oxzt" />
     <bpmn:serviceTask id="Activity_14ten68" name="Initialization comments and beta readers lists" camunda:class="com.example.workflow.services.initialization.InitializationCommentsAndBetaListsService">
@@ -527,7 +527,7 @@
     <bpmn:intermediateThrowEvent id="Event_1fe5rds" name="Notify writer about more work needed request by editor">
       <bpmn:incoming>Flow_0yream1</bpmn:incoming>
       <bpmn:outgoing>Flow_1vq9jpx</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1ibuopb" camunda:class="com.example.workflow.services.notifications.NotifyWriterAboutMoreWorkNeededRequestByEditor" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ibuopb" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutMoreWorkNeededRequestByEditor" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1bq53at" sourceRef="Activity_16b8skj" targetRef="Gateway_05hapfj" />
     <bpmn:serviceTask id="Activity_16b8skj" name="Get lector" camunda:class="com.example.workflow.services.db.GetLectorService">
@@ -560,13 +560,13 @@
     <bpmn:intermediateThrowEvent id="Event_0w5qw92" name="Notify editor about possible finished book">
       <bpmn:incoming>Flow_01qvy8d</bpmn:incoming>
       <bpmn:outgoing>Flow_049rb7b</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0fliqq6" camunda:class="com.example.workflow.services.notifications.EditorPossibleFinishedBookNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0fliqq6" camunda:class="com.example.workflow.services.notifications.headEditor.NotifyHeadEditorAboutPossibleFinishedBook" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1vlfwft" sourceRef="Event_0tg13aa" targetRef="Event_0p4fr8k" />
     <bpmn:intermediateThrowEvent id="Event_0tg13aa" name="Notify writer about successful book publish">
       <bpmn:incoming>Flow_1n9o4lo</bpmn:incoming>
       <bpmn:outgoing>Flow_1vlfwft</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1yj7els" camunda:class="com.example.workflow.services.notifications.WriterSuccessfulBookPublishNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1yj7els" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutSuccessfulBookPublish" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1radom1" sourceRef="Activity_0y0v3ry" targetRef="Gateway_05hapfj" />
     <bpmn:serviceTask id="Activity_0y0v3ry" name="Save file name" camunda:class="com.example.workflow.services.db.StoreBookFileNameService">

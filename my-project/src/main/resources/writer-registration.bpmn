@@ -72,7 +72,7 @@
     <bpmn:intermediateThrowEvent id="Event_11uvfu2" name="Send verification email">
       <bpmn:incoming>Flow_19fsk0e</bpmn:incoming>
       <bpmn:outgoing>Flow_1or6r9f</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1ershs2" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.SendVerificationEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ershs2" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.user.NotifyUserAboutEmailVerificationNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateCatchEvent id="Event_1eevqhj" name="Receive writer verification">
       <bpmn:incoming>Flow_1or6r9f</bpmn:incoming>
@@ -235,7 +235,7 @@
     <bpmn:intermediateThrowEvent id="Event_1y3ng9b" name="Notify committee">
       <bpmn:incoming>Flow_03jelnn</bpmn:incoming>
       <bpmn:outgoing>Flow_03d7r2g</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1jadove" messageRef="Message_00ad7dv" camunda:class="com.example.workflow.services.notifications.NotifyCommitteeEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1jadove" messageRef="Message_00ad7dv" camunda:class="com.example.workflow.services.notifications.committee.NotifyCommitteeAboutNewWriterWork" />
     </bpmn:intermediateThrowEvent>
     <bpmn:exclusiveGateway id="Gateway_0zwgjf6">
       <bpmn:incoming>Flow_1yuv7v3</bpmn:incoming>
@@ -259,7 +259,7 @@
     <bpmn:intermediateThrowEvent id="Event_16k9vz8" name="Send payment request">
       <bpmn:incoming>Flow_17zlyp4</bpmn:incoming>
       <bpmn:outgoing>Flow_1ccgy1a</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1g0b6rh" messageRef="Message_11goiy6" camunda:class="com.example.workflow.services.notifications.PayMembershipNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1g0b6rh" messageRef="Message_11goiy6" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutMembershipPaymentNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateThrowEvent id="Event_1jag3mq" name="Notify of canceled membership">
       <bpmn:incoming>Flow_10s7okz</bpmn:incoming>
@@ -316,13 +316,13 @@
     <bpmn:intermediateThrowEvent id="Event_0qa5x2v" name="Valid payment notification">
       <bpmn:incoming>Flow_1qpccaf</bpmn:incoming>
       <bpmn:outgoing>Flow_01aq8w4</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1avvz8g" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.ValidPaymentNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1avvz8g" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutValidPayment" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1qkv6sn" sourceRef="Event_0tosyi3" targetRef="Activity_132racf" />
     <bpmn:intermediateThrowEvent id="Event_0tosyi3" name="Invalid payment notification">
       <bpmn:incoming>Flow_04tyu8o</bpmn:incoming>
       <bpmn:outgoing>Flow_1qkv6sn</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_11bvx3c" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.InvalidPaymentNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_11bvx3c" messageRef="Message_1dob6i9" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutInvalidPayment" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_0hu9dfu" sourceRef="Activity_0ge77vk" targetRef="Event_0ootk52" />
     <bpmn:serviceTask id="Activity_0ge77vk" name="Activate writer account" camunda:class="com.example.workflow.services.db.ActivateWriterAccountService">

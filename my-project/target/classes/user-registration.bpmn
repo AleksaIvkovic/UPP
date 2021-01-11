@@ -113,7 +113,7 @@
     <bpmn:intermediateThrowEvent id="Event_0cmfax6" name="Send verification email">
       <bpmn:incoming>Flow_125ore5</bpmn:incoming>
       <bpmn:outgoing>Flow_0wczb2c</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1tags6m" messageRef="Message_0tusknh" camunda:class="com.example.workflow.services.notifications.SendVerificationEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1tags6m" messageRef="Message_0tusknh" camunda:class="com.example.workflow.services.notifications.user.NotifyUserAboutEmailVerificationNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:exclusiveGateway id="Gateway_1jhh0vy">
       <bpmn:incoming>Flow_0ywcmyy</bpmn:incoming>
