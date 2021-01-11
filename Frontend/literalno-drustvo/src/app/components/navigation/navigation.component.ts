@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BlockScrollStrategy } from '@angular/cdk/overlay';
 import { StarterService } from 'src/app/services/starter.service';
 import { SysUser } from 'src/app/models/sysUser.model';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-navigation',
@@ -24,7 +25,8 @@ export class NavigationComponent {
       private breakpointObserver: BreakpointObserver,
       public router: Router,
       public activeRoute: ActivatedRoute,
-      private starterService: StarterService) {}
+      private starterService: StarterService,
+      public loaderService: LoaderService) {}
 
     
     submitNewBook(){

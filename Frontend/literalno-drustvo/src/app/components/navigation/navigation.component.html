@@ -13,6 +13,9 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <div *ngIf="loaderService.isLoading | async" class="loader-container">
+      <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </div>
     <mat-toolbar color="primary" style="height: 75px;">
       <button
         type="button"

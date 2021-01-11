@@ -14,6 +14,7 @@ import { StarterComponent } from './components/starter/starter.component';
 import { EmailConfirmationComponent } from './components/email-confirmation/email-confirmation.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { InterceptorService } from './loader/interceptor.service';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -128,7 +129,11 @@ import { ImageComponent } from './components/image/image.component';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true,
-    }
+    },
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: InterceptorService, 
+      multi: true }
   ],
   bootstrap: [AppComponent]
 })
