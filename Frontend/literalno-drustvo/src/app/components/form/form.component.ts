@@ -189,97 +189,96 @@ export class FormComponent implements OnInit {
   }
 
   initForm(res){
-    console.log(res);
-        this.formFieldsDto = res;
-        this.formFields = res.formFields;
-        this.processInstance = res.processInstanceId;
-        this.formFields.map( (field) => {
+    this.formFieldsDto = res;
+    this.formFields = res.formFields;
+    this.processInstance = res.processInstanceId;
+    this.formFields.map( (field) => {
 
-          if(field.type.name.includes("multipleEnum")){
-            this.enumValues.set(field.id, Object.keys(field.type.values));
-          
-            let min = 0;
-            let exact = 0;
-            if(field.type.name.split('_')[2] == 'x'){
-              exact = <number>field.defaultValue;
+      if(field.type.name.includes("multipleEnum")){
+        this.enumValues.set(field.id, Object.keys(field.type.values));
+      
+        let min = 0;
+        let exact = 0;
+        if(field.type.name.split('_')[2] == 'x'){
+          exact = <number>field.defaultValue;
+        }
+        else{
+          min = <number>field.type.name.split('_')[2];
+        }
+        let tempForm = new FormGroup({}, this.checkArray(min, exact));
+
+        for (let [key, value] of this.enumValues) {
+          if(key == field.id){
+            for(let enumId of value){
+              tempForm.addControl(enumId, new FormControl(false));
             }
-            else{
-              min = <number>field.type.name.split('_')[2];
+          }
+        }
+
+        this.registerForm.addControl(
+          field.id, tempForm
+        );
+      }
+      else if(field.type.name.includes("files")){
+        let minFiles = <number>field.type.name.split('_')[1];
+        let maxFiles = <number>field.type.name.split('_')[2]
+        let tempForm = new FormControl([], this.checkFiles(minFiles, maxFiles));
+        this.files.set(field.id, []);
+        this.registerForm.addControl(
+          field.id, tempForm
+        );
+      }
+      else if(field.type.name.includes("notEditableEnum")){
+        this.enumValues.set(field.id, Object.keys(field.type.values));
+
+        let tempControl = new FormControl([]);
+        let temp = [];
+
+        for (let [key, value] of this.enumValues) {
+          if(key == field.id){
+            for(let enumId of value){
+              temp.push(field.type.values[enumId]);
             }
-            let tempForm = new FormGroup({}, this.checkArray(min, exact));
+          }
+        }
 
-            for (let [key, value] of this.enumValues) {
-              if(key == field.id){
-                for(let enumId of value){
-                  tempForm.addControl(enumId, new FormControl(false));
-                }
-              }
+        tempControl.setValue(temp);
+
+        this.registerForm.addControl(
+          field.id, tempControl
+        );
+      }
+      else if(field.type.name == "string_labels"){
+        this.enumValues.set(field.id, Object.keys(field.defaultValue));
+      }
+      else if(field.type.name.includes("label")){
+        this.enumValues.set(field.id, field.defaultValue);
+      }
+      else{
+        let temp = new FormControl(field.defaultValue);
+        this.formControls.push(temp);
+        this.registerForm.addControl(field.id, temp);
+        
+        let validators = [];
+
+        field.validationConstraints.map( (validation) => {
+          switch(validation.name){
+            case 'required' : {
+              validators.push(Validators.required);
+              break;
             }
-
-            this.registerForm.addControl(
-              field.id, tempForm
-            );
-          }
-          else if(field.type.name.includes("files")){
-            let minFiles = <number>field.type.name.split('_')[1];
-            let maxFiles = <number>field.type.name.split('_')[2]
-            let tempForm = new FormControl([], this.checkFiles(minFiles, maxFiles));
-            this.files.set(field.id, []);
-            this.registerForm.addControl(
-              field.id, tempForm
-            );
-          }
-          else if(field.type.name.includes("notEditableEnum")){
-            this.enumValues.set(field.id, Object.keys(field.type.values));
-
-            let tempControl = new FormControl([]);
-            let temp = [];
-
-            for (let [key, value] of this.enumValues) {
-              if(key == field.id){
-                for(let enumId of value){
-                  temp.push(field.type.values[enumId]);
-                }
-              }
+            case 'minlength' : {
+              validators.push(Validators.minLength(<number>validation.configuration));
+              break;
             }
-
-            tempControl.setValue(temp);
-
-            this.registerForm.addControl(
-              field.id, tempControl
-            );
-          }
-          else if(field.type.name == "string_labels"){
-            this.enumValues.set(field.id, Object.keys(field.defaultValue));
-          }
-          else if(field.type.name.includes("label")){
-            this.enumValues.set(field.id, field.defaultValue);
-          }
-          else{
-            let temp = new FormControl(field.defaultValue);
-            this.formControls.push(temp);
-            this.registerForm.addControl(field.id, temp);
-            
-            let validators = [];
-
-            field.validationConstraints.map( (validation) => {
-              switch(validation.name){
-                case 'required' : {
-                  validators.push(Validators.required);
-                  break;
-                }
-                case 'minlength' : {
-                  validators.push(Validators.minLength(<number>validation.configuration));
-                  break;
-                }
-              }
-            });
-
-            this.registerForm.controls[field.id].setValidators(
-              validators
-            );
           }
         });
+
+        this.registerForm.controls[field.id].setValidators(
+          validators
+        );
+      }
+    });
   }
 
   onSubmit(value, form) {
@@ -313,10 +312,12 @@ export class FormComponent implements OnInit {
                 this.userService.onTaskChange('');
                 this.router.navigate(['../../'], {relativeTo: this.route});
               },
-            (err) => console.log(err)
+            err => {
+              console.log(err);
+            }
             );
           },
-          (err) => {
+          err => {
             console.log(err);
           }
         )
@@ -329,7 +330,7 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
-        console.log(error);
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
         //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
@@ -348,7 +349,7 @@ export class FormComponent implements OnInit {
             }
           }
       }, error => {
-        console.log(error);
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
         //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
@@ -360,7 +361,7 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
-        console.log(error);
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         //alert("Field " + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString());
         //this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
@@ -372,7 +373,6 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
-        console.log(error);
         this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
@@ -383,7 +383,6 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
-        console.log(error);
         this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
@@ -394,8 +393,8 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
-        err => {
-          console.log(err);
+        error => {
+          this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         }
       )
     }
@@ -406,8 +405,8 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
-        err => {
-          console.log(err);
+        error => {
+          this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         }
       )
     }
@@ -418,8 +417,8 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
-        err => {
-          console.log(err);
+        error => {
+          this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         }
       )
     }
@@ -430,8 +429,8 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
-        err => {
-          console.log(err);
+        error => {
+          this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         }
       )
     }
@@ -442,10 +441,19 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
         },
-        err => {
-          console.log(err);
+        error => {
+          this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
         }
       )
+    }
+    else if (this.isWriter) {
+      this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
+        (res) => {
+            this._snackBar.open('Registration successful. Verification email has been sent to your address.', 'OK', {duration: 5000,});
+            this.router.navigate(['../../'], {relativeTo: this.route});
+      }, (error : any)  => {
+        this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
+      });
     }
     else if(!this.isBetaReader){
       this.userService.submitRegisterForm(o, this.formFieldsDto.taskId).subscribe(
@@ -458,7 +466,6 @@ export class FormComponent implements OnInit {
             this.router.navigate(['main/register-beta']);
           }
       }, (error : any)  => {
-        console.log(error);
         this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
@@ -469,27 +476,10 @@ export class FormComponent implements OnInit {
           this.userService.onTaskChange('');
           this.router.navigate(['../../'], {relativeTo: this.route});
       }, error => {
-        console.log(error);
         this._snackBar.open('Field ' + error.error.fieldType.toString() + " is invalid. Cause: " + error.error.validatorType.toString(), 'OK', {duration: 5000,});
       });
     }
   }
-
-  // checkArray(group: FormGroup): {[s:string]:boolean} {
-  //   let found = false;
-  //   Object.keys(group.controls).forEach(key => {
-  //     if(group.controls[key].value)
-  //     {
-  //       found = true;
-  //     }
-  //   });
-  //   if(found){
-  //     return null
-  //   }
-  //   else{
-  //     return {'None are chosen': true}
-  //   }
-  // }
 
   checkArray(min: number, exact: number): ValidatorFn {
     return (group: FormGroup): {[key: string]: any} | null => {
@@ -555,7 +545,8 @@ export class FormComponent implements OnInit {
         URL.revokeObjectURL(objectUrl);
       },
       (error) => {
-        console.log('Error: ' + error);;
+        console.log('Error: ' + error);
+        alert(error);
       });
   }
 

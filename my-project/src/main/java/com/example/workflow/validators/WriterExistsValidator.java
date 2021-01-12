@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class WriterExistsValidator implements FormFieldValidator {
     @Autowired
-    SystemUserService systemUserService;
+    private SystemUserService systemUserService;
 
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class UniqueTitleValidator implements FormFieldValidator {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Override
     public boolean validate(Object submittedValue, FormFieldValidatorContext validatorContext) {

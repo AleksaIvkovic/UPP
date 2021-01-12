@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BookExistsValidator implements FormFieldValidator {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Override
     public boolean validate(Object o, FormFieldValidatorContext formFieldValidatorContext) {

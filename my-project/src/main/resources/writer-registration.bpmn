@@ -210,7 +210,6 @@
           <camunda:formField id="date" label="Expiration Date (mm/YY)" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
-              <camunda:constraint name="validator" config="com.example.workflow.validators.CardDateValidator" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="crc" label="CRC" type="string">
@@ -229,7 +228,7 @@
     <bpmn:intermediateThrowEvent id="Event_0sogkkg" name="Notify writer of suspension">
       <bpmn:incoming>Flow_0a78x74</bpmn:incoming>
       <bpmn:outgoing>Flow_0j57zk0</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1jhsrxi" messageRef="Message_1xac1wo" camunda:class="com.example.workflow.services.notifications.SendSuspensionNoticeEmailService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1jhsrxi" messageRef="Message_1xac1wo" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutDeniedMembershipRequest" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_03d7r2g" sourceRef="Event_1y3ng9b" targetRef="Activity_0vti6s4" />
     <bpmn:intermediateThrowEvent id="Event_1y3ng9b" name="Notify committee">
@@ -254,7 +253,7 @@
     <bpmn:intermediateThrowEvent id="Event_0sk4eog" name="More work needeed">
       <bpmn:incoming>Flow_1bp1lfg</bpmn:incoming>
       <bpmn:outgoing>Flow_0rgp5gm</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0kzkir3" messageRef="Message_00k0aqe" camunda:class="com.example.workflow.services.notifications.NeedMoreWorkNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0kzkir3" messageRef="Message_00k0aqe" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutMoreWorkNeeded" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateThrowEvent id="Event_16k9vz8" name="Send payment request">
       <bpmn:incoming>Flow_17zlyp4</bpmn:incoming>
@@ -264,7 +263,7 @@
     <bpmn:intermediateThrowEvent id="Event_1jag3mq" name="Notify of canceled membership">
       <bpmn:incoming>Flow_10s7okz</bpmn:incoming>
       <bpmn:outgoing>Flow_0e849eu</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0q9zki3" messageRef="Message_136eyxd" camunda:class="com.example.workflow.services.notifications.NoMemebershipPaymentReceivedNotificationService" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0q9zki3" messageRef="Message_136eyxd" camunda:class="com.example.workflow.services.notifications.writer.NotifyWriterAboutNoMembershipPaymentReceived" />
     </bpmn:intermediateThrowEvent>
     <bpmn:serviceTask id="Activity_097euqt" name="Store the work" camunda:class="com.example.workflow.services.db.StoreWorkService">
       <bpmn:incoming>Flow_0nbmnvn</bpmn:incoming>
@@ -660,6 +659,9 @@
       <bpmndi:BPMNShape id="Gateway_0qlxha7_di" bpmnElement="Gateway_0qlxha7" isMarkerVisible="true">
         <dc:Bounds x="965" y="1425" width="50" height="50" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ootk52_di" bpmnElement="Event_0ootk52">
+        <dc:Bounds x="152" y="972" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1xdpjze_di" bpmnElement="Event_1xdpjze">
         <dc:Bounds x="682" y="1572" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -708,6 +710,27 @@
       <bpmndi:BPMNShape id="Activity_1hudaye_di" bpmnElement="Activity_1hudaye">
         <dc:Bounds x="1450" y="180" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kwst7n_di" bpmnElement="Activity_1e8ukq4">
+        <dc:Bounds x="650" y="950" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0wxiz6t_di" bpmnElement="Gateway_0wxiz6t" isMarkerVisible="true">
+        <dc:Bounds x="515" y="965" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i63wfq_di" bpmnElement="Event_0qa5x2v">
+        <dc:Bounds x="382" y="972" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="365" y="1016" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00u9qp5_di" bpmnElement="Event_0tosyi3">
+        <dc:Bounds x="522" y="1082" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="441" y="1086" width="78" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14n5uiq_di" bpmnElement="Activity_0ge77vk">
+        <dc:Bounds x="230" y="950" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1y5xk4s_di" bpmnElement="Activity_1y01gxb">
         <dc:Bounds x="650" y="1410" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -734,30 +757,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_00x28jl_di" bpmnElement="Activity_1bievld">
         <dc:Bounds x="1450" y="950" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0kwst7n_di" bpmnElement="Activity_1e8ukq4">
-        <dc:Bounds x="650" y="950" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0wxiz6t_di" bpmnElement="Gateway_0wxiz6t" isMarkerVisible="true">
-        <dc:Bounds x="515" y="965" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0i63wfq_di" bpmnElement="Event_0qa5x2v">
-        <dc:Bounds x="382" y="972" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="365" y="1016" width="70" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_14n5uiq_di" bpmnElement="Activity_0ge77vk">
-        <dc:Bounds x="230" y="950" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ootk52_di" bpmnElement="Event_0ootk52">
-        <dc:Bounds x="152" y="972" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_00u9qp5_di" bpmnElement="Event_0tosyi3">
-        <dc:Bounds x="522" y="1082" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="441" y="1086" width="78" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_04wzsor_di" bpmnElement="Event_06e1gl2">
         <dc:Bounds x="682" y="1202" width="36" height="36" />

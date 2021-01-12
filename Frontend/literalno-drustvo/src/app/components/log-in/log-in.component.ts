@@ -44,8 +44,9 @@ export class LogInComponent implements OnInit {
         this.dialogRef.close('success');
       },
       err => {
-        if (err.status == 400) {
-          this._snackBar.open(err.error.message, 'OK', {duration: 5000,});
+        if (err.status == 400 || err.status == 403) {
+          console.log(err);
+          this._snackBar.open(err.error, 'OK', {duration: 5000,});
           this.logInForm.patchValue({
             username: '',
             password: ''

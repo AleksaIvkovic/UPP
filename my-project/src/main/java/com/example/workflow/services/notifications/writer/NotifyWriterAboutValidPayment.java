@@ -18,7 +18,7 @@ public class NotifyWriterAboutValidPayment implements JavaDelegate {
         String text = "Dear " + execution.getVariable("firstname") +
                 ",\n\n\t" + "We would like to inform you that the payment process " +
                 "finished successfully and that from this moment on you are full " +
-                "member of our Foxy family";
+                "member of our Foxy family.";
 
         String subject = "Welcome to the family";
         mailingService.sendMail(subject, text, execution.getVariable("email").toString());

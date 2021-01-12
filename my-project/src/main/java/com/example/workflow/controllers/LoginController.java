@@ -28,37 +28,42 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoginController {
-
     @Autowired
     private TokenUtils tokenUtils;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private SystemUserService userDetailsService;
-
     @Autowired
     private SystemUserService systemUserService;
-
     @Autowired
     private ModelMapper modelMapper;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<?> login(@RequestBody JwtAuthenticationRequest authenticationRequest) {
-
-        if (!systemUserService.getSystemUserByUsername(authenticationRequest.getUsername()).isConfirmed()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        SysUser user;
+        try {
+            user = systemUserService.getSystemUserByUsername(authenticationRequest.getUsername());
+        } catch (Exception e) {
+            return new ResponseEntity<>("User with given username doesn't exist", HttpStatus.BAD_REQUEST);
         }
 
-        final Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()));
-        if(authentication == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (!user.isConfirmed()) {
+            return new ResponseEntity<>("Email has not been confirmed.", HttpStatus.BAD_REQUEST);
         }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            final Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()));
+            if(authentication == null){
+                return new ResponseEntity<>("Invalid password.", HttpStatus.BAD_REQUEST);
+            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Invalid password.", HttpStatus.BAD_REQUEST);
+        }
+
         UserDetails details = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         String jwt = tokenUtils.generateToken(details.getUsername());

@@ -3,6 +3,7 @@ package com.example.workflow.services.systemServices;
 import com.example.workflow.intefaces.ICamunda;
 import com.example.workflow.models.DTOs.FormSubmissionDTO;
 import com.example.workflow.models.DTOs.TaskDTO;
+import com.example.workflow.models.ValidationError;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
@@ -36,8 +37,11 @@ public class CamundaService implements ICamunda {
         try {
             formService.submitTaskForm(taskId, map);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+            try {
+                return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

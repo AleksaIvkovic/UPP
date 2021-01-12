@@ -51,24 +51,27 @@ public class RegistrationController {
         String processInstanceId = task.getProcessInstanceId();
         runtimeService.setVariable(processInstanceId, "newSysUser", map);
 
-        camundaService.trySubmitForm(taskId, map);
+        try {
+            formService.submitTaskForm(taskId, map);
+            //camundaService.trySubmitForm(taskId, map);
 
-        Task nextTask;
-        TaskFormData tfd = null;
-        if(taskService.createTaskQuery().processInstanceId(processInstanceId).list().size() != 0) {
-            nextTask = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
-            tfd = formService.getTaskFormData(nextTask.getId());
+            Task nextTask;
+            TaskFormData tfd = null;
+            if(taskService.createTaskQuery().processInstanceId(processInstanceId).list().size() != 0) {
+                nextTask = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
+                tfd = formService.getTaskFormData(nextTask.getId());
 
-            List<FormField> properties = tfd.getFormFields();
-            for(FormField fp : properties) {
-                System.out.println(fp.getId() + fp.getType());
+                List<FormField> properties = tfd.getFormFields();
+                return new ResponseEntity<>(new FormFieldsDTO(nextTask.getId(), properties, processInstanceId), HttpStatus.OK);
             }
-
-            return new ResponseEntity<>(new FormFieldsDTO(nextTask.getId(), properties, processInstanceId), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            try {
+                return new ResponseEntity<>(new ValidationError(e.toString().split("'")[1],e.toString().split("[()]+")[1].split("[.]")[4]), HttpStatus.BAD_REQUEST);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @PostMapping(path="/confirm-email/{processId}", consumes = "application/json")

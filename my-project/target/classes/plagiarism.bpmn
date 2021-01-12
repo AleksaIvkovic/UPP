@@ -23,7 +23,7 @@
           <camunda:formField id="author" label="Author (firstname lastname)" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
-              <camunda:constraint name="validator" config="com.example.workflow.validators.FullnameValidator" />
+              <camunda:constraint name="validator" config="com.example.workflow.validators.FullNameValidator" />
               <camunda:constraint name="validator" config="com.example.workflow.validators.WriterExistsValidator" />
             </camunda:validation>
           </camunda:formField>
