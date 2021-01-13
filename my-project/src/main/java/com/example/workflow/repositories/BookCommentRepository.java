@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookCommentRepository extends JpaRepository<BookComment, Long> {
+    void deleteBookCommentByPublishedBookId(long bookId);
 }

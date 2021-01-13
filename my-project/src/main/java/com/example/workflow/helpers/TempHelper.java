@@ -69,7 +69,7 @@ public class TempHelper {
         PublishedBook book = bookService.getBookByTitle(title);
         SysUser sysUser = systemUserService.getSystemUserByUsername(user.getId());
         BookComment bookComment = new BookComment(comment, book, sysUser);
-        bookCommentService.StoreComment(bookComment);
+        bookCommentService.storeComment(bookComment);
         bookService.storeComment(book, bookComment);
     }
 }

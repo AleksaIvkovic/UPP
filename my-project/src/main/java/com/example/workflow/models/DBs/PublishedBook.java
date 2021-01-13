@@ -8,10 +8,10 @@ import java.util.List;
 public class PublishedBook implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  long id;
+    private long id;
 
     @Column(nullable = false)
-    private  String  title;
+    private String  title;
 
     @ManyToOne
     private SysUser writer;

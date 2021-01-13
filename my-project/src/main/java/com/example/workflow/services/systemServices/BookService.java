@@ -24,6 +24,8 @@ public class BookService implements IBook {
     private BookRepository bookRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private BookCommentService bookCommentService;
 
     @Override
     public void storeBook(PublishedBook publishedBook) {
@@ -31,8 +33,8 @@ public class BookService implements IBook {
     }
 
     @Override
-    public void removeBook(String title) {
-        bookRepository.delete(getBookByTitle(title));
+    public void removeBook(PublishedBook bookToDelete) {
+        bookRepository.delete(bookToDelete);
     }
 
     @Override

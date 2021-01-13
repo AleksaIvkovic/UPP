@@ -12,7 +12,12 @@ public class BookCommentService implements IBookComment {
     private BookCommentRepository bookCommentRepository;
 
     @Override
-    public void StoreComment(BookComment bookComment) {
+    public void storeComment(BookComment bookComment) {
         bookCommentRepository.save(bookComment);
+    }
+
+    @Override
+    public void deleteCommentsForBook(long bookId) {
+        bookCommentRepository.deleteBookCommentByPublishedBookId(bookId);
     }
 }

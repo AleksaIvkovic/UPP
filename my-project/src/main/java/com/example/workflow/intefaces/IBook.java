@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public interface IBook {
     void storeBook(PublishedBook publishedBook);
-    void removeBook(String title);
+    void removeBook(PublishedBook bookToDelete);
     PublishedBook getBookByTitle(String title);
     boolean checkUniqueTitle(String title);
     ArrayList<PublishedBookDTO> getPublishedBooks();
