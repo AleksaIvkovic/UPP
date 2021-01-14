@@ -62,18 +62,26 @@
       </mat-form-field>
       
       <div class="col-md-6" *ngIf="field.type.name.includes('files_')" >
-        <div class="row" style="margin-left: 9px; margin-bottom: 10px;" >
+        <div class="row" >
           <mat-label>{{field.label}}</mat-label>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
           <br>
           <input type="file" #file placeholder="Choose file" (change)="onFileChange($event, field.id)" style="display:none;" multiple>
-          <button mat-fab color="accent" type="button" (click)="file.click()"  matTooltip="Upload file">
+          <button mat-fab color="accent" type="button" (click)="file.click()"  matTooltip="Upload file" style="margin-left: 10px;">
             <mat-icon> attach_file</mat-icon>
           </button>
         </div>
         <div class="row" *ngIf="registerForm.controls[field.id].value != null">
-          <div  *ngFor="let uploadedFile of filesString">
-            <mat-label>{{uploadedFile}}</mat-label> &nbsp;&nbsp;&nbsp;
-            <button mat-mini-fab color="warn" (click)="RemoveFile(uploadedFile, field.id)">X</button>
+          <div *ngFor="let uploadedFile of filesString">
+            <div class="row">
+              <div class="col-md-9" style="text-align:center; margin-top: 4%;">
+                {{uploadedFile}}&nbsp;&nbsp;
+              </div>
+              <div class="col-md-3" style="padding-bottom: 6%;"> 
+                <button mat-mini-fab color="warn" (click)="RemoveFile(uploadedFile, field.id)">X</button>
+              </div>
+            </div>
             <br>
             <br>
           </div>

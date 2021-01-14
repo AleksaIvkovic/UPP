@@ -51,7 +51,7 @@ public class CamundaService implements ICamunda {
     public ResponseEntity<?> getNextTask(String taskName, String processInstanceId) {
         if (taskService.createTaskQuery().processInstanceId(processInstanceId).list().size() != 0) {
             Task nextTask = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
-            if (nextTask.getName().equals(taskName)) {
+            if (taskName.contains(nextTask.getName())) {
                 TaskDTO taskDTO = new TaskDTO(nextTask.getId(), nextTask.getName());
                 return new ResponseEntity<>(taskDTO, HttpStatus.OK);
             } else {

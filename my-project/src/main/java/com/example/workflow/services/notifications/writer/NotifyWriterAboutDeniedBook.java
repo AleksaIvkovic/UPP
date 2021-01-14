@@ -20,7 +20,7 @@ public class NotifyWriterAboutDeniedBook implements JavaDelegate {
         "of your new book has been denied. The explanation is given below.\n\n\t" +
         "\"" + explanationForm + "\"";
 
-        String subject = "Suspension notice";
+        String subject = "Book denied";
         SysUser systemUser = (SysUser)execution.getVariable("loggedInWriter");
 
         mailingService.sendMail(subject,text,systemUser.getEmail());

@@ -119,7 +119,7 @@ export class FormComponent implements OnInit {
                 this.nextTaskName = 'Download manuscript';
                 break;
               case 'Download manuscript':
-                this.nextTaskName = 'Send to beta decision';
+                this.nextTaskName = 'Send to beta decision | Give an explanation';
                 break;
               case 'Send to beta decision':
                 this.nextTaskName = 'Select beta readers';
@@ -460,6 +460,7 @@ export class FormComponent implements OnInit {
         (res) => {
           if(res == null){
             this._snackBar.open('Registration successful. Verification email has been sent to your address.', 'OK', {duration: 5000,});
+            this.router.navigate(['../../'], {relativeTo: this.route});
           }
           else{
             sessionStorage.setItem('betaForm', JSON.stringify(res));

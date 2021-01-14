@@ -7,6 +7,7 @@ import com.example.workflow.models.DBs.Genre;
 import com.example.workflow.models.DBs.SysUser;
 import com.example.workflow.services.systemServices.AuthorityService;
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.identity.User;
@@ -28,6 +29,8 @@ public class StoreSystemUserService implements JavaDelegate {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private TaskService taskService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -103,7 +106,6 @@ public class StoreSystemUserService implements JavaDelegate {
             execution.setVariable("invalidSave", false);
         } catch (Exception e) {
             execution.setVariable("invalidSave", true);
-            throw new Exception("Something went wrong");
         }
 
         User user = identityService.newUser(systemUserForm.get("username").toString());
@@ -112,8 +114,13 @@ public class StoreSystemUserService implements JavaDelegate {
         user.setLastName(systemUserForm.get("lastname").toString());
         user.setEmail(systemUserForm.get("email").toString());
 
-        identityService.saveUser(user);
-        identityService.createMembership(user.getId(), group);
+        try {
+            identityService.saveUser(user);
+            identityService.createMembership(user.getId(), group);
+            execution.setVariable("invalidSave", false);
+        } catch (Exception e) {
+            execution.setVariable("invalidSave", true);
+        }
 
         String token = UUID.randomUUID().toString();
         systemUserService.createVerificationToken(newSysUser, token);
